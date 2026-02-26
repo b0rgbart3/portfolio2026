@@ -17,7 +17,7 @@ interface AIPanelProps {
 }
 
 const suggestions = [
-  "Describe a UI Bart built — problem, tech, tradeoffs.",
+  "Describe a project that Bart is particularly proud of — what were the challenges, solutions, and tradeoffs?",
   "How does Bart make UIs fast, accessible, and cross-device?",
   "Share a time Bart and a designer or PM disagreed — what happened and outcome?",
   "Would Bart be a good for a Series B startup with messy data infrastructure?",
@@ -25,6 +25,16 @@ const suggestions = [
   "What kind of leadership experience does Bart have?",
   "How does Bart approach UI/UX design and development?",
 ];
+
+const renderWithLineBreaks = (text: string) => {
+  const sentences = text.split(/(?<=\.)\s+(?=[A-Z])/);
+  return sentences.map((sentence, i) => (
+    <React.Fragment key={i}>
+      {sentence}
+      {i < sentences.length - 1 && <><br /><br /></>}
+    </React.Fragment>
+  ));
+};
 
 const AIPanel: React.FC<AIPanelProps> = ({
   isOpen,
@@ -196,7 +206,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
                         can answer nuanced questions about my experience,
                         skills, and background by retrieving relevant context
                         from a curated knowledge base before generating a
-                        response.
+                        response. In other words, I trained the agent.
                       </p>
                     </div>
                     <div className={styles["build-section"]}>
@@ -206,8 +216,8 @@ const AIPanel: React.FC<AIPanelProps> = ({
                         other source documents are tokenized, chunked, embedded,
                         and stored in a LanceDB vector database using an
                         embedding specific model. Then, at query time, the most
-                        semantically relevant chunks are retrieved using cosine
-                        similarity search.
+                        semantically relevant chunks are retrieved using a
+                        cosine similarity search.
                       </p>
                     </div>
                     <div className={styles["build-section"]}>
@@ -215,18 +225,21 @@ const AIPanel: React.FC<AIPanelProps> = ({
                       <p>
                         A Python based LangGraph agent orchestrates the
                         retrieval and generation steps. It decides which
-                        documents to include, formats the context window, and
-                        then calls a cloud based LLM model with a detailed
-                        system prompt which directs the LLM to only answer
-                        questions based on the factual documents that were
-                        provided. This way it can provide tailored answers which
-                        represent me accurately and honestly, while still using
-                        the natural language skills of the LLM. This greatly
-                        reduces the chances of hallucinations.
+                        documents to include based on relevance, formats the
+                        context window, and then calls a cloud based LLM model
+                        with a detailed system prompt which directs the LLM to
+                        only answer questions based on the factual documents
+                        that were provided. This way it can provide tailored
+                        answers which represent me accurately and honestly,
+                        while still using the natural language skills of the
+                        LLM. This greatly reduces the chances of hallucinations.
+                        Note however that because LLMs are probabilistic by
+                        nature, answers may vary even if you ask the same
+                        question over again.
                       </p>
                     </div>
                     <div className={styles["build-section"]}>
-                      <h3>Stack</h3>
+                      <h3>Tech Stack</h3>
                       <p>
                         FastAPI · LanceDB · Python · LangGraph · Claude Code ·
                         React + TypeScript frontend. Documents are ingested via
@@ -257,7 +270,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
                           className={styles["suggestion-item"]}
                           onClick={() => handleSend(suggestion)}
                         >
-                          "{suggestion}"
+                          {suggestion}
                         </button>
                       ))}
                     </div>
@@ -274,7 +287,11 @@ const AIPanel: React.FC<AIPanelProps> = ({
                         key={msg.id}
                         className={`${styles["message-wrapper"]} ${styles[msg.sender]}`}
                       >
-                        <div className={styles.bubble}>{msg.text}</div>
+                        <div className={styles.bubble}>
+                          {msg.sender === "assistant"
+                            ? renderWithLineBreaks(msg.text)
+                            : msg.text}
+                        </div>
                       </div>
                     ))}
                     {isTyping && (

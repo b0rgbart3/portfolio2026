@@ -145,16 +145,18 @@
                 padding: 16px 20px;
                 border-radius: 12px;
                 text-align: left;
-                color: $text-primary;
+                color: $text-secondary;
                 font-size: 0.95rem;
+                line-height: 1.5rem;
                 cursor: pointer;
                 transition: all 0.2s ease;
-                width: 100%;
+                width: 98%;
 
                 &:hover {
-                    background: rgba(255, 255, 255, 0.06);
-                    border-color: rgba($accent-blue, 0.3);
-                    transform: translateX(4px);
+                    background: rgba(80, 193, 254, 0.132);
+                    border-color: rgba($accent-blue, 1);
+                    transform: translateX(2px);
+                    color: $text-primary;
                 }
             }
         }

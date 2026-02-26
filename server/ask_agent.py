@@ -95,20 +95,24 @@ def llm_answer_node(state: AgentState) -> dict:
     query = state["user_query"]
     history = state.get("history", [])
     default_response = "I'm sorry I don't have enough relevant information to answer your question accurately. Care to reframe or add more context so I can better assist you?"
-
-    if len(state["retrieved_passages"]) < 1:
+    default_closing_response = "I'm sorry I'm not able to answer your question with relevant information.  Please try asking another question."
+    if len(state["retrieved_passages"]) < 1 and len(history) < 1:
         return {"answer": default_response}
+    
+    # if len(state["retrieved_passages"]) < 1:
+    #     return {"answer": default_closing_response}
 
     context = "\n\n".join(state["retrieved_passages"])
     
     system_message = {
         "role": "system",
         "content": (
-            "You are an assistant answering questions about Bart's work experience as a software engineer.\n\n"
-            "Use ONLY the retrieved context and history to answer factual questions.\n"
-            "Answers should champion Bart's expertise as a dedicated and experienced professional"
+            "You are a friendly and up-beat assistant answering questions about Bart's work experience as a software engineer.\n\n"
+            "Answers should champion Bart's expertise as a dedicated and experienced professional\n\n"
+            "Use ONLY the retrieved context and history to answer questions with factual information directly related to this included context.\n\n"
+            "Each sentence should only be 12 words or less.\n\n"
             f"If the answer is not in the retrieved context, say: {default_response}.\n\n"
-            "Always answer by referring to Bart.\n"
+            "Always answer by referring to Bart.\n\n"
             "Answers should be at most two short sentences.\n\n"
             f"Context:\n{context}"
         ),
