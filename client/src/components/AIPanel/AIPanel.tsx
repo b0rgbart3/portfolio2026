@@ -83,10 +83,15 @@ const AIPanel: React.FC<AIPanelProps> = ({
     // }, 1500);
 
     try {
+      const history = messages.map((msg) => ({
+        role: msg.sender === "user" ? "user" : "assistant",
+        content: msg.text,
+      }));
+
       const response = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: text, history }),
       });
       const data = await response.json();
       console.log("BD: DATA: ", data);

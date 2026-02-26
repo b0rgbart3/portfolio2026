@@ -1,4 +1,4 @@
-from typing import TypedDict, List
+from typing import TypedDict, List, Dict
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -65,6 +65,7 @@ hf_client = InferenceClient(token=os.environ["HF_TOKEN"])
 # --- State ---
 class AgentState(TypedDict):
     user_query: str
+    history: List[Dict[str, str]]
     query_embedding: List[float]
     retrieved_passages: List[str]
     answer: str
@@ -92,27 +93,29 @@ def vector_search_node(state: AgentState) -> dict:
 
 def llm_answer_node(state: AgentState) -> dict:
     query = state["user_query"]
+    history = state.get("history", [])
     context = "\n\n".join(state["retrieved_passages"])
-    prompt = (
-        f"You are an assistant answering questions about a software engineer's work experience. "
-        f"Answer using only the context below.\n\n"
-        f"Context:\n{context}\n\n"
-        f"Question: {query}\nAnswer:"
-    )
-    # response = hf_client.chat_completion(
-    #     model=LLM_MODEL,
-    #     messages=[{"role": "user", "content": prompt}],
-    #     max_tokens=512,
-    # )
+
+    system_message = {
+        "role": "system",
+        "content": (
+            "You are an assistant answering questions about a software engineer's work experience. "
+            "Answer using only the context and history below.\n\n"
+            f"Context:\n{context}"
+            f"History:\n{history}"
+        ),
+    }
+
+    messages = [system_message, *history, {"role": "user", "content": query}]
+
     client = get_llm_client()
     response = client.chat.completions.create(
         model=LLM_MODEL,
-        messages=[{"role": "user", "content": prompt}],
+        messages=messages,
         max_tokens=512,
     )
-    
+
     return {"answer": response.choices[0].message.content}
-    # return {"answer": 'placeholder answer'}
 
 # --- Build graph ---
 builder = StateGraph(AgentState)
@@ -127,6 +130,6 @@ graph = builder.compile()
 
 
 # --- Public interface ---
-def run_agent(user_query: str) -> str:
-    result = graph.invoke({"user_query": user_query})
+def run_agent(user_query: str, history: List[Dict[str, str]] = []) -> str:
+    result = graph.invoke({"user_query": user_query, "history": history})
     return result.get("answer", "")
