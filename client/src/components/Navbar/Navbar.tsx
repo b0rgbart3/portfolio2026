@@ -42,6 +42,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
         <div className={styles['nav-content']}>
           <div className={`${styles['nav-links']} ${isMenuOpen ? styles.active : ''}`}>
             <a onClick={() => scrollToSection('experience')}>Experience</a>
+            <a onClick={() => scrollToSection('skills')}>Skills</a>
             <a onClick={() => scrollToSection('projects')}>Projects</a>
             <a onClick={() => scrollToSection('fit-check')}>Fit Check</a>
           </div>
@@ -57,6 +58,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
 
       <div className={`${styles['mobile-menu']} ${isMenuOpen ? styles.active : ''}`}>
         <a onClick={() => scrollToSection('experience')}>Experience</a>
+        <a onClick={() => scrollToSection('skills')}>Skills</a>
         <a onClick={() => scrollToSection('projects')}>Projects</a>
         <a onClick={() => scrollToSection('fit-check')}>Fit Check</a>
       </div>

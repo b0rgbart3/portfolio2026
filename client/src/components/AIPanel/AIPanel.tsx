@@ -17,17 +17,25 @@ interface AIPanelProps {
 }
 
 const suggestions = [
+  "Describe a UI Bart built — problem, tech, tradeoffs.",
+  "How does Bart make UIs fast, accessible, and cross-device?",
+  "Share a time Bart and a designer or PM disagreed — what happened and outcome?",
   "Would this person be good for a Series B startup with messy data infrastructure?",
   "Tell me about their biggest failure.",
   "What kind of leadership experience do they have?",
   "How do they approach UI/UX design and development?",
 ];
 
-const AIPanel: React.FC<AIPanelProps> = ({ isOpen, onClose, openToBuildInfo = false }) => {
+const AIPanel: React.FC<AIPanelProps> = ({
+  isOpen,
+  onClose,
+  openToBuildInfo = false,
+}) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showBuildInfo, setShowBuildInfo] = useState(false);
+  const [shuffledSuggestions, setShuffledSuggestions] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -40,6 +48,7 @@ const AIPanel: React.FC<AIPanelProps> = ({ isOpen, onClose, openToBuildInfo = fa
       setInputValue("");
       setIsTyping(false);
       setShowBuildInfo(openToBuildInfo);
+      setShuffledSuggestions([...suggestions].sort(() => Math.random() - 0.5));
     }
   }, [isOpen, openToBuildInfo]);
 
@@ -217,7 +226,7 @@ const AIPanel: React.FC<AIPanelProps> = ({ isOpen, onClose, openToBuildInfo = fa
                     </p>
 
                     <div className={styles.suggestions}>
-                      {suggestions.map((suggestion, index) => (
+                      {shuffledSuggestions.map((suggestion, index) => (
                         <button
                           key={index}
                           className={styles["suggestion-item"]}
