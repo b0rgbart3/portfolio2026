@@ -1,0 +1,25 @@
+// _variables.scss
+$bg-primary: #0f161d; // Dark Navy from image
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$accent-green: #4ade80; // Emerald Green for "Staff Engineer"
+$accent-blue: #1d7da6; // Electric Blue for buttons
+$nav-bg: rgba(19, 31, 40, 0.8);
+$border-color: rgba(255, 255, 255, 0.1);
+
+// Typography
+$font-serif: 'PT Serif', serif;
+$font-sans: 'Inter', sans-serif;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin section-padding {
+  padding: 80px 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}

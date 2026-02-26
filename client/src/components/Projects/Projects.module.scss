@@ -1,0 +1,105 @@
+@use '../../styles/variables' as *;
+
+.projects {
+  @include section-padding;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  .header {
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 3rem;
+      color: $text-primary;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 1.125rem;
+      color: $text-secondary;
+      max-width: 700px;
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      border-color: rgba($accent-blue, 0.4);
+      background: rgba($accent-blue, 0.08);
+      transform: translateY(-2px);
+
+      h3 {
+        color: $accent-blue;
+      }
+
+      p {
+        color: $text-primary;
+      }
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      color: $text-primary;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-family: $font-sans;
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: $text-secondary;
+      margin: 0;
+    }
+  }
+
+  .cardHighlighted {
+    border-color: #38bdf8 !important;
+    background: rgba(56, 189, 248, 0.18) !important;
+    transition: all 0.2s ease !important;
+
+    // h3 {
+    //   color: #38bdf8 !important;
+    //   transition: color 0.2s ease !important;
+    // }
+  }
+}
+
+@media (max-width: 768px) {
+  .projects {
+    padding-top: 60px;
+    padding-bottom: 60px;
+
+    .header {
+      h2 {
+        font-size: 2.5rem;
+      }
+    }
+
+    .card {
+      padding: 24px;
+    }
+  }
+}

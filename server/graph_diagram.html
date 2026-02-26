@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ask_agent LangGraph</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f1117;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #e2e8f0;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 48px;
+    }
+    .graph {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      position: relative;
+    }
+
+    /* ── Terminal nodes (START / END) ─────────────────────────── */
+    .terminal {
+      width: 120px;
+      height: 40px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+    .terminal.start { background: #1e293b; border: 1.5px solid #334155; color: #94a3b8; }
+    .terminal.end   { background: #1e293b; border: 1.5px solid #334155; color: #94a3b8; }
+
+    /* ── Step nodes ───────────────────────────────────────────── */
+    .step {
+      display: flex;
+      align-items: stretch;
+      gap: 20px;
+      z-index: 1;
+    }
+    .node {
+      width: 260px;
+      border-radius: 12px;
+      border: 1.5px solid;
+      overflow: hidden;
+    }
+    .node-header {
+      padding: 10px 16px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .node-body {
+      padding: 10px 16px 14px;
+      font-size: 0.72rem;
+      line-height: 1.7;
+    }
+    .node-body .label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.55;
+      margin-top: 6px;
+    }
+    .node-body .value {
+      font-family: 'Cascadia Code', 'Fira Mono', monospace;
+      font-size: 0.70rem;
+    }
+
+    /* colour themes per node */
+    .embed   { border-color: #6366f1; }
+    .embed   .node-header { background: #1e1b4b; color: #a5b4fc; }
+    .embed   .node-body   { background: #13112e; }
+    .embed   .value       { color: #c7d2fe; }
+
+    .search  { border-color: #0ea5e9; }
+    .search  .node-header { background: #0c1a2e; color: #7dd3fc; }
+    .search  .node-body   { background: #080f1e; }
+    .search  .value       { color: #bae6fd; }
+
+    .llm     { border-color: #10b981; }
+    .llm     .node-header { background: #052e16; color: #6ee7b7; }
+    .llm     .node-body   { background: #021a0d; }
+    .llm     .value       { color: #a7f3d0; }
+
+    /* ── Side annotation (state delta) ───────────────────────── */
+    .annotation {
+      width: 180px;
+      align-self: center;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #161b27;
+      border: 1px dashed #2d3748;
+      font-size: 0.65rem;
+      line-height: 1.8;
+      color: #718096;
+    }
+    .annotation .key   { color: #f6ad55; font-family: monospace; }
+    .annotation .type  { color: #68d391; font-family: monospace; }
+    .annotation .arrow { color: #4a5568; }
+
+    /* ── Connector arrows ─────────────────────────────────────── */
+    .connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      height: 52px;
+      z-index: 0;
+    }
+    .connector-line {
+      width: 2px;
+      flex: 1;
+      background: linear-gradient(to bottom, #334155, #475569);
+    }
+    .connector-label {
+      font-size: 0.60rem;
+      color: #475569;
+      letter-spacing: 0.08em;
+      padding: 2px 0;
+      white-space: nowrap;
+    }
+    .arrow-head {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 9px solid #475569;
+    }
+
+    /* ── Legend ───────────────────────────────────────────────── */
+    .legend {
+      margin-top: 52px;
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.65rem;
+      color: #64748b;
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 3px;
+    }
+
+    /* ── State box ────────────────────────────────────────────── */
+    .state-box {
+      margin-top: 52px;
+      border: 1px dashed #334155;
+      border-radius: 12px;
+      padding: 20px 24px;
+      max-width: 460px;
+      width: 100%;
+    }
+    .state-box h2 {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 14px;
+    }
+    .state-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid #1e293b;
+      font-size: 0.72rem;
+    }
+    .state-row:last-child { border-bottom: none; }
+    .state-key  { color: #f6ad55; font-family: monospace; min-width: 160px; }
+    .state-type { color: #68d391; font-family: monospace; }
+    .state-set  { margin-left: auto; font-size: 0.60rem; color: #475569; }
+  </style>
+</head>
+<body>
+
+  <h1>ask_agent.py · LangGraph</h1>
+
+  <div class="graph">
+
+    <!-- START -->
+    <div class="terminal start">START</div>
+
+    <!-- Arrow 1 -->
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-label">user_query →</div>
+      <div class="connector-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+
+    <!-- Node 1: embed_query -->
+    <div class="step">
+      <div class="node embed">
+        <div class="node-header">embed_query</div>
+        <div class="node-body">
+          <div class="label">reads</div>
+          <div class="value">user_query: str</div>
+          <div class="label">writes</div>
+          <div class="value">query_embedding: List[float]</div>
+          <div class="label">model</div>
+          <div class="value">BAAI/bge-small-en-v1.5</div>
+        </div>
+      </div>
+      <div class="annotation">
+        Encodes the question into a<br>
+        dense vector using a local<br>
+        HuggingFace embedding model.
+      </div>
+    </div>
+
+    <!-- Arrow 2 -->
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-label">query_embedding →</div>
+      <div class="connector-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+
+    <!-- Node 2: vector_search -->
+    <div class="step">
+      <div class="node search">
+        <div class="node-header">vector_search</div>
+        <div class="node-body">
+          <div class="label">reads</div>
+          <div class="value">query_embedding: List[float]</div>
+          <div class="label">writes</div>
+          <div class="value">retrieved_passages: List[str]</div>
+          <div class="label">store · filter</div>
+          <div class="value">LanceDB · top-5 · dist &lt; 0.8</div>
+        </div>
+      </div>
+      <div class="annotation">
+        Searches the LanceDB vector<br>
+        store, returns up to 5 chunks<br>
+        with cosine distance &lt; 0.7.
+      </div>
+    </div>
+
+    <!-- Arrow 3 -->
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-label">retrieved_passages →</div>
+      <div class="connector-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+
+    <!-- Node 3: llm_answer -->
+    <div class="step">
+      <div class="node llm">
+        <div class="node-header">llm_answer</div>
+        <div class="node-body">
+          <div class="label">reads</div>
+          <div class="value">user_query + retrieved_passages</div>
+          <div class="label">writes</div>
+          <div class="value">answer: str</div>
+          <div class="label">model</div>
+          <div class="value">ollama / openrouter (env-driven)</div>
+        </div>
+      </div>
+      <div class="annotation">
+        Builds a RAG prompt, calls the<br>
+        configured LLM (Ollama or<br>
+        OpenRouter), returns ≤ 2 sentences.
+      </div>
+    </div>
+
+    <!-- Arrow 4 -->
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-label">answer →</div>
+      <div class="connector-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+
+    <!-- END -->
+    <div class="terminal end">END</div>
+
+  </div>
+
+  <!-- AgentState breakdown -->
+  <div class="state-box">
+    <h2>AgentState (TypedDict)</h2>
+    <div class="state-row">
+      <span class="state-key">user_query</span>
+      <span class="state-type">str</span>
+      <span class="state-set">set by caller</span>
+    </div>
+    <div class="state-row">
+      <span class="state-key">query_embedding</span>
+      <span class="state-type">List[float]</span>
+      <span class="state-set">embed_query</span>
+    </div>
+    <div class="state-row">
+      <span class="state-key">retrieved_passages</span>
+      <span class="state-type">List[str]</span>
+      <span class="state-set">vector_search</span>
+    </div>
+    <div class="state-row">
+      <span class="state-key">answer</span>
+      <span class="state-type">str</span>
+      <span class="state-set">llm_answer</span>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#6366f1"></div>
+      Embedding node
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#0ea5e9"></div>
+      Vector search node
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#10b981"></div>
+      LLM generation node
+    </div>
+  </div>
+
+</body>
+</html>

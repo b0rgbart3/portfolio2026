@@ -1,0 +1,203 @@
+@use '../../styles/variables' as *;
+
+.experience {
+    @include section-padding;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    .header {
+        margin-bottom: 20px;
+
+        h2 {
+            font-size: 3rem;
+            color: $text-primary;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 1.125rem;
+            color: $text-secondary;
+            max-width: 700px;
+        }
+    }
+
+    .cards {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 40px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        scroll-margin-top: 100px;
+
+        &:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+
+            .company-info {
+                h3 {
+                    font-size: 1.75rem;
+                    color: $text-primary;
+                    margin-bottom: 8px;
+                }
+
+                .role {
+                    font-size: 1rem;
+                    color: $text-secondary;
+                    font-family: $font-sans;
+                    font-weight: 500;
+                }
+            }
+
+            .duration {
+                font-size: 0.875rem;
+                color: $text-secondary;
+                font-family: $font-sans;
+                font-weight: 600;
+                letter-spacing: 0.05em;
+            }
+        }
+
+        .bullet-points {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 32px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            li {
+                display: flex;
+                gap: 12px;
+                color: $text-secondary;
+                font-size: 1rem;
+                line-height: 1.6;
+
+                .icon {
+                    color: rgba($accent-green, 0.6);
+                    flex-shrink: 0;
+                    margin-top: 4px;
+                }
+            }
+        }
+
+        .ai-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: $accent-blue;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+            user-select: none;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &--open {
+                opacity: 1;
+            }
+
+            .sparkle {
+                color: $accent-blue;
+            }
+
+            .chevron {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .business-context {
+            // height/opacity animated by framer-motion
+
+            .business-context-inner {
+                margin-top: 20px;
+                padding: 24px;
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.07);
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .context-row {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .context-label {
+                font-family: $font-sans;
+                font-size: 0.6875rem;
+                font-weight: 600;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: $text-secondary;
+                opacity: 0.6;
+            }
+
+            .context-text {
+                font-family: $font-sans;
+                font-size: 0.9375rem;
+                line-height: 1.65;
+                color: $text-secondary;
+                margin: 0;
+
+                &--quote {
+                    font-style: italic;
+                    color: $accent-green;
+                    opacity: 0.85;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .experience {
+        padding-top: 60px;
+        padding-bottom: 60px;
+
+        .header {
+            h2 {
+                font-size: 2.5rem;
+            }
+        }
+
+        .card {
+            padding: 24px;
+
+            .card-header {
+                flex-direction: column;
+                gap: 8px;
+
+                .duration {
+                    order: -1;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,45 @@
+@use '../../styles/variables' as *;
+
+.scroll-top {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba($accent-blue, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($accent-blue, 0.3);
+    color: $accent-blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 998;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+        background: rgba($accent-blue, 0.2);
+        border-color: $accent-blue;
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba($accent-blue, 0.2);
+    }
+
+    svg {
+        transition: transform 0.3s ease;
+    }
+
+    &:hover svg {
+        transform: translateY(-2px);
+    }
+}
+
+@media (max-width: 768px) {
+    .scroll-top {
+        bottom: 24px;
+        right: 24px;
+        width: 44px;
+        height: 44px;
+    }
+}

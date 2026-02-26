@@ -1,0 +1,133 @@
+@use '../../styles/variables' as *;
+
+.skills {
+  background: $bg-primary;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.inner {
+  @include section-padding;
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  margin-bottom: 28px;
+
+  h2 {
+    font-family: $font-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: $text-primary;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-family: $font-sans;
+    font-size: 1rem;
+    color: $text-secondary;
+  }
+}
+
+// ─── Row: 4 columns ──────────────────────────────────────────
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ─── Card ────────────────────────────────────────────────────
+.card {
+  border-radius: 12px;
+  padding: 24px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid $border-color;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &.cardGreen {
+    background: rgba(74, 222, 128, 0.06);
+    border-color: rgba(74, 222, 128, 0.2);
+
+    &:hover {
+      background: rgba(74, 222, 128, 0.09);
+      border-color: rgba(74, 222, 128, 0.35);
+    }
+  }
+
+  &.cardBlue {
+    background: rgba(29, 125, 166, 0.1);
+    border-color: rgba(29, 125, 166, 0.3);
+
+    &:hover {
+      background: rgba(29, 125, 166, 0.15);
+      border-color: rgba(29, 125, 166, 0.45);
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: $font-sans;
+    font-size: 0.9rem;
+    color: $text-secondary;
+    line-height: 1.1;
+  }
+}
+
+.cardTitle {
+  font-family: $font-sans;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $accent-green;
+  margin-bottom: 18px;
+
+  &.cardTitleBlue {
+    color: #38bdf8;
+  }
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba($accent-green, 0.5);
+  flex-shrink: 0;
+}
+
+.dotBlue {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.5);
+  flex-shrink: 0;
+}
