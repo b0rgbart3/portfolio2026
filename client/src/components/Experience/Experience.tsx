@@ -31,11 +31,11 @@ const experiences: ExperienceItem[] = [
     ],
     businessContext: {
       situation:
-        "Enterprise fintech clients needed clearer reporting dashboards to manage hundreds of accounts across complex data hierarchies — existing tooling couldn't scale without degrading UX.",
+        "Enterprise fintech clients needed extensive filtering capabilities to manage financial reports across hundreds of accounts  — existing platform didn't offer customization of reports.",
       approach:
-        "Built a scalable, component-driven UI system that prioritized clarity and predictability, ensuring high-stakes financial workflows remained fast and reliable as data complexity grew.",
+        "Built a scalable, component-driven UI system that prioritized speed and predictability, ensuring clients had a high degree of customization at their fingertips - and financial data was reliable.",
       technicalWork:
-        "Engineered data-intensive React/TypeScript features with MobX state management, integrated Node.js APIs, and shipped consistently via CI/CD on Jenkins, GitLab, and OpenShift on a two-week cadence.",
+        "Engineered data-intensive React/TypeScript components with MobX state management, integrated Node.js APIs, and shipped features consistently on a monthly deployment cadence.",
       lessonsLearned:
         "UI systems benefit from modularization, and components should be designed with asynchronous data flow architectures from the ground up.  When API contracts are consistent and predictable it makes product development flow faster.",
     },

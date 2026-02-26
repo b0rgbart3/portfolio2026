@@ -8,15 +8,9 @@ const ScrollToTop: React.FC = () => {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      // Calculate 50% of the page height
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollThreshold = scrollHeight / 2;
-      
-      if (window.scrollY > scrollThreshold) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      const experienceSection = document.getElementById('experience');
+      if (!experienceSection) return;
+      setIsVisible(window.scrollY >= experienceSection.offsetTop);
     };
 
     window.addEventListener('scroll', toggleVisibility);
