@@ -71,6 +71,8 @@ def build_chunks(documents) -> List[Dict]:
     structured_chunks = []
 
     for node in nodes:
+        if len(node.text.split()) < 5:
+            continue
         embedding = Settings.embed_model.get_text_embedding(node.text)
 
 # future chunk meta-data to add:

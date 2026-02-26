@@ -82,7 +82,7 @@ def embed_query_node(state: AgentState) -> dict:
 
 def vector_search_node(state: AgentState) -> dict:
     results = table.search(state["query_embedding"]).limit(5).to_list()
-    passages = [r["text"] for r in results if r["_distance"] < 0.7] 
+    passages = [r["text"] for r in results if r["_distance"] < 0.85 and len(r["text"].split()) >= 5]
     print("PASSAGES: ------------------------")
     print("PASSAGES: ")
     print(len(passages))
@@ -94,15 +94,23 @@ def vector_search_node(state: AgentState) -> dict:
 def llm_answer_node(state: AgentState) -> dict:
     query = state["user_query"]
     history = state.get("history", [])
-    context = "\n\n".join(state["retrieved_passages"])
+    default_response = "I'm sorry I don't have enough relevant information to answer your question accurately. Care to reframe or add more context so I can better assist you?"
 
+    if len(state["retrieved_passages"]) < 1:
+        return {"answer": default_response}
+
+    context = "\n\n".join(state["retrieved_passages"])
+    
     system_message = {
         "role": "system",
         "content": (
-            "You are an assistant answering questions about a software engineer's work experience. "
-            "Answer using only the context and history below.\n\n"
+            "You are an assistant answering questions about Bart's work experience as a software engineer.\n\n"
+            "Use ONLY the retrieved context and history to answer factual questions.\n"
+            "Answers should champion Bart's expertise as a dedicated and experienced professional"
+            f"If the answer is not in the retrieved context, say: {default_response}.\n\n"
+            "Always answer by referring to Bart.\n"
+            "Answers should be at most two short sentences.\n\n"
             f"Context:\n{context}"
-            f"History:\n{history}"
         ),
     }
 

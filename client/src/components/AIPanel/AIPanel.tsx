@@ -20,10 +20,10 @@ const suggestions = [
   "Describe a UI Bart built — problem, tech, tradeoffs.",
   "How does Bart make UIs fast, accessible, and cross-device?",
   "Share a time Bart and a designer or PM disagreed — what happened and outcome?",
-  "Would this person be good for a Series B startup with messy data infrastructure?",
-  "Tell me about their biggest failure.",
-  "What kind of leadership experience do they have?",
-  "How do they approach UI/UX design and development?",
+  "Would Bart be a good for a Series B startup with messy data infrastructure?",
+  "Tell me about a time Bart experienced a failure.",
+  "What kind of leadership experience does Bart have?",
+  "How does Bart approach UI/UX design and development?",
 ];
 
 const AIPanel: React.FC<AIPanelProps> = ({
@@ -37,6 +37,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
   const [showBuildInfo, setShowBuildInfo] = useState(false);
   const [shuffledSuggestions, setShuffledSuggestions] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,12 +50,26 @@ const AIPanel: React.FC<AIPanelProps> = ({
       setIsTyping(false);
       setShowBuildInfo(openToBuildInfo);
       setShuffledSuggestions([...suggestions].sort(() => Math.random() - 0.5));
+    } else {
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = null;
     }
   }, [isOpen, openToBuildInfo]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
+
+  const assistantCount = messages.filter(
+    (m) => m.sender === "assistant",
+  ).length;
+  const showAskAnother = assistantCount >= 2 && !isTyping;
+
+  const handleReset = () => {
+    setMessages([]);
+    setInputValue("");
+    setShuffledSuggestions([...suggestions].sort(() => Math.random() - 0.5));
+  };
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return;
@@ -82,6 +97,9 @@ const AIPanel: React.FC<AIPanelProps> = ({
     //   setIsTyping(false);
     // }, 1500);
 
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     try {
       const history = messages.map((msg) => ({
         role: msg.sender === "user" ? "user" : "assistant",
@@ -92,6 +110,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, history }),
+        signal: controller.signal,
       });
       const data = await response.json();
       console.log("BD: DATA: ", data);
@@ -107,7 +126,8 @@ const AIPanel: React.FC<AIPanelProps> = ({
       };
       setMessages((prev) => [...prev, assistantMessage]);
       setIsTyping(false);
-    } catch {
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") return;
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: "There was an error",
@@ -274,40 +294,54 @@ const AIPanel: React.FC<AIPanelProps> = ({
             </div>
 
             <div className={styles.footer}>
-              {!showBuildInfo && (
-                <form
-                  className={styles["input-wrapper"]}
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSend(inputValue);
+              {!showBuildInfo &&
+                (showAskAnother ? (
+                  <div className={styles["ask-another-wrapper"]}>
+                    <button
+                      className={styles["ask-another-btn"]}
+                      onClick={handleReset}
+                    >
+                      Ask another question
+                    </button>
+                  </div>
+                ) : (
+                  <form
+                    className={styles["input-wrapper"]}
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSend(inputValue);
+                    }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Ask a follow-up question..."
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      disabled={isTyping}
+                    />
+                    <button
+                      type="submit"
+                      className={styles["send-btn"]}
+                      disabled={!inputValue.trim() || isTyping}
+                    >
+                      <Send size={18} />
+                    </button>
+                  </form>
+                ))}
+              {(!showAskAnother || showBuildInfo) && (
+                <button
+                  className={styles["build-info-btn"]}
+                  disabled={isTyping}
+                  onClick={() => {
+                    setShowBuildInfo((prev) => !prev);
+                    setMessages([]);
                   }}
                 >
-                  <input
-                    type="text"
-                    placeholder="Ask a follow-up question..."
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                  />
-                  <button
-                    type="submit"
-                    className={styles["send-btn"]}
-                    disabled={!inputValue.trim() || isTyping}
-                  >
-                    <Send size={18} />
-                  </button>
-                </form>
+                  {showBuildInfo
+                    ? "← Back to chat"
+                    : "How was this AI agent built?"}
+                </button>
               )}
-              <button
-                className={styles["build-info-btn"]}
-                onClick={() => {
-                  setShowBuildInfo((prev) => !prev);
-                  setMessages([]);
-                }}
-              >
-                {showBuildInfo
-                  ? "← Back to chat"
-                  : "How was this AI agent built?"}
-              </button>
             </div>
           </motion.div>
         </motion.div>

@@ -37,7 +37,7 @@ const experiences: ExperienceItem[] = [
       technicalWork:
         "Engineered data-intensive React/TypeScript features with MobX state management, integrated Node.js APIs, and shipped consistently via CI/CD on Jenkins, GitLab, and OpenShift on a two-week cadence.",
       lessonsLearned:
-        '"In fintech, clarity isn\'t optional. Every ambiguous data point is a decision made in the dark."',
+        "UI systems benefit from modularization, and components should be designed with asynchronous data flow architectures from the ground up.  When API contracts are consistent and predictable it makes product development flow faster.",
     },
   },
   {
@@ -59,7 +59,7 @@ const experiences: ExperienceItem[] = [
       technicalWork:
         "Designed brand systems and responsive websites, built and deployed database-driven apps on AWS and Heroku using PHP and MySQL. Earned a Silver Caddy Award for Creative Excellence for the Jeep Liberty site.",
       lessonsLearned:
-        '"Design systems outlive design trends. The logo you rush becomes the one you explain for a decade."',
+        "Robust and flexible design systems and visual assets simplify the development of every additional project.",
     },
   },
 ];
