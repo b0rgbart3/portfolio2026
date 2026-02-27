@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, Mail } from "lucide-react";
+import { Menu, X, Mail, Github, Linkedin } from "lucide-react";
 import styles from "./Navbar.module.scss";
 import cvPdf from "../../assets/Bart Dority CV.pdf";
 
@@ -40,6 +40,24 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
             BD
           </div>
           <a
+            href="https://github.com/b0rgbart3/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles["email-btn"]}
+            aria-label="GitHub"
+          >
+            <Github size={18} />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/bart-dority/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles["email-btn"]}
+            aria-label="LinkedIn"
+          >
+            <Linkedin size={18} />
+          </a>
+          <a
             href="mailto:jobs4bart@gmail.com"
             className={styles["email-btn"]}
             aria-label="Email"
@@ -55,7 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
             <a onClick={() => scrollToSection("experience")}>Experience</a>
             <a onClick={() => scrollToSection("skills")}>Skills</a>
             <a onClick={() => scrollToSection("projects")}>Projects</a>
-            <a href={cvPdf} target="_blank" rel="noopener noreferrer">CV</a>
+            {/* <a href={cvPdf} target="_blank" rel="noopener noreferrer">CV</a> */}
             <a onClick={() => scrollToSection("fit-check")}>Fit Check</a>
           </div>
 
@@ -80,7 +98,9 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
         <a onClick={() => scrollToSection("experience")}>Experience</a>
         <a onClick={() => scrollToSection("skills")}>Skills</a>
         <a onClick={() => scrollToSection("projects")}>Projects</a>
-        <a href={cvPdf} target="_blank" rel="noopener noreferrer">CV</a>
+        <a href={cvPdf} target="_blank" rel="noopener noreferrer">
+          CV
+        </a>
         <a onClick={() => scrollToSection("fit-check")}>Fit Check</a>
       </div>
     </nav>

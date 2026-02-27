@@ -45,7 +45,7 @@ const experiences: ExperienceItem[] = [
   {
     company: "Dority Design Works",
     role: "Freelance Web Designer →  Developer → UI Engineer",
-    duration: "2005—2021",
+    duration: "2011—2021",
     bullets: [
       "Led brand and visual identity development, creating logos, style guides, and cohesive marketing assets across print and digital media (brochures, business cards, websites), partnering closely with clients and creative teams to refine concepts and align with business goals.",
       "Designed and built responsive, mobile-first websites, translating brand systems into polished, user-centered front-end experiences with intuitive UX and seamless cross-device performance.",
@@ -112,7 +112,11 @@ const Experience: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           whileHover={{ x: 3 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15, x: { duration: 0.15, ease: "easeOut" } }}
+          transition={{
+            duration: 0.6,
+            delay: 0.15,
+            x: { duration: 0.15, ease: "easeOut" },
+          }}
         >
           <img src={pdfIcon} alt="" className={styles["cv-icon"]} />
           Bart's CV

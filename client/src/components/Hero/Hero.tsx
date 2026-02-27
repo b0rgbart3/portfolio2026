@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X } from "lucide-react";
 import styles from "./Hero.module.scss";
 import profilePic from "../../assets/bart_dority_profile4.png";
+import cvPdf from "../../assets/Bart Dority CV.pdf";
+import pdfIcon from "../../assets/pdf_icon.svg";
 
 interface HeroProps {
   onOpenAI: () => void;
@@ -129,6 +131,17 @@ const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
               {ABOUT_TEXT.split("\n\n").map((para, i) => (
                 <p key={i}>{para}</p>
               ))}
+              <motion.a
+                href={cvPdf}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles["cv-link"]}
+                whileHover={{ x: 3 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
+              >
+                <img src={pdfIcon} alt="" className={styles["cv-icon"]} />
+                Bart's CV
+              </motion.a>
             </motion.div>
           )}
         </AnimatePresence>,

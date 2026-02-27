@@ -38,7 +38,7 @@
         margin-left:6px;
         display: flex;
         align-items: center;
-        color: $text-secondary;
+        color: $dull-accent-blue;
         transition: color 0.2s ease;
 
         &:hover {
@@ -70,6 +70,7 @@
         color: $text-primary;
         z-index: 1001;
         cursor: pointer;
+        padding-right: 14px;
     }
 
     .nav-content {
@@ -173,10 +174,18 @@
     }
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+    .navbar {
+        .wrapper {
+            padding-top: 14px;
+        }
+    }
+}
+
 @media (max-width: 768px) {
     .navbar {
         .wrapper {
-            padding: 0 24px;
+            padding: 14px 24px 0;
         }
 
         .nav-links {
