@@ -19,7 +19,7 @@ interface AIPanelProps {
 const suggestions = [
   "Describe a project that Bart is particularly proud of — what were the challenges, solutions, and tradeoffs?",
   "How does Bart make UIs fast, accessible, and cross-device?",
-  "Share a time Bart and a designer or PM disagreed — what happened and outcome?",
+  "Share a time Bart and a designer or PM disagreed — what happened and what was the outcome?",
   "Would Bart be a good for a Series B startup with messy data infrastructure?",
   "Tell me about a time Bart experienced a failure.",
   "What kind of leadership experience does Bart have?",
@@ -31,7 +31,12 @@ const renderWithLineBreaks = (text: string) => {
   return sentences.map((sentence, i) => (
     <React.Fragment key={i}>
       {sentence}
-      {i < sentences.length - 1 && <><br /><br /></>}
+      {i < sentences.length - 1 && (
+        <>
+          <br />
+          <br />
+        </>
+      )}
     </React.Fragment>
   ));
 };
@@ -241,7 +246,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
                     <div className={styles["build-section"]}>
                       <h3>Tech Stack</h3>
                       <p>
-                        FastAPI · LanceDB · Python · LangGraph · Claude Code ·
+                        Python · LangGraph · FastAPI · LanceDB · Claude Code ·
                         React + TypeScript frontend. Documents are ingested via
                         a custom preprocessing python pipeline that handles
                         chunking and embedding generation.

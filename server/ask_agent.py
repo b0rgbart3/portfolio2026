@@ -82,7 +82,7 @@ def embed_query_node(state: AgentState) -> dict:
 
 def vector_search_node(state: AgentState) -> dict:
     results = table.search(state["query_embedding"]).limit(5).to_list()
-    passages = [r["text"] for r in results if r["_distance"] < 0.85 and len(r["text"].split()) >= 5]
+    passages = [r["text"] for r in results if r["_distance"] < 0.85 and len(r["text"].split()) >= 4]
     print("PASSAGES: ------------------------")
     print("PASSAGES: ")
     print(len(passages))
@@ -98,23 +98,24 @@ def llm_answer_node(state: AgentState) -> dict:
     default_closing_response = "I'm sorry I'm not able to answer your question with relevant information.  Please try asking another question."
     if len(state["retrieved_passages"]) < 1 and len(history) < 1:
         return {"answer": default_response}
-    
-    # if len(state["retrieved_passages"]) < 1:
-    #     return {"answer": default_closing_response}
 
     context = "\n\n".join(state["retrieved_passages"])
     
     system_message = {
         "role": "system",
         "content": (
-            "You are a friendly and up-beat assistant answering questions about Bart's work experience as a software engineer.\n\n"
-            "Answers should champion Bart's expertise as a dedicated and experienced professional\n\n"
-            "Use ONLY the retrieved context and history to answer questions with factual information directly related to this included context.\n\n"
-            "Each sentence should only be 12 words or less.\n\n"
-            f"If the answer is not in the retrieved context, say: {default_response}.\n\n"
-            "Always answer by referring to Bart.\n\n"
-            "Answers should be at most two short sentences.\n\n"
-            f"Context:\n{context}"
+            "You are Bart's technical advocate. Answer questions about Bart based strictly on the retrieved facts below.\n\n"
+            "STRICT RULES — follow these exactly:\n"
+            "- Use ONLY information explicitly stated in the retrieved facts. Do not infer, extrapolate, or add context not present in the facts.\n"
+            "- Do NOT add analysis, opinions, implications, risks, or characterizations that are not directly quoted from the facts.\n"
+            "- Do NOT speculate about why Bart made decisions or what the consequences of those decisions were unless explicitly stated.\n"
+            "- If a detail is not in the retrieved facts, omit it entirely — do not fill gaps with general knowledge.\n\n"
+            "Style:\n"
+            "- Be concise. Answers should be at most two sentences.\n"
+            "- Refer to Bart by name.\n"
+            "- Use technical terms from the facts where relevant.\n\n"
+            f"If the answer is not in the retrieved facts, say exactly: {default_response}\n\n"
+            f"RETRIEVED FACTS ABOUT BART (use only these):\n{context}"
         ),
     }
 
@@ -125,6 +126,7 @@ def llm_answer_node(state: AgentState) -> dict:
         model=LLM_MODEL,
         messages=messages,
         max_tokens=512,
+        temperature=0,
     )
 
     return {"answer": response.choices[0].message.content}
