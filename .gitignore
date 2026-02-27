@@ -27,8 +27,6 @@ dist-ssr
 server/.env
 server/.venv
 server/venv
-server/lancedb
-server/lancedb/*
 venv
 venv/*
 .venv
