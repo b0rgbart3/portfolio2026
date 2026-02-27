@@ -41,6 +41,10 @@
         .dot {
             width: 8px;
             height: 8px;
+            min-width: 8px;
+            min-height: 8px;
+            flex-shrink: 0;
+            align-self: center;
             background-color: $accent-green;
             border-radius: 50%;
             box-shadow: 0 0 8px $accent-green;
@@ -298,6 +302,26 @@
 
         h1 {
             font-size: 3.5rem;
+        }
+
+        .title {
+            font-size: 1.25rem;
+        }
+
+        .description {
+            font-size: 1rem;
+        }
+
+        .cta-container {
+            .about-btn,
+            .main-cta {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+        }
+
+        .scroll-hint {
+            bottom: -14px;
         }
     }
 }
