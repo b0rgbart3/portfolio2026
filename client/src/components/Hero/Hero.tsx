@@ -9,7 +9,7 @@ interface HeroProps {
   onOpenAI: () => void;
 }
 
-const ABOUT_TEXT = `I'm a front-end focused, fullstack software engineer with a passion for well-designed interfaces. I consider myself to be AI Native because I use a variety of AI tools and have incorporated them into my workflow.  I work across the stack with a focus on building intuitive and responsive apps using modern JavaScript frameworks.
+const ABOUT_TEXT = `I'm a front-end focused, fullstack software engineer with a passion for well-designed interfaces. I am AI Native because I use a variety of AI tools and have incorporated them into my workflow.  I work across the stack with a focus on building intuitive and responsive apps using modern JavaScript frameworks.
 
 With a background in design, animation, and advertising, I care about both the user experience and the system architecture. I enjoy collaborating with product designers and engineers to develop elegant solutions to complex problems. I'm endlessly curious and always learning.`;
 

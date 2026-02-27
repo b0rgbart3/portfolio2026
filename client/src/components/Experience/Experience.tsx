@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, BookOpen, ChevronDown } from "lucide-react";
 import styles from "./Experience.module.scss";
+import cvPdf from "../../assets/Bart Dority CV.pdf";
+import pdfIcon from "../../assets/pdf_icon.svg";
 
 interface BusinessContext {
   situation: string;
@@ -82,23 +84,39 @@ const Experience: React.FC = () => {
   return (
     <section className={styles.experience} id="experience">
       <div className={styles.header}>
-        <motion.h2
+        <div className={styles["header-text"]}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            Experience
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            Each role includes business context — the real story behind the
+            bullet points.
+          </motion.p>
+        </div>
+        <motion.a
+          href={cvPdf}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles["cv-link"]}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          whileHover={{ x: 3 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.15, x: { duration: 0.15, ease: "easeOut" } }}
         >
-          Experience
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Each role includes business context — the real story behind the bullet
-          points.
-        </motion.p>
+          <img src={pdfIcon} alt="" className={styles["cv-icon"]} />
+          Bart's CV
+        </motion.a>
       </div>
 
       <div className={styles.cards}>
