@@ -41,7 +41,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
       <div className={styles.content}>
         <motion.div
           className={styles.left}
-          initial={{ opacity: 0, x: -50 }}
+          initial={{ opacity: 0, x: -70 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
@@ -89,7 +89,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
 
         <motion.div
           className={styles.right}
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.7 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
         >
