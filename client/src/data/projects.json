@@ -3,100 +3,226 @@
         "title": "A Birthday Tracker",
         "intro": "vibe coded fullstack app",
         "description": "Fullstack MERN app - Vibe coded with AntiGravity.  This is a fullstack application with a UI built with React, a cloud based MongoDB database, and a backend server written in Node.js.  The server runs a daily cron job to look for upcoming birthdays and sends me an email when they are a week out.",
-        "images": ["birthdayTracker.jpg"],   
+        "images": [
+            "birthdayTracker.jpg"
+        ],
         "live": "https://birthdaytracker.bartdorityportfolio.online/",
         "github": "https://github.com/b0rgbart3/birthday_tracker",
-        "features": [""],
-        "tech": ["React","Node.js","Express", "MongoDB","Mongoose", "Antigravity"],
-        "shields": ["react","node","express","mongo","mongoose", "antigravity"]
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "Mongoose",
+            "Antigravity"
+        ],
+        "shields": [
+            "react",
+            "node",
+            "express",
+            "mongo",
+            "mongoose",
+            "antigravity"
+        ]
     },
-     {
+    {
         "title": "My Google Bookshelf",
         "intro": "simple fullstack app",
         "description": "Full Stack MERN application to search for books from the public Google Books API, and store them in a custom Mongo data base.",
-        "images": ["googlebooks.jpg"],   
-        "live": "https://googlebooks.bartdority.online",
+        "images": [
+            "googlebooks.jpg"
+        ],
+        "live": "https://googlebooks.bartdorityportfolio.online",
         "github": "https://github.com/b0rgbart3/GoogleBookShelf",
-        "features": [""],
-        "tech": ["React","Node.js","Express","MongoDB","Mongoose"],
-        "shields": ["react","node","express","mongo","mongoose"]
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "Mongoose"
+        ],
+        "shields": [
+            "react",
+            "node",
+            "express",
+            "mongo",
+            "mongoose"
+        ]
     },
     {
         "title": "Moon-Math Blog",
         "intro": "fullstack blogging app",
         "description": "Full Stack MERN blog that allows authors to blog articles.  Includes user logins image uploads, etc.",
-        "images": ["moonmath.jpg"],   
+        "images": [
+            "moonmath.jpg"
+        ],
         "live": "https://moon-math.online",
         "github": "https://github.com/b0rgbart3/reactBlog",
-        "features": [""],
-        "tech": ["React","Node.js","Express","MongoDB","Mongoose"],
-        "shields": ["react","node","express","mongo","mongoose"]
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "Mongoose"
+        ],
+        "shields": [
+            "react",
+            "node",
+            "express",
+            "mongo",
+            "mongoose"
+        ]
     },
-        {
+    {
         "title": "Millionth Block Countdown",
         "intro": "counting down the blocks until Bitcoin hits the one-millionth block",
         "description": "Fun little countdown visualizer that uses the Mempool.space API to track the bitcoin network blockheight.",
-        "images": ["millionthblock.jpg"],   
+        "images": [
+            "millionthblock.jpg"
+        ],
         "live": "https://millionthblock-countdown.com/",
         "github": "https://github.com/b0rgbart3/1M-Countdown",
-        "features": [""],
-        "tech": ["React","Node.js","Mempool API"],
-        "shields": ["react","node"]
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Node.js",
+            "Mempool API"
+        ],
+        "shields": [
+            "react",
+            "node"
+        ]
     },
     {
         "title": "LightBurst -a Puzzle Game",
         "intro": "cross-platform mobile puzzle game",
         "description": "The game consists of a square grid of lights. When the game starts, a random pattern of these lights is switched on. The goal of the puzzle is to switch all the lights off. Originally writen in Objective C, I converted the codebase to Flutter for cross platform compatibility including iOS and Android  ",
-        "images":["lightburst2.jpg"],
-        "live":"https://bartdorityportfolio.online/lightburst/",
-        "github":"https://github.com/b0rgbart3/lightburst3",
-        "features": [""],
-        "tech": ["Flutter", "Dart"],
-        "shields": ["flutter", "dart"]
+        "images": [
+            "lightburst2.jpg"
+        ],
+        "live": "https://bartdorityportfolio.online/lightburst/",
+        "github": "https://github.com/b0rgbart3/lightburst3",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "Flutter",
+            "Dart"
+        ],
+        "shields": [
+            "flutter",
+            "dart"
+        ]
     },
     {
         "title": "JerryFrost",
         "intro": "full featured artist portfolio website",
         "description": "This is a custom portfolio website designed and built for Jerry Frost, an artist who lives in San Francisco, California.  It includes an admin panel that allows him to upload images and other details about new artwork.  As a prolific artist, this was essential.",
-        "images":["jerry2.jpg"],
-        "live":"http://jerryfrost.com",
-        "github":"https://github.com/b0rgbart3/jerryfrost2025",
-        "features": [""],
-        "tech": ["Php", "Javascript", "HTML 5", "CSS"],
-        "shields": ["php", "js", "html", "css"]
+        "images": [
+            "jerry2.jpg"
+        ],
+        "live": "http://jerryfrost.com",
+        "github": "https://github.com/b0rgbart3/jerryfrost2025",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "Php",
+            "Javascript",
+            "HTML 5",
+            "CSS"
+        ],
+        "shields": [
+            "php",
+            "js",
+            "html",
+            "css"
+        ]
     },
     {
         "title": "AmyGraham.art",
         "intro": "brochure style artist portfolio website",
         "description": "This is a custom portfolio website designed and built for artist Amy Graham",
-        "images":["amy.jpg"],
-        "live":"https://amygraham.art",
-        "github":"https://github.com/b0rgbart3/amygraham",
-        "features": [""],
-        "tech": ["Javascript","HTML 5", "CSS"],
-        "shields": ["js", "html", "css" ]
+        "images": [
+            "amy.jpg"
+        ],
+        "live": "https://amygraham.art",
+        "github": "https://github.com/b0rgbart3/amygraham",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "Javascript",
+            "HTML 5",
+            "CSS"
+        ],
+        "shields": [
+            "js",
+            "html",
+            "css"
+        ]
     },
     {
         "title": "Dority Design Works",
-         "intro": "freelance portfolio website",
+        "intro": "freelance portfolio website",
         "description": "A custom website designed and built for my graphic design and web hosting consulting business - Dority Design Works",
-        "images":["ddw.jpg"],
-        "live":"https://ddworks.org",
-        "github":"https://github.com/b0rgbart3/amygraham",
-        "features": [""],
-        "tech": ["Php", "Javascript","HTML 5", "CSS"],
-        "shields": ["php", "js", "html", "css" ]
+        "images": [
+            "ddw.jpg"
+        ],
+        "live": "https://ddworks.org",
+        "github": "https://github.com/b0rgbart3/amygraham",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "Php",
+            "Javascript",
+            "HTML 5",
+            "CSS"
+        ],
+        "shields": [
+            "php",
+            "js",
+            "html",
+            "css"
+        ]
     },
-       
-        {
+    {
         "title": "Bart Dority Online",
         "intro": "my AI powered portfolio website",
         "description": "This is my portfolio website.  It uses a NodeJS backend API server which handles the contact form, and React for the frontend. It is hosted on my own virtual private server where I host my clients websites.",
-        "images":["bd_portfolio.jpg"],
-        "live":"https://bartdority.online",
-        "github":"https://github.com/b0rgbart3/portfolio2025",
-        "features": [""],
-        "tech": ["NodeJS", "React", "Javascript","HTML 5", "CSS"],
-        "shields": ["node", "react", "js", "html", "css" ]
+        "images": [
+            "bd_portfolio.jpg"
+        ],
+        "live": "https://bartdority.online",
+        "github": "https://github.com/b0rgbart3/portfolio2025",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "NodeJS",
+            "React",
+            "Javascript",
+            "HTML 5",
+            "CSS"
+        ],
+        "shields": [
+            "node",
+            "react",
+            "js",
+            "html",
+            "css"
+        ]
     }
 ]
