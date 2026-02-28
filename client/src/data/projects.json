@@ -199,23 +199,23 @@
         ]
     },
     {
-        "title": "Bart Dority Online",
+        "title": "My 2026 Portfolio",
         "intro": "my AI powered portfolio website",
-        "description": "This is my portfolio website.  It uses a NodeJS backend API server which handles the contact form, and React for the frontend. It is hosted on my own virtual private server where I host my clients websites.",
+        "description": "This is my portfolio website.  It has a React front-end, and a Python Fast API backend.  It features a custom built agentic RAG AI chatbot.",
         "images": [
-            "bd_portfolio.jpg"
+            "portfolio2026.jpg"
         ],
-        "live": "https://bartdority.online",
-        "github": "https://github.com/b0rgbart3/portfolio2025",
+        "live": "",
+        "github": "https://github.com/b0rgbart3/portfolio2026",
         "features": [
             ""
         ],
         "tech": [
-            "NodeJS",
+            "Python",
             "React",
-            "Javascript",
-            "HTML 5",
-            "CSS"
+            "LangGraph",
+            "LanceDB",
+            "custom agentic RAG pipeline"
         ],
         "shields": [
             "node",
