@@ -32,6 +32,17 @@
         "tech": ["React","Node.js","Express","MongoDB","Mongoose"],
         "shields": ["react","node","express","mongo","mongoose"]
     },
+        {
+        "title": "Millionth Block Countdown",
+        "intro": "counting down the blocks until Bitcoin hits the one-millionth block",
+        "description": "Fun little countdown visualizer that uses the Mempool.space API to track the bitcoin network blockheight.",
+        "images": ["millionthblock.jpg"],   
+        "live": "https://millionthblock-countdown.com/",
+        "github": "https://github.com/b0rgbart3/1M-Countdown",
+        "features": [""],
+        "tech": ["React","Node.js","Mempool API"],
+        "shields": ["react","node"]
+    },
     {
         "title": "LightBurst -a Puzzle Game",
         "intro": "cross-platform mobile puzzle game",
