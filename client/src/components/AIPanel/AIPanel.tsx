@@ -316,41 +316,31 @@ const AIPanel: React.FC<AIPanelProps> = ({
             </div>
 
             <div className={styles.footer}>
-              {!showBuildInfo &&
-                (showAskAnother ? (
-                  <div className={styles["ask-another-wrapper"]}>
-                    <button
-                      className={styles["ask-another-btn"]}
-                      onClick={handleReset}
-                    >
-                      Ask another question
-                    </button>
-                  </div>
-                ) : (
-                  <form
-                    className={styles["input-wrapper"]}
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      handleSend(inputValue);
-                    }}
-                  >
-                    <input
-                      type="text"
-                      placeholder="Ask a follow-up question..."
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      disabled={isTyping}
-                    />
-                    <button
-                      type="submit"
-                      className={styles["send-btn"]}
-                      disabled={!inputValue.trim() || isTyping}
-                    >
-                      <Send size={18} />
-                    </button>
-                  </form>
-                ))}
-              {(!showAskAnother || showBuildInfo) && (
+              {/* Input — always rendered, visually hidden when not applicable */}
+              <form
+                className={`${styles["input-wrapper"]} ${showBuildInfo || showAskAnother ? styles["input-hidden"] : ""}`}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSend(inputValue);
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder={messages.length === 0 ? "Ask a custom question about Bart's experience" : "Ask a follow-up question..."}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  disabled={isTyping || showBuildInfo || showAskAnother}
+                />
+                <button
+                  type="submit"
+                  className={styles["send-btn"]}
+                  disabled={!inputValue.trim() || isTyping}
+                >
+                  <Send size={18} />
+                </button>
+              </form>
+              {/* Button row — always rendered */}
+              <div className={styles["button-row"]}>
                 <button
                   className={styles["build-info-btn"]}
                   disabled={isTyping}
@@ -359,11 +349,17 @@ const AIPanel: React.FC<AIPanelProps> = ({
                     setMessages([]);
                   }}
                 >
-                  {showBuildInfo
-                    ? "← Back to chat"
-                    : "How was this AI agent built?"}
+                  {showBuildInfo ? "← Back to chat" : "How was this AI built?"}
                 </button>
-              )}
+                {!showBuildInfo && !isTyping && messages.length > 0 && (
+                  <button
+                    className={styles["ask-another-btn"]}
+                    onClick={handleReset}
+                  >
+                    Ask another question
+                  </button>
+                )}
+              </div>
             </div>
           </motion.div>
         </motion.div>
