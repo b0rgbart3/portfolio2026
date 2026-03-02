@@ -22,6 +22,15 @@
       color: $text-secondary;
       max-width: 700px;
     }
+
+    .header-note {
+      font-style: italic;
+      opacity: 0.85;
+      font-family: $font-serif;
+      color: #5487a1;
+      font-size: 1.2rem;
+      padding-top: 8px;
+    }
   }
 
   .grid {

@@ -165,6 +165,7 @@
         }
 
         .business-context {
+            overflow: hidden; // clip height animation
             // height/opacity animated by framer-motion
 
             .business-context-inner {

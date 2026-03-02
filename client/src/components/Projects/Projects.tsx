@@ -70,16 +70,7 @@ const Projects: React.FC = () => {
         >
           A selection of things that I've built — from full-stack apps to client
           sites.
-          <p
-            style={{
-              fontStyle: "italic",
-              opacity: 0.85,
-              fontFamily: "serif",
-              color: "#5487a1",
-              fontSize: "1.2rem",
-              paddingTop: "8px",
-            }}
-          >
+          <p className={styles["header-note"]}>
             Note that the work done for Grid Dynamics as a private enterprise is
             proprietary, so I'm not able to include that work in this list of
             projects.
