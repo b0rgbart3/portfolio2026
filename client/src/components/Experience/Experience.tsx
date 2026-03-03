@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, BookOpen, ChevronDown } from "lucide-react";
 import styles from "./Experience.module.scss";
-import cvPdf from "../../assets/Bart Dority CV.pdf";
+import cvPdf from "../../assets/BartDorityCV.pdf";
 import pdfIcon from "../../assets/pdf_icon.svg";
 
 interface BusinessContext {

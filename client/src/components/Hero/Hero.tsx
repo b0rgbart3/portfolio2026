@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X } from "lucide-react";
 import styles from "./Hero.module.scss";
 import profilePic from "../../assets/bart_dority_profile4.png";
-import cvPdf from "../../assets/Bart Dority CV.pdf";
+import cvPdf from "../../assets/BartDorityCV.pdf";
 import pdfIcon from "../../assets/pdf_icon.svg";
 
 interface HeroProps {

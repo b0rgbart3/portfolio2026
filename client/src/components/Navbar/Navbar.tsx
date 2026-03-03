@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Mail, Github, Linkedin } from "lucide-react";
 import styles from "./Navbar.module.scss";
-import cvPdf from "../../assets/Bart Dority CV.pdf";
+import cvPdf from "../../assets/BartDorityCV.pdf";
 
 interface NavbarProps {
   onOpenAI: () => void;
