@@ -44,16 +44,12 @@
         gap: 12px;
 
         .avatar {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            background: rgba($accent-blue, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: $accent-blue;
-            border: 1px solid rgba($accent-blue, 0.3);
+            object-fit: cover;
+            border: 3px solid rgba(122, 207, 240, 0.55);
+            flex-shrink: 0;
         }
 
         .status {
@@ -76,6 +72,7 @@
                     background: $accent-green;
                     border-radius: 50%;
                     box-shadow: 0 0 8px $accent-green;
+                    animation: breathe 3s ease-in-out infinite;
                 }
             }
         }
@@ -83,7 +80,7 @@
 
     .close-btn {
         background: none;
-        border: none;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         color: $text-secondary;
         cursor: pointer;
         padding: 8px;
@@ -235,6 +232,11 @@
     }
 }
 
+@keyframes breathe {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px $accent-green; }
+    50% { opacity: 0.25; box-shadow: 0 0 4px $accent-green; }
+}
+
 @keyframes spin {
     from {
         transform: rotate(0deg);
@@ -243,6 +245,19 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.streaming::after {
+    content: '▋';
+    display: inline-block;
+    animation: blink 0.8s step-end infinite;
+    margin-left: 2px;
+    opacity: 1;
 }
 
 .build-info {
@@ -358,6 +373,7 @@
     }
 
     .ask-another-btn {
+        margin-left: auto;
         background: rgba($accent-blue, 0.15);
         border: 1px solid rgba($accent-blue, 0.35);
         color: $accent-blue;

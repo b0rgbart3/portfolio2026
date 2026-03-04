@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from typing import List, Dict
 import os
-from ask_agent import run_agent
+from ask_agent import run_agent, stream_agent_response
 
 app = FastAPI()
 
@@ -28,6 +28,23 @@ async def ask(request: AskRequest):
     print('ANSWER: ', answer)
     # return {"response": "This is a placeholder response."}
     return {"response": answer}
+
+@app.post("/api/ask/stream")
+async def ask_stream(request: AskRequest):
+    async def event_gen():
+        async for chunk in stream_agent_response(request.message, request.history):
+            yield chunk
+
+    return StreamingResponse(
+        event_gen(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
+    )
+
 
 # Serve the React app — html=True means unmatched paths fall back to index.html,
 # which lets React Router handle client-side navigation.

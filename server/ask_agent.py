@@ -1,5 +1,9 @@
-from typing import TypedDict, List, Dict
+from typing import TypedDict, List, Dict, AsyncGenerator
 from pathlib import Path
+import asyncio
+import json
+import queue as _queue
+import threading
 
 from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent / ".env")
@@ -155,19 +159,29 @@ def vector_search_node(state: AgentState) -> dict:
     return {"retrieved_passages": passages}
 
 
-def llm_answer_node(state: AgentState) -> dict:
+_DEFAULT_RESPONSE = (
+    "I'm sorry I don't have enough details on this particular topic to answer your question accurately, "
+    "but Bart would be happy to answer your questions directly.  Contact him at jobs4bart@gmail.com"
+)
+
+
+def _build_llm_messages(state: AgentState):
+    """Build the messages list for the LLM call.
+
+    Returns (messages, default_response). If messages is None, callers should
+    use default_response directly without calling the LLM.
+    """
     query = state["user_query"]
     history = state.get("history", [])
-    default_response = "I'm sorry I don't have enough details on this particular topic to answer your question accurately, but Bart would be happy to answer your questions directly.  Contact him at jobs4bart@gmail.com"
 
     if len(state["retrieved_passages"]) < 1 and len(history) < 1:
-        return {"answer": default_response}
+        return None, _DEFAULT_RESPONSE
 
     context = "\n\n".join(state["retrieved_passages"])
     print("LLM CONTEXT: ------------------------")
     print(context)
     print("-------------------------------------")
-    
+
     system_message = {
         "role": "system",
         "content": (
@@ -185,7 +199,7 @@ def llm_answer_node(state: AgentState) -> dict:
             "- Be concise. Limit answers to 3 sentences maximum — never exceed this.\n"
             "- Refer to Bart by name.\n"
             "- Use technical terms from the facts where relevant.\n\n"
-            f"If there is genuinely no relevant information in the retrieved facts to address the question, say exactly: {default_response}\n\n"
+            f"If there is genuinely no relevant information in the retrieved facts to address the question, say exactly: {_DEFAULT_RESPONSE}\n\n"
             f"--- BEGIN RETRIEVED FACTS ---\n{context}\n--- END RETRIEVED FACTS ---"
             + (
                 "\n\nEnd your response with a brief, natural invitation to continue the conversation or schedule an interview with Bart by sending him an email at jobs4bart@gmail.com."
@@ -195,6 +209,13 @@ def llm_answer_node(state: AgentState) -> dict:
     }
 
     messages = [system_message, *history, {"role": "user", "content": query}]
+    return messages, _DEFAULT_RESPONSE
+
+
+def llm_answer_node(state: AgentState) -> dict:
+    messages, default_response = _build_llm_messages(state)
+    if messages is None:
+        return {"answer": default_response}
 
     client = get_llm_client()
     response = client.chat.completions.create(
@@ -224,3 +245,81 @@ graph = builder.compile()
 def run_agent(user_query: str, history: List[Dict[str, str]] = []) -> str:
     result = graph.invoke({"user_query": user_query, "history": history})
     return result.get("answer", "")
+
+
+async def stream_agent_response(
+    user_query: str, history: List[Dict[str, str]] = []
+) -> AsyncGenerator[str, None]:
+    """Async generator that yields SSE-formatted strings for the streaming endpoint."""
+
+    def sse(payload: dict) -> str:
+        return f"data: {json.dumps(payload)}\n\n"
+
+    state: AgentState = {
+        "user_query": user_query,
+        "history": history,
+        "query_embedding": [],
+        "retrieved_passages": [],
+        "answer": "",
+    }
+
+    # Stage 1: Rewrite query
+    yield sse({"type": "status", "text": "Refining your question..."})
+    result = await asyncio.to_thread(rewrite_query_node, state)
+    state = {**state, **result}
+
+    # Stage 2: Embed query
+    yield sse({"type": "status", "text": "Searching knowledge base..."})
+    result = await asyncio.to_thread(embed_query_node, state)
+    state = {**state, **result}
+
+    # Stage 3: Vector search
+    yield sse({"type": "status", "text": "Retrieving relevant context..."})
+    result = await asyncio.to_thread(vector_search_node, state)
+    state = {**state, **result}
+
+    # Stage 4: LLM answer (streaming)
+    yield sse({"type": "status", "text": "Generating answer..."})
+
+    messages, default_response = _build_llm_messages(state)
+    if messages is None:
+        yield sse({"type": "token", "text": default_response})
+        yield sse({"type": "done"})
+        return
+
+    try:
+        client = get_llm_client()
+        chunk_queue: _queue.Queue = _queue.Queue()
+        DONE_SENTINEL = object()
+
+        def _stream_in_thread():
+            try:
+                stream = client.chat.completions.create(
+                    model=LLM_MODEL,
+                    messages=messages,
+                    max_tokens=256,
+                    temperature=0,
+                    stream=True,
+                )
+                for chunk in stream:
+                    chunk_queue.put(chunk)
+            finally:
+                chunk_queue.put(DONE_SENTINEL)
+
+        threading.Thread(target=_stream_in_thread, daemon=True).start()
+
+        loop = asyncio.get_running_loop()
+        while True:
+            chunk = await loop.run_in_executor(None, chunk_queue.get)
+            if chunk is DONE_SENTINEL:
+                break
+            if not chunk.choices:
+                continue
+            delta = chunk.choices[0].delta
+            if delta and delta.content:
+                yield sse({"type": "token", "text": delta.content})
+
+        yield sse({"type": "done"})
+
+    except Exception as e:
+        yield sse({"type": "error", "text": str(e)})

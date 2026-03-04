@@ -110,12 +110,12 @@ const Experience: React.FC = () => {
           className={styles["cv-link"]}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          whileHover={{ x: 3 }}
+          whileHover={{ scale: 1.03 }}
           viewport={{ once: true }}
           transition={{
             duration: 0.6,
             delay: 0.15,
-            x: { duration: 0.15, ease: "easeOut" },
+            scale: { duration: 0.2, ease: "easeOut" },
           }}
         >
           <img src={pdfIcon} alt="" className={styles["cv-icon"]} />

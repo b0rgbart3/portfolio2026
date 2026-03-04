@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, Send, Loader2 } from "lucide-react";
 import styles from "./AIPanel.module.scss";
+import profilePic from "../../assets/bart_dority_profile4.png";
 
 interface Message {
   id: string;
@@ -49,10 +50,13 @@ const AIPanel: React.FC<AIPanelProps> = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [statusText, setStatusText] = useState<string>("");
+  const [isStreaming, setIsStreaming] = useState(false);
   const [showBuildInfo, setShowBuildInfo] = useState(false);
   const [shuffledSuggestions, setShuffledSuggestions] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const streamingIdRef = useRef<string | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -63,6 +67,8 @@ const AIPanel: React.FC<AIPanelProps> = ({
       setMessages([]);
       setInputValue("");
       setIsTyping(false);
+      setStatusText("");
+      setIsStreaming(false);
       setShowBuildInfo(openToBuildInfo);
       setShuffledSuggestions([...suggestions].sort(() => Math.random() - 0.5));
     } else {
@@ -99,21 +105,14 @@ const AIPanel: React.FC<AIPanelProps> = ({
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setIsTyping(true);
-
-    // Simulate API Response
-    // setTimeout(() => {
-    //   const assistantMessage: Message = {
-    //     id: (Date.now() + 1).toString(),
-    //     text: `Based on Bart's profile, "${text}" is a great question. Bart specializes in building complex, data-intensive UI features and has extensive experience with React, TypeScript, and modern front-end ecosystems. He's known for being both technically rigorous and design-conscious.`,
-    //     sender: 'assistant',
-    //     timestamp: new Date()
-    //   };
-    //   setMessages(prev => [...prev, assistantMessage]);
-    //   setIsTyping(false);
-    // }, 1500);
+    setStatusText("Connecting...");
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
+
+    const assistantId = (Date.now() + 1).toString();
+    streamingIdRef.current = assistantId;
+    let firstTokenReceived = false;
 
     try {
       const history = messages.map((msg) => ({
@@ -121,36 +120,108 @@ const AIPanel: React.FC<AIPanelProps> = ({
         content: msg.text,
       }));
 
-      const response = await fetch("/api/ask", {
+      const response = await fetch("/api/ask/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, history }),
         signal: controller.signal,
       });
-      const data = await response.json();
-      console.log("BD: DATA: ", data);
 
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text:
-          typeof data === "string"
-            ? data
-            : (data.text ?? data.response ?? JSON.stringify(data)),
-        sender: "assistant",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
+      if (!response.ok || !response.body) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      const finalize = () => { reader.cancel(); };
+      const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+
+        // Split on double-newline (SSE event delimiter); keep incomplete tail in buffer
+        const parts = buffer.split("\n\n");
+        buffer = parts.pop() ?? "";
+
+        for (const part of parts) {
+          const dataLine = part.split("\n").find((line) => line.startsWith("data: "));
+          if (!dataLine) continue;
+
+          const jsonStr = dataLine.slice("data: ".length).trim();
+          if (!jsonStr) continue;
+
+          let event: { type: string; text?: string };
+          try {
+            event = JSON.parse(jsonStr);
+          } catch {
+            continue;
+          }
+
+          if (event.type === "status") {
+            setStatusText(event.text ?? "");
+          } else if (event.type === "token") {
+            if (!firstTokenReceived) {
+              firstTokenReceived = true;
+              setIsStreaming(true);
+              setMessages((prev) => [
+                ...prev,
+                {
+                  id: assistantId,
+                  text: event.text ?? "",
+                  sender: "assistant",
+                  timestamp: new Date(),
+                },
+              ]);
+            } else {
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId ? { ...m, text: m.text + (event.text ?? "") } : m
+                )
+              );
+            }
+            await wait(25);
+          } else if (event.type === "done") {
+            finalize();
+            streamingIdRef.current = null;
+            setIsTyping(false);
+            setIsStreaming(false);
+            setStatusText("");
+            return;
+          } else if (event.type === "error") {
+            throw new Error(event.text ?? "Stream error");
+          }
+        }
+      }
+
+      // Stream ended without a done event
+      streamingIdRef.current = null;
       setIsTyping(false);
+      setIsStreaming(false);
+      setStatusText("");
     } catch (err) {
-      if (err instanceof Error && err.name === "AbortError") return;
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: "There was an error",
-        sender: "assistant",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
+      streamingIdRef.current = null;
+      if (err instanceof Error && err.name === "AbortError") {
+        setIsTyping(false);
+        setIsStreaming(false);
+        setStatusText("");
+        return;
+      }
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          text: "There was an error",
+          sender: "assistant",
+          timestamp: new Date(),
+        },
+      ]);
       setIsTyping(false);
+      setIsStreaming(false);
+      setStatusText("");
     }
   };
   return (
@@ -173,7 +244,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
           >
             <div className={styles.header}>
               <div className={styles["user-info"]}>
-                <div className={styles.avatar}>B</div>
+                <img src={profilePic} alt="Bart Dority" className={styles.avatar} />
                 <div className={styles.status}>
                   <h3>Ask AI About Bart</h3>
                   <div className={styles.indicator}>
@@ -292,20 +363,22 @@ const AIPanel: React.FC<AIPanelProps> = ({
                         key={msg.id}
                         className={`${styles["message-wrapper"]} ${styles[msg.sender]}`}
                       >
-                        <div className={styles.bubble}>
+                        <div
+                          className={`${styles.bubble}${isTyping && isStreaming && msg.id === streamingIdRef.current ? ` ${styles.streaming}` : ""}`}
+                        >
                           {msg.sender === "assistant"
                             ? renderWithLineBreaks(msg.text)
                             : msg.text}
                         </div>
                       </div>
                     ))}
-                    {isTyping && (
+                    {isTyping && !isStreaming && (
                       <div
                         className={`${styles["message-wrapper"]} ${styles.assistant}`}
                       >
                         <div className={`${styles.bubble} ${styles.typing}`}>
                           <Loader2 size={16} className={styles.spinner} />
-                          Thinking...
+                          {statusText || "Thinking..."}
                         </div>
                       </div>
                     )}

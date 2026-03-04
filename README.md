@@ -140,25 +140,62 @@ The full application (frontend + API) is then available at `http://localhost:800
 
 ## AI Workflow
 
-The LangGraph agent in `server/ask_agent.py` implements a three-node RAG pipeline:
+The LangGraph agent in `server/ask_agent.py` implements a four-node RAG pipeline:
 
 ```
 User Query
     │
     ▼
+rewrite_query_node     ← Resolves pronouns and disambiguates follow-up questions
+    │
+    ▼
 embed_query_node       ← HuggingFace BAAI/bge-small-en-v1.5
     │
     ▼
-vector_search_node     ← LanceDB similarity search (top 5, distance < 0.7)
+vector_search_node     ← LanceDB cosine similarity search (top 10, deduplicated)
     │
     ▼
-llm_answer_node        ← OpenAI LLM with retrieved context
+llm_answer_node        ← LLM with retrieved context and grounding system prompt
     │
     ▼
 Answer
 ```
 
 State is managed via a typed `AgentState` dict passed through each node.
+
+---
+
+## Streaming Response
+
+The chatbot uses **Server-Sent Events (SSE)** to stream responses progressively instead of waiting for the full pipeline to complete.
+
+### How it works
+
+The frontend posts to `POST /api/ask/stream`. The server streams a sequence of JSON events over a long-lived HTTP connection:
+
+```
+data: {"type": "status", "text": "Refining your question..."}
+data: {"type": "status", "text": "Searching knowledge base..."}
+data: {"type": "status", "text": "Retrieving relevant context..."}
+data: {"type": "status", "text": "Generating answer..."}
+data: {"type": "token",  "text": "Bart "}
+data: {"type": "token",  "text": "has extensive"}
+...
+data: {"type": "done"}
+```
+
+| Event type | Description |
+|---|---|
+| `status` | Pipeline stage label shown in the typing indicator |
+| `token` | A token chunk from the LLM, appended to the live response bubble |
+| `done` | Stream complete — client finalises the message |
+| `error` | Unrecoverable error during pipeline setup |
+
+### Implementation notes
+
+- **Backend** (`ask_agent.py`): `stream_agent_response()` is an async generator that runs the first three pipeline nodes via `asyncio.to_thread()` (to avoid blocking the event loop), then streams LLM tokens using a thread + queue bridge around the OpenAI SDK's synchronous streaming iterator.
+- **Frontend** (`AIPanel.tsx`): Uses the Fetch API's `ReadableStream` with a `TextDecoder` and a buffer to handle SSE line parsing across chunk boundaries. The typing status bubble cycles through stage labels until the first token arrives, at which point the live response bubble appears and fills in word by word.
+- **Backward compatible**: The original `POST /api/ask` endpoint is unchanged.
 
 ---
 
