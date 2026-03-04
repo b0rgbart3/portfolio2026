@@ -253,13 +253,15 @@
         color: #32abde;
         position: relative;
         left: -2px;
+        top: 8px;
     }
 
     .cv-link {
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-top: 20px;
+        margin-top: 34px;
+        margin-bottom: 12px;
         background: rgba($accent-green, 0.15);
         border: 1px solid rgba($accent-green, 0.35);
         color: $accent-green;
