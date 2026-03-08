@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from typing import List, Dict
 import os
 from ask_agent import run_agent, stream_agent_response
+from assess_agent import stream_assess_response
 
 app = FastAPI()
 
@@ -28,6 +29,27 @@ async def ask(request: AskRequest):
     print('ANSWER: ', answer)
     # return {"response": "This is a placeholder response."}
     return {"response": answer}
+
+class AssessRequest(BaseModel):
+    job_description: str
+
+
+@app.post("/api/assess")
+async def assess(request: AssessRequest):
+    async def event_gen():
+        async for chunk in stream_assess_response(request.job_description):
+            yield chunk
+
+    return StreamingResponse(
+        event_gen(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
+    )
+
 
 @app.post("/api/ask/stream")
 async def ask_stream(request: AskRequest):

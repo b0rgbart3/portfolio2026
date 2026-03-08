@@ -1,6 +1,6 @@
 [
     {
-        "title": "A Birthday Tracker",
+        "title": "Birthday Tracker",
         "intro": "vibe coded fullstack app",
         "description": "Fullstack MERN app - Vibe coded with AntiGravity.  This is a fullstack application with a UI built with React, a cloud based MongoDB database, and a backend server written in Node.js.  The server runs a daily cron job to look for upcoming birthdays and sends me an email when they are a week out.",
         "images": [
@@ -29,7 +29,7 @@
         ]
     },
     {
-        "title": "My Google Bookshelf",
+        "title": "Google Bookshelf",
         "intro": "simple fullstack app",
         "description": "Full Stack MERN application to search for books from the public Google Books API, and store them in a custom Mongo data base.",
         "images": [
@@ -105,7 +105,7 @@
         ]
     },
     {
-        "title": "LightBurst -a Puzzle Game",
+        "title": "LightBurst",
         "intro": "cross-platform mobile puzzle game",
         "description": "The game consists of a square grid of lights. When the game starts, a random pattern of these lights is switched on. The goal of the puzzle is to switch all the lights off. Originally writen in Objective C, I converted the codebase to Flutter for cross platform compatibility including iOS and Android  ",
         "images": [
@@ -151,7 +151,7 @@
         ]
     },
     {
-        "title": "AmyGraham.art",
+        "title": "AmyGraham",
         "intro": "brochure style artist portfolio website",
         "description": "This is a custom portfolio website designed and built for artist Amy Graham",
         "images": [

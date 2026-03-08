@@ -94,6 +94,86 @@
     //   transition: color 0.2s ease !important;
     // }
   }
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 640px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .cardBloat {
+
+    min-height: 200px;
+    position: relative;
+    // aspect-ratio: 702 / 612;
+    background-image: url('../../assets/bloatborder1.svg');
+    background-size: 100% 100%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    @media (max-width: 1024px) {
+     
+      // aspect-ratio: 2 / 1;
+      // background-size: 800px 100px;
+    }
+
+    @media (max-width: 640px) {
+      // aspect-ratio: 2 / 1;
+      // background-size: 100% 150%;
+    }
+
+    &:hover {
+      background-image: url('../../assets/bloatborder.svg');
+      transform: translateY(-2px);
+      filter: brightness(1.2) saturate(1.2);
+
+      .cardBloatContent h3 {
+        // color: $accent-blue-bright;
+      }
+
+      .cardBloatContent p {
+        color: $text-primary;
+      }
+    }
+  }
+
+  .cardBloatContent {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    padding-left: 58px;
+    padding-right: 58px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+    h3 {
+      font-size: 1.25rem;
+      color: $text-primary;
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
+    }
+
+    p {
+      font-family: $font-sans;
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: $text-secondary;
+      margin: 0;
+      transition: color 0.3s ease;
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -108,6 +188,10 @@
     }
 
     .card {
+      padding: 24px;
+    }
+
+    .cardBloatContent {
       padding: 24px;
     }
   }

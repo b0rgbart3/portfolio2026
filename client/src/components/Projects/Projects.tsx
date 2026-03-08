@@ -99,6 +99,29 @@ const Projects: React.FC = () => {
         ))}
       </div>
 
+      {/* <div className={styles.grid2}>
+        {projects.map((project, index) => (
+          <motion.div
+            key={`bloat-${project.title}`}
+            className={styles.cardBloat}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{
+              duration: 1.5 - index * 0.1,
+              delay: 1 + index * 0.18,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            onClick={() => setSelectedIndex(index)}
+          >
+            <div className={styles.cardBloatContent}>
+              <h3>{project.title}</h3>
+              <p>{project.intro}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div> */}
+
       <ProjectPanel
         project={selectedProject}
         onClose={() => setSelectedIndex(null)}

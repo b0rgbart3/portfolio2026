@@ -123,3 +123,391 @@
 .iconGaps {
   color: $text-secondary;
 }
+
+// ─── AI Assessor Section ──────────────────────────────────────
+
+.assessorSection {
+  margin-top: 52px;
+  padding-top: 40px;
+  border-top: 1px solid $border-color;
+}
+
+.assessorHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: $font-sans;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 10px;
+}
+
+.assessorIcon {
+  color: #38bdf8;
+}
+
+.assessorSubtitle {
+  font-family: $font-sans;
+  font-size: 0.95rem;
+  color: $text-secondary;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+// ─── Preset Buttons ───────────────────────────────────────────
+
+.presetRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.presetBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: $font-sans;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.presetGood {
+  background: rgba(74, 222, 128, 0.08);
+  border-color: rgba(74, 222, 128, 0.25);
+  color: $accent-green;
+
+  &:hover:not(:disabled) {
+    background: rgba(74, 222, 128, 0.15);
+  }
+}
+
+.presetBad {
+  background: rgba(29, 125, 166, 0.1);
+  border-color: rgba(29, 125, 166, 0.3);
+  color: #38bdf8;
+
+  &:hover:not(:disabled) {
+    background: rgba(29, 125, 166, 0.18);
+  }
+}
+
+// ─── Input Phase ──────────────────────────────────────────────
+
+.jdInput {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 16px 20px;
+  color: $text-primary;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 140px;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: rgba($text-secondary, 0.4);
+  }
+
+  &:focus {
+    border-color: rgba(29, 125, 166, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.loadingRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  color: $text-secondary;
+  font-style: italic;
+  margin-top: 14px;
+}
+
+.spinner {
+  animation: assessSpin 1.4s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes assessSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.errorMsg {
+  margin-top: 12px;
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  color: #f87171;
+}
+
+.assessorActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.assessBtn {
+  background: $accent-blue;
+  border: none;
+  color: #fff;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 11px 28px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: $accent-blue-bright;
+    transform: scale(1.03);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.resetBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid $border-color;
+  color: $text-secondary;
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  padding: 10px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: $text-primary;
+  }
+}
+
+// ─── Results Phase ────────────────────────────────────────────
+
+.scoreRow {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+}
+
+.scoreRowGood {
+  background: rgba(74, 222, 128, 0.06);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  padding: 20px 24px;
+}
+
+.scoreRowBad {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px 24px;
+}
+
+.thumbsCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.thumbsCircleGood {
+  background: rgba(74, 222, 128, 0.12);
+  border: 4px solid rgba(74, 222, 128, 0.65);
+}
+
+.thumbsCircleBad {
+  background: rgba(255, 255, 255, 0.07);
+  border: 4px solid rgba(255, 255, 255, 0.55);
+}
+
+.thumbsGood {
+  color: $accent-green;
+}
+
+.thumbsBad {
+  color: $text-secondary;
+}
+
+.scoreRing {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.scoreNumber {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span:first-child {
+    font-family: $font-sans;
+    font-size: 1.5rem;
+    color: $text-primary;
+    line-height: 1;
+  }
+}
+
+.scorePct {
+  font-family: $font-sans;
+  font-size: 1rem;
+  font-weight: 700;
+  color: $text-secondary;
+  align-self: center;
+  padding-left: 2px;
+}
+
+.scoreLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  strong {
+    font-family: $font-sans;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  span {
+    font-family: $font-sans;
+    font-size: 0.8rem;
+    color: $text-secondary;
+  }
+}
+
+.resultCard {
+  border-radius: 12px;
+  padding: 20px 24px;
+  border: 1px solid $border-color;
+  margin-bottom: 14px;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-family: $font-sans;
+    font-size: 0.9rem;
+    color: $text-secondary;
+    line-height: 1.4;
+
+    svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+  }
+}
+
+.resultCardLabel {
+  font-family: $font-sans;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.resultGood {
+  background: rgba(74, 222, 128, 0.06);
+  border-color: rgba(74, 222, 128, 0.2);
+
+  .resultCardLabel { color: $accent-green; }
+}
+
+.resultGap {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+
+  .resultCardLabel { color: $text-secondary; }
+}
+
+.recommendationBox {
+  background: rgba(29, 125, 166, 0.08);
+  border: 1px solid rgba(29, 125, 166, 0.25);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+
+  p {
+    font-family: $font-sans;
+    font-size: 0.9rem;
+    color: $text-secondary;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.recommendationLabel {
+  font-family: $font-sans;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 10px;
+}
+
+// ─── Mobile ───────────────────────────────────────────────────
+
+@media (max-width: 768px) {
+  .scoreRow {
+    gap: 16px;
+  }
+
+  .assessorActions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
