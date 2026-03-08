@@ -1,33 +1,43 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Circle, X, Zap, Loader2, ThumbsUp, ThumbsDown } from "lucide-react";
+import {
+  Check,
+  Circle,
+  X,
+  Zap,
+  Loader2,
+  ThumbsUp,
+  ThumbsDown,
+} from "lucide-react";
 import styles from "./FitCheck.module.scss";
 
 const strong = [
   "UI design & development",
   "User experience",
+  "AI tooling & integration",
   "Component architectural design",
   "Engineering mentorship",
-
   "Design & branding",
   "Code reviews",
+  "Freelance breadth & client delivery",
   "Solo contributor",
+  "CI/CD Pipelines and Cloud hosting",
 ];
 
 const moderate = [
   "Cross-functional leadership",
-  "AI integration",
   "Agentic workflow architectural design",
   "Data engineering",
-  "Team building",
   "Mobile development",
+  "Production deployments",
 ];
 
 const gaps = [
+  "Product analytics & user research",
   "Database design & maintenance",
   "Performance optimization",
   "Security & compliance",
-  "Production deployments",
+  "Open source contributions & community presence",
 ];
 
 const BAD_FIT_JD = `If you want an exciting job with one of the largest off-price retail stores in the nation, join the Burlington Stores, Inc. as a Stocking Associate! Are you looking for a hands-on role in a fast-paced environment? Do you have great organizational skills and work well as part of a team? Would you thrive in a process-driven environment? If you answered yes, then this may be the role for you!
@@ -163,9 +173,7 @@ const FitCheck: React.FC = () => {
         buffer = parts.pop() ?? "";
 
         for (const part of parts) {
-          const dataLine = part
-            .split("\n")
-            .find((l) => l.startsWith("data: "));
+          const dataLine = part.split("\n").find((l) => l.startsWith("data: "));
           if (!dataLine) continue;
           const jsonStr = dataLine.slice("data: ".length).trim();
           if (!jsonStr) continue;
@@ -198,7 +206,9 @@ const FitCheck: React.FC = () => {
         return;
       }
       setErrorMsg(
-        err instanceof Error ? err.message : "Something went wrong — please try again."
+        err instanceof Error
+          ? err.message
+          : "Something went wrong — please try again.",
       );
       setStatus("error");
     }
@@ -318,8 +328,8 @@ const FitCheck: React.FC = () => {
           </div>
 
           <p className={styles.assessorSubtitle}>
-            Paste a job description. Get an honest assessment of whether I'm
-            the right person— including when I'm not.
+            Paste a job description. Get an honest assessment of whether I'm the
+            right person— including when I'm not.
           </p>
 
           <AnimatePresence mode="wait">
@@ -374,9 +384,7 @@ const FitCheck: React.FC = () => {
                   <button
                     className={styles.assessBtn}
                     onClick={() => runAssessment(jdText)}
-                    disabled={
-                      status === "loading" || jdText.trim().length < 50
-                    }
+                    disabled={status === "loading" || jdText.trim().length < 50}
                   >
                     {status === "loading" ? "Assessing..." : "Run Fit Check"}
                   </button>
@@ -397,8 +405,12 @@ const FitCheck: React.FC = () => {
                 {result && (
                   <>
                     {/* Score ring */}
-                    <div className={`${styles.scoreRow} ${result.fit_percentage > 60 ? styles.scoreRowGood : styles.scoreRowBad}`}>
-                      <div className={`${styles.thumbsCircle} ${result.fit_percentage > 60 ? styles.thumbsCircleGood : styles.thumbsCircleBad}`}>
+                    <div
+                      className={`${styles.scoreRow} ${result.fit_percentage > 60 ? styles.scoreRowGood : styles.scoreRowBad}`}
+                    >
+                      <div
+                        className={`${styles.thumbsCircle} ${result.fit_percentage > 60 ? styles.thumbsCircleGood : styles.thumbsCircleBad}`}
+                      >
                         {result.fit_percentage > 60 ? (
                           <ThumbsUp size={28} className={styles.thumbsGood} />
                         ) : (
@@ -425,7 +437,10 @@ const FitCheck: React.FC = () => {
                             initial={{ strokeDashoffset: CIRCUMFERENCE }}
                             animate={{ strokeDashoffset: dashOffset }}
                             transition={{ duration: 1, ease: "easeOut" }}
-                            style={{ transform: "rotate(-90deg)", transformOrigin: "50% 50%" }}
+                            style={{
+                              transform: "rotate(-90deg)",
+                              transformOrigin: "50% 50%",
+                            }}
                           />
                         </svg>
                         <div className={styles.scoreNumber}>
@@ -442,7 +457,9 @@ const FitCheck: React.FC = () => {
 
                     {/* Good fit */}
                     {result.good_fit.length > 0 && (
-                      <div className={`${styles.resultCard} ${styles.resultGood}`}>
+                      <div
+                        className={`${styles.resultCard} ${styles.resultGood}`}
+                      >
                         <div className={styles.resultCardLabel}>
                           Strong Matches
                         </div>
@@ -459,7 +476,9 @@ const FitCheck: React.FC = () => {
 
                     {/* Mismatches */}
                     {result.mismatches.length > 0 && (
-                      <div className={`${styles.resultCard} ${styles.resultGap}`}>
+                      <div
+                        className={`${styles.resultCard} ${styles.resultGap}`}
+                      >
                         <div className={styles.resultCardLabel}>
                           Gaps / Questions
                         </div>
@@ -478,7 +497,9 @@ const FitCheck: React.FC = () => {
 
                 {result?.recommendation && (
                   <div className={styles.recommendationBox}>
-                    <div className={styles.recommendationLabel}>Recommendation</div>
+                    <div className={styles.recommendationLabel}>
+                      Recommendation
+                    </div>
                     <p>{result.recommendation}</p>
                   </div>
                 )}

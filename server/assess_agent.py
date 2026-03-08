@@ -136,7 +136,7 @@ def llm_assess_node(state: AssessState) -> dict:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message},
         ],
-        max_tokens=700,
+        max_tokens=512,
         temperature=0,
     )
 
