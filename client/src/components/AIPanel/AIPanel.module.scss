@@ -7,7 +7,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: $overlay-bg;
     backdrop-filter: blur(8px);
     z-index: 2000;
     display: flex;
@@ -17,7 +17,7 @@
 }
 
 .panel {
-    background: #111820; // Slightly lighter than bg-primary
+    background: $bg-panel;
     width: 100%;
     max-width: 600px;
     height: 80vh;
@@ -33,7 +33,7 @@
 
 .header {
     padding: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid $surface-subtle;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,7 +48,7 @@
             height: 42px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(122, 207, 240, 0.55);
+            border: 3px solid $avatar-border-color;
             flex-shrink: 0;
         }
 
@@ -88,7 +88,7 @@
         transition: all 0.2s ease;
 
         &:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: $surface-subtle;
             color: $text-primary;
         }
     }
@@ -132,6 +132,7 @@
             color: $accent-blue;
             filter: drop-shadow(0 0 10px rgba($accent-blue, 0.4));
             margin-bottom: 8px;
+            animation: sparkle-land 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
 
         h2 {
@@ -154,8 +155,8 @@
             gap: 12px;
 
             .suggestion-item {
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: $surface-faint;
+                border: 1px solid $border-faint;
                 padding: 16px 20px;
                 border-radius: 12px;
                 text-align: left;
@@ -201,8 +202,8 @@
                 justify-content: flex-start;
 
                 .bubble {
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    background: $surface-subtle;
+                    border: 1px solid $border-color;
                     color: $text-primary;
                     border-bottom-left-radius: 4px;
                 }
@@ -230,6 +231,14 @@
             }
         }
     }
+}
+
+@keyframes sparkle-land {
+    0%   { transform: scale(1); filter: drop-shadow(0 0 10px rgba($accent-blue, 0.4)); }
+    74%  { transform: scale(1); filter: drop-shadow(0 0 10px rgba($accent-blue, 0.4)); }
+    75%  { transform: scale(1.9); filter: drop-shadow(0 0 28px rgba($accent-blue, 0.9)); }
+    88%  { transform: scale(0.95); filter: drop-shadow(0 0 12px rgba($accent-blue, 0.5)); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba($accent-blue, 0.4)); }
 }
 
 @keyframes breathe {
@@ -281,7 +290,7 @@
             font-weight: 600;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #38bdf8;
+            color: $accent-sky;
             margin-bottom: 8px;
         }
 
@@ -295,7 +304,7 @@
 
 .footer {
     padding: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid $surface-subtle;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -304,8 +313,8 @@
     .input-wrapper {
         display: flex;
         gap: 12px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: $surface-faint;
+        border: 1px solid $border-color;
         border-radius: 16px;
         padding: 8px 8px 8px 20px;
         transition: all 0.2s ease;
@@ -317,7 +326,7 @@
 
         &:focus-within {
             border-color: rgba($accent-blue, 0.4);
-            background: rgba(255, 255, 255, 0.05);
+            background: $surface-subtle;
         }
 
         input {

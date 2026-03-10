@@ -1,5 +1,6 @@
 import "./styles/main.scss";
 import { useState } from "react";
+import { playPanelOpen } from "./utils/sounds";
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import Experience from "./components/Experience/Experience";
@@ -15,11 +16,13 @@ function App() {
   const [openToBuildInfo, setOpenToBuildInfo] = useState(false);
 
   const handleOpenAI = () => {
+    playPanelOpen();
     setOpenToBuildInfo(false);
     setIsAIPanelOpen(true);
   };
 
   const handleOpenAIBuildInfo = () => {
+    playPanelOpen();
     setOpenToBuildInfo(true);
     setIsAIPanelOpen(true);
   };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Menu, X, Mail, Github, Linkedin } from "lucide-react";
 import styles from "./Navbar.module.scss";
 import cvPdf from "../../assets/BartDorityCV.pdf";
+import { playNavClick } from "../../utils/sounds";
 
 interface NavbarProps {
   onOpenAI: () => void;
@@ -23,6 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const scrollToSection = (id: string) => {
+    playNavClick();
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });

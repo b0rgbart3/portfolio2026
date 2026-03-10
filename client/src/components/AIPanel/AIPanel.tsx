@@ -272,7 +272,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                   >
-                    <h2>How I built this AI agentic chat-bot:</h2>
+                    <h2>How I built these AI systems:</h2>
                     <div className={styles["build-section"]}>
                       <h3>Overview</h3>
                       <p>
@@ -312,6 +312,23 @@ const AIPanel: React.FC<AIPanelProps> = ({
                         Note however that because LLMs are probabilistic by
                         nature, answers may vary even if you ask the same
                         question over again.
+                      </p>
+                    </div>
+                    <div className={styles["build-section"]}>
+                      <h3>FitCheck Assessment Pipeline</h3>
+                      <p>
+                        The FitCheck tool uses a second LangGraph agent pipeline.
+                        It works in three steps: first, it extracts key technical
+                        signals from the job description using an LLM — things like
+                        required languages, frameworks, experience level, and domain.
+                        Second, those signals are embedded and used to search the
+                        same LanceDB knowledge base, retrieving the most relevant
+                        passages from my CV and project write-ups. Third, a second
+                        LLM call compares the retrieved context against the job
+                        requirements and returns a structured assessment — a fit
+                        percentage, specific strengths, gaps, and a short
+                        recommendation. The goal is honest calibration: a high score
+                        means a strong match across most criteria, not flattery.
                       </p>
                     </div>
                     <div className={styles["build-section"]}>

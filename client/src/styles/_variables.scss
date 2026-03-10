@@ -7,8 +7,15 @@ $accent-blue: #1d7da6; // Electric Blue for buttons
 $accent-blue-bright: #199ed6; 
 $dull-accent-blue: #1a6281;
 $accent-gold: #c9a227; // Gold for CV link
+$bg-panel: #111820; // Modal/panel surface, slightly lighter than bg-primary
+$overlay-bg: rgba(0, 0, 0, 0.7); // Modal overlay backdrop
+$surface-subtle: rgba(255, 255, 255, 0.05); // Subtle surface for hover states and dividers
+$surface-faint: rgba(255, 255, 255, 0.03); // Barely-there surface for input/card backgrounds
 $nav-bg: rgba(19, 31, 40, 0.8);
 $border-color: rgba(255, 255, 255, 0.1);
+$border-faint: rgba(255, 255, 255, 0.08); // Softer border, between transparent and border-color
+$accent-sky: #38bdf8; // Sky blue for section labels and highlights
+$avatar-border-color: rgba(122, 207, 240, 0.55); // Light blue avatar ring
 
 // Typography
 $font-serif: 'PT Serif', serif;
