@@ -5,8 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/assets/icon-Cf7Ar5P7.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>portfolio2026</title>
-    <script type="module" crossorigin src="/assets/index-DJIgFkmS.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BO9ZcS9i.css">
+    <script>
+      (function() {
+        var t = localStorage.getItem('theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-Da0Atmu5.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-3C4Xb-W0.css">
   </head>
   <body>
     <div id="root"></div>
