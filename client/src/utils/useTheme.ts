@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { playLightSwitch } from './sounds';
 
 type Theme = 'dark' | 'light';
 
@@ -28,7 +29,10 @@ export function useTheme() {
     return () => window.removeEventListener(THEME_EVENT, onThemeChange as EventListener);
   }, []);
 
-  const toggle = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
+  const toggle = () => {
+    playLightSwitch();
+    setTheme(t => t === 'dark' ? 'light' : 'dark');
+  };
 
   return { theme, toggle };
 }

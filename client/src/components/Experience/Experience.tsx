@@ -28,6 +28,7 @@ const experiences: ExperienceItem[] = [
     bullets: [
       "Built complex, data-intensive UI features for a fintech reporting platform serving enterprise clients managing hundreds of accounts, improving clarity and performance at scale.",
       "Architected scalable front-end systems using React, TypeScript, Material UI, Sass, and MobX, integrating seamlessly with Node.js APIs to deliver fast, reliable, and predictable user experiences.",
+      "Led a pod of 4 UI developers, providing daily code reviews, coaching, pair-programming, and hands-on mentorship to help the team deliver high-quality frontend work.",
       "Drove cross-functional delivery in agile sprints, translating complex business requirements into intuitive, production-ready components shipped on a consistent two-week cadence.",
       "Strengthened engineering velocity and reliability by contributing to CI/CD pipelines (Jenkins, GitLab, OpenShift) and leveraging AI-assisted tooling to accelerate development and improve test coverage.",
     ],

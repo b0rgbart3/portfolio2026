@@ -5,6 +5,7 @@ import styles from "./AIPanel.module.scss";
 import profilePic from "../../assets/bart_dority_profile4.png";
 import profilePicLight from "../../assets/bart_dority_profile_light5.jpg";
 import { useTheme } from "../../utils/useTheme";
+import { playButtonClick, playComputerThink } from "../../utils/sounds";
 
 interface Message {
   id: string;
@@ -375,7 +376,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
                         <button
                           key={index}
                           className={styles["suggestion-item"]}
-                          onClick={() => handleSend(suggestion)}
+                          onClick={() => { playComputerThink(); handleSend(suggestion); }}
                         >
                           {suggestion}
                         </button>
@@ -425,6 +426,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
                 className={`${styles["input-wrapper"]} ${showBuildInfo || showAskAnother ? styles["input-hidden"] : ""}`}
                 onSubmit={(e) => {
                   e.preventDefault();
+                  playComputerThink();
                   handleSend(inputValue);
                 }}
               >
@@ -453,6 +455,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
                   className={styles["build-info-btn"]}
                   disabled={isTyping}
                   onClick={() => {
+                    playButtonClick();
                     setShowBuildInfo((prev) => !prev);
                     setMessages([]);
                   }}
@@ -462,7 +465,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
                 {!showBuildInfo && !isTyping && messages.length > 0 && (
                   <button
                     className={styles["ask-another-btn"]}
-                    onClick={handleReset}
+                    onClick={() => { playButtonClick(); handleReset(); }}
                   >
                     Ask another question
                   </button>

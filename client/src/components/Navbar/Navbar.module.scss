@@ -195,10 +195,11 @@
 
 [data-theme="light"] .navbar {
     .nav-links a {
-        color: #7a9ab8;
+        color: #2472bb;
 
         &:hover {
             color: var(--text-primary);
+            font-weight: 900;
         }
     }
 

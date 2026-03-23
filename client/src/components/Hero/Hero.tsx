@@ -8,6 +8,7 @@ import profilePicLight from "../../assets/bart_dority_profile_light5.jpg";
 import cvPdf from "../../assets/BartDorityCV.pdf";
 import pdfIcon from "../../assets/pdf_icon.svg";
 import { useTheme } from "../../utils/useTheme";
+import { playButtonClick } from "../../utils/sounds";
 
 interface HeroProps {
   onOpenAI: () => void;
@@ -66,6 +67,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
                 key={tag}
                 href={`#${tag.toLowerCase().replace(/\s+/g, "-")}`}
                 className={styles.tag}
+                onClick={playButtonClick}
               >
                 {tag}
               </a>
@@ -76,7 +78,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
             <button
               ref={btnRef}
               className={styles["about-btn"]}
-              onClick={() => setAboutOpen((v) => !v)}
+              onClick={() => { playButtonClick(); setAboutOpen((v) => !v); }}
             >
               About Bart
             </button>
