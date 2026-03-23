@@ -1,7 +1,7 @@
 @use '../../styles/variables' as *;
 
 .fitCheck {
-  background: $bg-primary;
+  background: var(--bg-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -21,14 +21,14 @@
   h2 {
     font-family: $font-serif;
     font-size: clamp(2rem, 4vw, 3rem);
-    color: $text-primary;
+    color: var(--text-primary);
     margin-bottom: 12px;
   }
 
   p {
     font-family: $font-sans;
     font-size: 1rem;
-    color: $text-secondary;
+    color: var(--text-secondary);
   }
 }
 
@@ -46,7 +46,7 @@
 .card {
   border-radius: 12px;
   padding: 28px 24px;
-  border: 1px solid $border-color;
+  border: 1px solid var(--border-color);
 
   ul {
     list-style: none;
@@ -63,7 +63,7 @@
     gap: 10px;
     font-family: $font-sans;
     font-size: 0.95rem;
-    color: $text-secondary;
+    color: var(--text-secondary);
     line-height: 1.4;
 
     svg {
@@ -84,44 +84,44 @@
 
 // ─── Strong ──────────────────────────────────────────────────
 .cardStrong {
-  background: rgba(74, 222, 128, 0.06);
-  border-color: rgba(74, 222, 128, 0.2);
+  background: var(--accent-green-06);
+  border: 2px solid rgba(74, 222, 128, 0.2);
 }
 
 .labelStrong {
-  color: $accent-green;
+  color: var(--accent-green);
 }
 
 .iconStrong {
-  color: $accent-green;
+  color: var(--accent-green);
 }
 
 // ─── Moderate ────────────────────────────────────────────────
 .cardModerate {
-  background: rgba(29, 125, 166, 0.1);
-  border-color: rgba(29, 125, 166, 0.3);
+  background: var(--accent-blue-10);
+  border: 2px solid var(--accent-blue-30);
 }
 
 .labelModerate {
-  color: #38bdf8;
+  color: var(--accent-sky);
 }
 
 .iconModerate {
-  color: #38bdf8;
+  color: var(--accent-sky);
 }
 
 // ─── Gaps ────────────────────────────────────────────────────
 .cardGaps {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--surface-faint);
+  border: 2px solid var(--border-faint);
 }
 
 .labelGaps {
-  color: $text-secondary;
+  color: var(--text-secondary);
 }
 
 .iconGaps {
-  color: $text-secondary;
+  color: var(--text-secondary);
 }
 
 // ─── AI Assessor Section ──────────────────────────────────────
@@ -129,7 +129,7 @@
 .assessorSection {
   margin-top: 52px;
   padding-top: 40px;
-  border-top: 1px solid $border-color;
+  border-top: 1px solid var(--border-color);
 }
 
 .assessorHeader {
@@ -137,22 +137,30 @@
   align-items: center;
   gap: 8px;
   font-family: $font-sans;
-  font-size: 0.7rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: -.01em;
   text-transform: uppercase;
-  color: #38bdf8;
+  color: var(--accent-sky);
   margin-bottom: 10px;
 }
 
 .assessorIcon {
-  color: #38bdf8;
+  color: var(--accent-sky);
+}
+
+:global([data-theme="light"]) .assessorHeader {
+  color: #1a3a6b;
+}
+
+:global([data-theme="light"]) .assessorIcon {
+  color: #1a3a6b;
 }
 
 .assessorSubtitle {
   font-family: $font-sans;
   font-size: 0.95rem;
-  color: $text-secondary;
+  color: var(--text-secondary);
   margin-bottom: 24px;
   line-height: 1.5;
 }
@@ -186,22 +194,22 @@
 }
 
 .presetGood {
-  background: rgba(74, 222, 128, 0.08);
+  background: var(--accent-green-06);
   border-color: rgba(74, 222, 128, 0.25);
-  color: $accent-green;
+  color: var(--accent-green);
 
   &:hover:not(:disabled) {
-    background: rgba(74, 222, 128, 0.15);
+    background: var(--accent-green-15);
   }
 }
 
 .presetBad {
-  background: rgba(29, 125, 166, 0.1);
-  border-color: rgba(29, 125, 166, 0.3);
-  color: #38bdf8;
+  background: var(--accent-blue-10);
+  border-color: var(--accent-blue-30);
+  color: var(--accent-sky);
 
   &:hover:not(:disabled) {
-    background: rgba(29, 125, 166, 0.18);
+    background: var(--accent-blue-20);
   }
 }
 
@@ -209,11 +217,11 @@
 
 .jdInput {
   width: 100%;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid $border-color;
+  background: var(--surface-faint);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 16px 20px;
-  color: $text-primary;
+  color: var(--text-primary);
   font-family: $font-sans;
   font-size: 0.9rem;
   line-height: 1.6;
@@ -224,12 +232,13 @@
   box-sizing: border-box;
 
   &::placeholder {
-    color: rgba($text-secondary, 0.4);
+    color: var(--text-secondary);
+    opacity: 0.4;
   }
 
   &:focus {
-    border-color: rgba(29, 125, 166, 0.5);
-    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-blue-30);
+    background: var(--surface-subtle);
   }
 
   &:disabled {
@@ -244,7 +253,7 @@
   gap: 10px;
   font-family: $font-sans;
   font-size: 0.875rem;
-  color: $text-secondary;
+  color: var(--text-secondary);
   font-style: italic;
   margin-top: 14px;
 }
@@ -263,7 +272,7 @@
   margin-top: 12px;
   font-family: $font-sans;
   font-size: 0.875rem;
-  color: #f87171;
+  color: var(--color-error);
 }
 
 .assessorActions {
@@ -274,7 +283,7 @@
 }
 
 .assessBtn {
-  background: $accent-blue;
+  background: var(--accent-blue);
   border: none;
   color: #fff;
   font-family: $font-sans;
@@ -286,7 +295,7 @@
   transition: background 0.2s ease, transform 0.15s ease;
 
   &:hover:not(:disabled) {
-    background: $accent-blue-bright;
+    background: var(--accent-blue-bright);
     transform: scale(1.03);
   }
 
@@ -298,9 +307,9 @@
 }
 
 .resetBtn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid $border-color;
-  color: $text-secondary;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
   font-family: $font-sans;
   font-size: 0.875rem;
   padding: 10px 20px;
@@ -309,8 +318,8 @@
   transition: background 0.2s ease, color 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: $text-primary;
+    background: var(--border-faint);
+    color: var(--text-primary);
   }
 }
 
@@ -325,14 +334,14 @@
 }
 
 .scoreRowGood {
-  background: rgba(74, 222, 128, 0.06);
+  background: var(--accent-green-06);
   border: 1px solid rgba(74, 222, 128, 0.2);
   padding: 20px 24px;
 }
 
 .scoreRowBad {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-faint);
+  border: 1px solid var(--border-faint);
   padding: 20px 24px;
 }
 
@@ -352,16 +361,16 @@
 }
 
 .thumbsCircleBad {
-  background: rgba(255, 255, 255, 0.07);
-  border: 4px solid rgba(255, 255, 255, 0.55);
+  background: var(--surface-subtle);
+  border: 4px solid var(--border-color);
 }
 
 .thumbsGood {
-  color: $accent-green;
+  color: var(--accent-green);
 }
 
 .thumbsBad {
-  color: $text-secondary;
+  color: var(--text-secondary);
 }
 
 .scoreRing {
@@ -376,6 +385,11 @@
   }
 }
 
+.scoreRingCircle {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
 .scoreNumber {
   position: absolute;
   inset: 0;
@@ -386,7 +400,7 @@
   span:first-child {
     font-family: $font-sans;
     font-size: 1.5rem;
-    color: $text-primary;
+    color: var(--text-primary);
     line-height: 1;
   }
 }
@@ -395,7 +409,7 @@
   font-family: $font-sans;
   font-size: 1rem;
   font-weight: 700;
-  color: $text-secondary;
+  color: var(--text-secondary);
   align-self: center;
   padding-left: 2px;
 }
@@ -409,20 +423,20 @@
     font-family: $font-sans;
     font-size: 1rem;
     font-weight: 600;
-    color: $text-primary;
+    color: var(--text-primary);
   }
 
   span {
     font-family: $font-sans;
     font-size: 0.8rem;
-    color: $text-secondary;
+    color: var(--text-secondary);
   }
 }
 
 .resultCard {
   border-radius: 12px;
   padding: 20px 24px;
-  border: 1px solid $border-color;
+  border: 1px solid var(--border-color);
   margin-bottom: 14px;
 
   ul {
@@ -440,7 +454,7 @@
     gap: 10px;
     font-family: $font-sans;
     font-size: 0.9rem;
-    color: $text-secondary;
+    color: var(--text-secondary);
     line-height: 1.4;
 
     svg {
@@ -460,22 +474,22 @@
 }
 
 .resultGood {
-  background: rgba(74, 222, 128, 0.06);
+  background: var(--accent-green-06);
   border-color: rgba(74, 222, 128, 0.2);
 
-  .resultCardLabel { color: $accent-green; }
+  .resultCardLabel { color: var(--accent-green); }
 }
 
 .resultGap {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--surface-faint);
+  border-color: var(--border-faint);
 
-  .resultCardLabel { color: $text-secondary; }
+  .resultCardLabel { color: var(--text-secondary); }
 }
 
 .recommendationBox {
-  background: rgba(29, 125, 166, 0.08);
-  border: 1px solid rgba(29, 125, 166, 0.25);
+  background: var(--accent-blue-10);
+  border: 1px solid var(--accent-blue-25);
   border-radius: 12px;
   padding: 20px 24px;
   margin-bottom: 20px;
@@ -483,7 +497,7 @@
   p {
     font-family: $font-sans;
     font-size: 0.9rem;
-    color: $text-secondary;
+    color: var(--text-secondary);
     line-height: 1.6;
     margin: 0;
   }
@@ -495,8 +509,85 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #38bdf8;
+  color: var(--accent-sky);
   margin-bottom: 10px;
+}
+
+// ─── Light-mode card overrides ───────────────────────────────
+:global([data-theme="light"]) .cardStrong {
+  background: rgba(0, 200, 83, 0.10);
+  border: 2px solid #6edc93;
+
+  li {
+    color: #015320;
+  }
+}
+
+:global([data-theme="light"]) .labelStrong {
+  color: #166534;
+}
+
+:global([data-theme="light"]) .iconStrong {
+  color: #166534;
+}
+
+:global([data-theme="light"]) .cardModerate {
+  background: rgba(75, 142, 196, 0.10);
+  border: 2px solid #90d6f7;
+
+  li {
+    color: #1361a0;
+  }
+}
+
+:global([data-theme="light"]) .labelModerate {
+  color: #1361a0;
+}
+
+:global([data-theme="light"]) .iconModerate {
+  color: #1361a0;
+}
+
+:global([data-theme="light"]) .cardGaps {
+  border: 2px solid rgba(126, 158, 185, 0.55);
+
+  li {
+    color: #414652;
+  }
+}
+
+:global([data-theme="light"]) .labelGaps {
+  color: #414652;
+}
+
+:global([data-theme="light"]) .iconGaps {
+  color: #414652;
+}
+
+// ─── Light-mode preset button overrides ──────────────────────
+:global([data-theme="light"]) .presetGood {
+  background: var(--accent-green);
+  border-color: transparent;
+  color: #010c06;
+
+  &:hover:not(:disabled) {
+    background: var(--accent-green);
+    border-color: #005c28;
+    box-shadow: 0 6px 20px rgba(0, 92, 40, 0.45);
+  }
+}
+
+:global([data-theme="light"]) .presetBad {
+  background: var(--accent-blue-15);
+  border-color: var(--accent-blue-40);
+  color: var(--ask-ai-text);
+  box-shadow: 0 0 8px var(--accent-blue-40);
+
+  &:hover:not(:disabled) {
+    background: var(--border-color);
+    border-color: var(--border-color);
+    color: #ffffff;
+  }
 }
 
 // ─── Mobile ───────────────────────────────────────────────────

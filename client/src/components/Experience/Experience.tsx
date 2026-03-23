@@ -39,7 +39,7 @@ const experiences: ExperienceItem[] = [
       technicalWork:
         "Engineered data-intensive React/TypeScript components with MobX state management, integrated Node.js APIs, and shipped features consistently on a monthly deployment cadence.",
       lessonsLearned:
-        "UI systems benefit from modularization, and components should be designed with asynchronous data flow architectures from the ground up.  When API contracts are consistent and predictable it makes product development flow faster.",
+        "UI systems benefit from modularization, and components should be designed with asynchronous data flow architectures from the ground up.  Also, when API contracts are consistent and predictable it makes product development flow faster.",
     },
   },
   {

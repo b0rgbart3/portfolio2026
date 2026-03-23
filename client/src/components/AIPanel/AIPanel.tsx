@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, Send, Loader2 } from "lucide-react";
 import styles from "./AIPanel.module.scss";
 import profilePic from "../../assets/bart_dority_profile4.png";
+import profilePicLight from "../../assets/bart_dority_profile_light5.jpg";
+import { useTheme } from "../../utils/useTheme";
 
 interface Message {
   id: string;
@@ -47,6 +49,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
   onClose,
   openToBuildInfo = false,
 }) => {
+  const { theme } = useTheme();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -134,7 +137,9 @@ const AIPanel: React.FC<AIPanelProps> = ({
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
-      const finalize = () => { reader.cancel(); };
+      const finalize = () => {
+        reader.cancel();
+      };
       const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
       while (true) {
@@ -148,7 +153,9 @@ const AIPanel: React.FC<AIPanelProps> = ({
         buffer = parts.pop() ?? "";
 
         for (const part of parts) {
-          const dataLine = part.split("\n").find((line) => line.startsWith("data: "));
+          const dataLine = part
+            .split("\n")
+            .find((line) => line.startsWith("data: "));
           if (!dataLine) continue;
 
           const jsonStr = dataLine.slice("data: ".length).trim();
@@ -179,8 +186,10 @@ const AIPanel: React.FC<AIPanelProps> = ({
             } else {
               setMessages((prev) =>
                 prev.map((m) =>
-                  m.id === assistantId ? { ...m, text: m.text + (event.text ?? "") } : m
-                )
+                  m.id === assistantId
+                    ? { ...m, text: m.text + (event.text ?? "") }
+                    : m,
+                ),
               );
             }
             await wait(25);
@@ -244,7 +253,11 @@ const AIPanel: React.FC<AIPanelProps> = ({
           >
             <div className={styles.header}>
               <div className={styles["user-info"]}>
-                <img src={profilePic} alt="Bart Dority" className={styles.avatar} />
+                <img
+                  src={theme === "light" ? profilePicLight : profilePic}
+                  alt="Bart Dority"
+                  className={styles.avatar}
+                />
                 <div className={styles.status}>
                   <h3>Ask AI About Bart</h3>
                   <div className={styles.indicator}>
@@ -317,18 +330,19 @@ const AIPanel: React.FC<AIPanelProps> = ({
                     <div className={styles["build-section"]}>
                       <h3>FitCheck Assessment Pipeline</h3>
                       <p>
-                        The FitCheck tool uses a second LangGraph agent pipeline.
-                        It works in three steps: first, it extracts key technical
-                        signals from the job description using an LLM — things like
-                        required languages, frameworks, experience level, and domain.
-                        Second, those signals are embedded and used to search the
-                        same LanceDB knowledge base, retrieving the most relevant
-                        passages from my CV and project write-ups. Third, a second
-                        LLM call compares the retrieved context against the job
-                        requirements and returns a structured assessment — a fit
-                        percentage, specific strengths, gaps, and a short
-                        recommendation. The goal is honest calibration: a high score
-                        means a strong match across most criteria, not flattery.
+                        The FitCheck tool uses a second LangGraph agent
+                        pipeline. It works in three steps: first, it extracts
+                        key technical signals from the job description using an
+                        LLM — things like required languages, frameworks,
+                        experience level, and domain. Second, those signals are
+                        embedded and used to search the same LanceDB knowledge
+                        base, retrieving the most relevant passages from my CV
+                        and project write-ups. Third, a second LLM call compares
+                        the retrieved context against the job requirements and
+                        returns a structured assessment — a fit percentage,
+                        specific strengths, gaps, and a short recommendation.
+                        The goal is honest calibration: a high score means a
+                        strong match across most criteria, not flattery.
                       </p>
                     </div>
                     <div className={styles["build-section"]}>
@@ -416,7 +430,11 @@ const AIPanel: React.FC<AIPanelProps> = ({
               >
                 <input
                   type="text"
-                  placeholder={messages.length === 0 ? "Ask a custom question about Bart's experience" : "Ask a follow-up question..."}
+                  placeholder={
+                    messages.length === 0
+                      ? "Ask a custom question about Bart's experience"
+                      : "Ask a follow-up question..."
+                  }
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   disabled={isTyping || showBuildInfo || showAskAnother}

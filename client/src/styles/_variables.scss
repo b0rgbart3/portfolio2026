@@ -1,27 +1,9 @@
 // _variables.scss
-$bg-primary: #0f161d; // Dark Navy from image
-$text-primary: #f8fafc;
-$text-secondary: #94a3b8;
-$accent-green: #4ade80; // Emerald Green for "Staff Engineer"
-$accent-blue: #1d7da6; // Electric Blue for buttons
-$accent-blue-bright: #199ed6; 
-$dull-accent-blue: #1a6281;
-$accent-gold: #c9a227; // Gold for CV link
-$bg-panel: #111820; // Modal/panel surface, slightly lighter than bg-primary
-$overlay-bg: rgba(0, 0, 0, 0.7); // Modal overlay backdrop
-$surface-subtle: rgba(255, 255, 255, 0.05); // Subtle surface for hover states and dividers
-$surface-faint: rgba(255, 255, 255, 0.03); // Barely-there surface for input/card backgrounds
-$nav-bg: rgba(19, 31, 40, 0.8);
-$border-color: rgba(255, 255, 255, 0.1);
-$border-faint: rgba(255, 255, 255, 0.08); // Softer border, between transparent and border-color
-$accent-sky: #38bdf8; // Sky blue for section labels and highlights
-$avatar-border-color: rgba(122, 207, 240, 0.55); // Light blue avatar ring
 
-// Typography
+// ── Sass-only (compile-time, no theming needed) ──────────────
 $font-serif: 'PT Serif', serif;
-$font-sans: 'Inter', sans-serif;
+$font-sans:  'Inter', sans-serif;
 
-// Mixins
 @mixin flex-center {
   display: flex;
   justify-content: center;
@@ -32,4 +14,76 @@ $font-sans: 'Inter', sans-serif;
   padding: 68px 24px;
   max-width: 1000px;
   margin: 0 auto;
+}
+
+// ── CSS Custom Properties: Dark defaults ─────────────────────
+:root {
+  --bg-primary:          #0f161d;
+  --bg-panel:            #111820;
+  --text-primary:        #f8fafc;
+  --text-secondary:      #94a3b8;
+  --accent-green:        #4ade80;
+  --accent-blue:         #1d7da6;
+  --accent-blue-bright:  #199ed6;
+  --dull-accent-blue:    #1a6281;
+  --accent-gold:         #c9a227;
+  --accent-sky:          #38bdf8;
+  --nav-bg:              rgba(19, 31, 40, 0.8);
+  --overlay-bg:          rgba(0, 0, 0, 0.75);
+  --border-color:        rgba(255, 255, 255, 0.1);
+  --border-faint:        rgba(255, 255, 255, 0.08);
+  --surface-subtle:      rgba(255, 255, 255, 0.05);
+  --surface-faint:       rgba(255, 255, 255, 0.03);
+  --avatar-border-color: rgba(122, 207, 240, 0.55);
+  --cv-link-text: #00c853;
+  // Previously hardcoded, now tokenised
+  --accent-blue-header:  #32abde;
+  --color-note:          #5487a1;
+  --color-error:         #f87171;
+  --panel-about-bg:      rgba(3, 41, 62, 0.9);
+  // Pre-computed rgba tokens (Sass color.adjust can't operate on CSS vars)
+  --accent-blue-10:      rgba(29, 125, 166, 0.10);
+  --accent-blue-15:      rgba(29, 125, 166, 0.15);
+  --accent-blue-20:      rgba(29, 125, 166, 0.20);
+  --accent-blue-25:      rgba(29, 125, 166, 0.25);
+  --accent-blue-30:      rgba(29, 125, 166, 0.30);
+  --accent-blue-40:      rgba(29, 125, 166, 0.40);
+  --accent-green-06:     rgba(74, 222, 128, 0.06);
+  --accent-green-15:     rgba(74, 222, 128, 0.15);
+   --ask-ai-text: #32abde;
+}
+
+// ── Light theme overrides ────────────────────────────────────
+// Steel-ocean blue palette — #4b8ec4 base, candy green highlight
+[data-theme="light"] {
+  --bg-primary:          rgb(246, 251, 255);
+  --bg-panel:            #d5e8f5;
+  --text-primary:        #000000;
+  --text-secondary:      #050a13;
+  --accent-green:        #00c853;
+  --accent-blue:         #226ead;
+  --accent-blue-bright:  #5db8e8;
+  --dull-accent-blue:    #30739d;
+  --accent-gold:         #ff9500;
+  --accent-sky:          #38c4e8;
+  --nav-bg:              rgb(200, 220, 235);
+  --overlay-bg:          rgba(30, 80, 140, 0.45);
+  --border-color:        rgb(0, 73, 133);
+  --border-faint:        rgba(75, 142, 196, 0.22);
+  --surface-subtle:      rgba(75, 142, 196, 0.10);
+  --surface-faint:       rgba(75, 142, 196, 0.06);
+  --avatar-border-color: rgba(75, 142, 196, 0.70);
+  --accent-blue-header:  #3d82c0;
+  --color-note:          #1e3a6e;
+  --color-error:         #e00000;
+  --panel-about-bg:      rgb(224, 233, 239);
+  --accent-blue-10:      rgba(75, 142, 196, 0.30);
+  --accent-blue-15:      rgba(75, 142, 196, 1);
+  --accent-blue-20:      rgba(75, 142, 196, 0.40);
+  --accent-blue-25:      rgba(75, 142, 196, 0.45);
+  --accent-blue-30:      rgba(75, 142, 196, 0.50);
+  --accent-blue-40:      rgb(154, 183, 206);
+  --ask-ai-text: white;
+  --accent-green-06:     rgba(0, 200, 83, 0.35);
+  --accent-green-15:     rgb(10, 32, 19);
 }

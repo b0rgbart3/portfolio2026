@@ -323,7 +323,7 @@ const FitCheck: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           <div className={styles.assessorHeader}>
-            <Zap size={14} className={styles.assessorIcon} />
+            <Zap size={21} className={styles.assessorIcon} />
             <span>AI Fit Check</span>
           </div>
 
@@ -437,10 +437,7 @@ const FitCheck: React.FC = () => {
                             initial={{ strokeDashoffset: CIRCUMFERENCE }}
                             animate={{ strokeDashoffset: dashOffset }}
                             transition={{ duration: 1, ease: "easeOut" }}
-                            style={{
-                              transform: "rotate(-90deg)",
-                              transformOrigin: "50% 50%",
-                            }}
+                            className={styles.scoreRingCircle}
                           />
                         </svg>
                         <div className={styles.scoreNumber}>

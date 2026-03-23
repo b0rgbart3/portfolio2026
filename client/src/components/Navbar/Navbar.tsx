@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, Mail, Github, Linkedin } from "lucide-react";
+import { Menu, X, Mail, Github, Linkedin, Sun, Moon } from "lucide-react";
 import styles from "./Navbar.module.scss";
 import cvPdf from "../../assets/BartDorityCV.pdf";
 import { playNavClick } from "../../utils/sounds";
+import { useTheme } from "../../utils/useTheme";
 
 interface NavbarProps {
   onOpenAI: () => void;
@@ -11,6 +12,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { theme, toggle } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,6 +82,13 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
           </div>
 
           <div className={styles.actions}>
+            <button
+              className={styles["theme-toggle"]}
+              onClick={toggle}
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             <button className={styles["ask-ai-btn"]} onClick={onOpenAI}>
               Ask AI
             </button>

@@ -13,13 +13,13 @@
 
     h2 {
       font-size: 3rem;
-      color: $text-primary;
+      color: var(--text-primary);
       margin-bottom: 16px;
     }
 
     p {
       font-size: 1.125rem;
-      color: $text-secondary;
+      color: var(--text-secondary);
       max-width: 700px;
     }
 
@@ -27,7 +27,7 @@
       font-style: italic;
       opacity: 0.85;
       font-family: $font-serif;
-      color: #5487a1;
+      color: var(--color-note);
       font-size: 1.2rem;
       padding-top: 8px;
     }
@@ -48,30 +48,30 @@
   }
 
   .card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--surface-faint);
+    border: 1px solid var(--border-faint);
     border-radius: 16px;
     padding: 32px;
     transition: all 0.3s ease;
     cursor: pointer;
 
     &:hover {
-      border-color: rgba($accent-blue, 0.4);
-      background: rgba($accent-blue, 0.08);
+      border-color: var(--accent-blue-40);
+      background: var(--accent-blue-10);
       transform: translateY(-2px);
 
       h3 {
-        color: $accent-blue;
+        color: var(--accent-blue);
       }
 
       p {
-        color: $text-primary;
+        color: var(--text-primary);
       }
     }
 
     h3 {
       font-size: 1.25rem;
-      color: $text-primary;
+      color: var(--text-primary);
       margin-bottom: 12px;
     }
 
@@ -79,20 +79,27 @@
       font-family: $font-sans;
       font-size: 0.9375rem;
       line-height: 1.65;
-      color: $text-secondary;
+      color: var(--text-secondary);
       margin: 0;
+    }
+
+    :global([data-theme="light"]) &:hover {
+      border-color: var(--accent-blue);
+
+      h3 {
+        color: var(--accent-blue);
+      }
+
+      p {
+        color: var(--accent-blue);
+      }
     }
   }
 
   .cardHighlighted {
-    border-color: #38bdf8 !important;
+    border-color: var(--accent-sky) !important;
     background: rgba(56, 189, 248, 0.18) !important;
     transition: all 0.2s ease !important;
-
-    // h3 {
-    //   color: #38bdf8 !important;
-    //   transition: color 0.2s ease !important;
-    // }
   }
 
   .grid2 {
@@ -113,7 +120,6 @@
 
     min-height: 200px;
     position: relative;
-    // aspect-ratio: 702 / 612;
     background-image: url('../../assets/bloatborder1.svg');
     background-size: 100% 100%;
     background-position: 50% 50%;
@@ -122,14 +128,9 @@
     transition: all 0.3s ease;
 
     @media (max-width: 1024px) {
-     
-      // aspect-ratio: 2 / 1;
-      // background-size: 800px 100px;
     }
 
     @media (max-width: 640px) {
-      // aspect-ratio: 2 / 1;
-      // background-size: 100% 150%;
     }
 
     &:hover {
@@ -137,12 +138,8 @@
       transform: translateY(-2px);
       filter: brightness(1.2) saturate(1.2);
 
-      .cardBloatContent h3 {
-        // color: $accent-blue-bright;
-      }
-
       .cardBloatContent p {
-        color: $text-primary;
+        color: var(--text-primary);
       }
     }
   }
@@ -160,7 +157,7 @@
 
     h3 {
       font-size: 1.25rem;
-      color: $text-primary;
+      color: var(--text-primary);
       margin-bottom: 12px;
       transition: color 0.3s ease;
     }
@@ -169,7 +166,7 @@
       font-family: $font-sans;
       font-size: 0.9375rem;
       line-height: 1.65;
-      color: $text-secondary;
+      color: var(--text-secondary);
       margin: 0;
       transition: color 0.3s ease;
     }

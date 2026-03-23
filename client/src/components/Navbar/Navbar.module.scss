@@ -12,9 +12,9 @@
 
     &.scrolled,
     &.menu-open {
-        background-color: $nav-bg;
+        background-color: var(--nav-bg);
         backdrop-filter: blur(10px);
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--border-color);
     }
 
     .wrapper {
@@ -38,11 +38,11 @@
         margin-left:6px;
         display: flex;
         align-items: center;
-        color: $dull-accent-blue;
+        color: var(--dull-accent-blue);
         transition: color 0.2s ease;
 
         &:hover {
-            color: $text-primary;
+            color: var(--text-primary);
         }
     }
 
@@ -67,7 +67,7 @@
         font-family: $font-serif;
         font-size: 1.5rem;
         font-weight: 700;
-        color: $text-primary;
+        color: var(--text-primary);
         z-index: 1001;
         cursor: pointer;
         padding-right: 14px;
@@ -86,13 +86,13 @@
 
         a {
             font-size: 0.9rem;
-            color: $text-secondary;
+            color: var(--text-secondary);
             font-weight: 500;
             cursor: pointer;
             transition: color 0.2s ease;
 
             &:hover {
-                color: $text-primary;
+                color: var(--text-primary);
             }
         }
     }
@@ -103,20 +103,39 @@
         gap: 16px;
     }
 
+    .theme-toggle {
+        background: none;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+
+        &:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+    }
+
     .ask-ai-btn {
-        background: rgba($accent-blue, 0.15);
-        border: 1px solid rgba($accent-blue, 0.4);
-        color: $accent-blue;
+        background: var(--accent-blue-15);
+        border: 1px solid var(--accent-blue-40);
+        color: var(--ask-ai-text);
         padding: 10px 24px;
         border-radius: 24px;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
+        box-shadow: 0 0 8px var(--accent-blue-40);
 
         &:hover {
-            background: rgba($accent-blue, 0.25);
+            background: var(--accent-blue-25);
             transform: translateY(-1px);
-            border-color: $accent-blue;
+            border-color: var(--accent-blue);
         }
     }
 
@@ -124,7 +143,7 @@
         display: none;
         background: none;
         border: none;
-        color: $text-primary;
+        color: var(--text-primary);
         cursor: pointer;
         padding: 8px;
         z-index: 1001;
@@ -140,9 +159,9 @@
         top: 80px;
         left: 0;
         width: 100%;
-        background-color: $nav-bg;
+        background-color: var(--nav-bg);
         backdrop-filter: blur(15px);
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--border-color);
         display: flex;
         flex-direction: column;
         padding: 20px 40px;
@@ -161,16 +180,31 @@
 
         a {
             font-size: 1.25rem;
-            color: $text-primary;
+            color: var(--text-primary);
             font-weight: 500;
             cursor: pointer;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--surface-faint);
 
             &:last-child {
                 border-bottom: none;
             }
         }
+    }
+}
+
+[data-theme="light"] .navbar {
+    .nav-links a {
+        color: #7a9ab8;
+
+        &:hover {
+            color: var(--text-primary);
+        }
+    }
+
+    .ask-ai-btn:hover {
+        background: var(--border-color);
+        color: #ffffff;
     }
 }
 

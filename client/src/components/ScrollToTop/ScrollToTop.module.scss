@@ -7,10 +7,10 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: rgba($accent-blue, 0.1);
+    background: var(--accent-blue-10);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba($accent-blue, 0.3);
-    color: $accent-blue;
+    border: 1px solid var(--accent-blue-30);
+    color: var(--accent-blue);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,10 +20,10 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 
     &:hover {
-        background: rgba($accent-blue, 0.2);
-        border-color: $accent-blue;
+        background: var(--accent-blue-20);
+        border-color: var(--accent-blue);
         transform: translateY(-5px);
-        box-shadow: 0 8px 30px rgba($accent-blue, 0.2);
+        box-shadow: 0 8px 30px var(--accent-blue-20);
     }
 
     svg {

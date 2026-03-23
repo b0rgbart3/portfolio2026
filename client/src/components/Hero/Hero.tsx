@@ -4,8 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X } from "lucide-react";
 import styles from "./Hero.module.scss";
 import profilePic from "../../assets/bart_dority_profile4.png";
+import profilePicLight from "../../assets/bart_dority_profile_light5.jpg";
 import cvPdf from "../../assets/BartDorityCV.pdf";
 import pdfIcon from "../../assets/pdf_icon.svg";
+import { useTheme } from "../../utils/useTheme";
 
 interface HeroProps {
   onOpenAI: () => void;
@@ -16,6 +18,7 @@ const ABOUT_TEXT = `I'm a front-end focused, fullstack software engineer with a 
 With a background in design, animation, and advertising, I care about both the user experience and the system architecture. I enjoy collaborating with product designers and engineers to develop elegant solutions to complex problems. I'm endlessly curious and always learning.`;
 
 const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
+  const { theme } = useTheme();
   const [aboutOpen, setAboutOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -94,7 +97,16 @@ const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
         >
           <div className={styles["image-wrapper"]}>
-            <img src={profilePic} alt="Bart Dority" />
+            <img src={profilePic} alt="Bart Dority" className={styles["img-dark"]} />
+            <img
+              src={profilePicLight}
+              alt="Bart Dority"
+              className={styles["img-light"]}
+              style={{
+                opacity: theme === "light" ? 1 : 0,
+                transition: theme === "light" ? "opacity 0.8s ease" : "opacity 2s ease",
+              }}
+            />
           </div>
         </motion.div>
       </div>
