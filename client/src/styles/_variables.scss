@@ -14,6 +14,10 @@ $font-sans:  'Inter', sans-serif;
   padding: 68px 24px;
   max-width: 1000px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding-right: 32px;
+  }
 }
 
 // ── CSS Custom Properties: Dark defaults ─────────────────────

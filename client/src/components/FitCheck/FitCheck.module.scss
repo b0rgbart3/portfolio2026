@@ -1,6 +1,7 @@
 @use '../../styles/variables' as *;
 
 .fitCheck {
+  scroll-margin-top: 40px;
   background: var(--bg-primary);
   min-height: 100vh;
   display: flex;

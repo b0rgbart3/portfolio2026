@@ -109,10 +109,10 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
         <a onClick={() => scrollToSection("experience")}>Experience</a>
         <a onClick={() => scrollToSection("skills")}>Skills</a>
         <a onClick={() => scrollToSection("projects")}>Projects</a>
+        <a onClick={() => scrollToSection("fit-check")}>Fit Check</a>
         <a href={cvPdf} target="_blank" rel="noopener noreferrer">
           CV
         </a>
-        <a onClick={() => scrollToSection("fit-check")}>Fit Check</a>
       </div>
     </nav>
   );

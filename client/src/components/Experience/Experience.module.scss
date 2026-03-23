@@ -1,6 +1,7 @@
 @use '../../styles/variables' as *;
 
 .experience {
+    scroll-margin-top: 100px;
     @include section-padding;
     padding-top: 85px;
     padding-bottom: 85px;
