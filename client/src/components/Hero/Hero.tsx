@@ -51,7 +51,10 @@ const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
         >
           <div className={styles["status-badge"]}>
             <span className={styles.dot}></span>
-            Seeking Staff+ opportunities at product-driven companies.
+            <span>
+              <span style={{ whiteSpace: "nowrap" }}>Seeking Staff+ opportunities at</span>{" "}
+              <span style={{ whiteSpace: "nowrap" }}>product-driven companies.</span>
+            </span>
           </div>
 
           <h1>Bart Dority</h1>
@@ -78,7 +81,10 @@ const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
             <button
               ref={btnRef}
               className={styles["about-btn"]}
-              onClick={() => { playButtonClick(); setAboutOpen((v) => !v); }}
+              onClick={() => {
+                playButtonClick();
+                setAboutOpen((v) => !v);
+              }}
             >
               About Bart
             </button>
@@ -99,14 +105,19 @@ const Hero: React.FC<HeroProps> = ({ onOpenAI }) => {
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
         >
           <div className={styles["image-wrapper"]}>
-            <img src={profilePic} alt="Bart Dority" className={styles["img-dark"]} />
+            <img
+              src={profilePic}
+              alt="Bart Dority"
+              className={styles["img-dark"]}
+            />
             <img
               src={profilePicLight}
               alt="Bart Dority"
               className={styles["img-light"]}
               style={{
                 opacity: theme === "light" ? 1 : 0,
-                transition: theme === "light" ? "opacity 0.8s ease" : "opacity 2s ease",
+                transition:
+                  theme === "light" ? "opacity 0.8s ease" : "opacity 2s ease",
               }}
             />
           </div>

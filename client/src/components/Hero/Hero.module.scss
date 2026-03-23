@@ -392,5 +392,13 @@
         .scroll-hint {
             bottom: -14px;
         }
+
+        .tags {
+            gap: 4px;
+
+            .tag {
+                padding: 4px 12px;
+            }
+        }
     }
 }
