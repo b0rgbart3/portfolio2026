@@ -92,7 +92,7 @@ const ProjectPanel: React.FC<ProjectPanelProps> = ({
                     onClick={onPrev}
                     aria-label="Previous project"
                   >
-                    <ArrowLeft size={20} />
+                    <ArrowLeft size={26} />
                   </button>
                 )}
                 {!isLast && (
@@ -101,7 +101,7 @@ const ProjectPanel: React.FC<ProjectPanelProps> = ({
                     onClick={onNext}
                     aria-label="Next project"
                   >
-                    <ArrowRight size={20} />
+                    <ArrowRight size={26} />
                   </button>
                 )}
               </div>

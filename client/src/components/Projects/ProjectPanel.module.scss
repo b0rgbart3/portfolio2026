@@ -6,7 +6,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75);
+  background: var(--overlay-bg);
   backdrop-filter: blur(8px);
   z-index: 2000;
   display: flex;
@@ -14,9 +14,6 @@
   justify-content: center;
   padding: 24px;
 
-  :global([data-theme="light"]) & {
-    background: rgba(30, 80, 140, 0.45);
-  }
 }
 
 .panel {
@@ -253,7 +250,7 @@
   :global([data-theme="light"]) & {
     background: var(--accent-green);
     border-color: var(--accent-green);
-    color: white;
+    color: rgb(10, 33, 12);
 
     &:hover {
       background: rgba(0, 200, 83, 0.80);
