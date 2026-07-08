@@ -1,5 +1,100 @@
 [
     {
+        "title": "Moon-Math Blog",
+        "intro": "fullstack blogging app",
+        "description": "Full Stack MERN blog that allows authors to blog articles.  Includes user logins image uploads, etc.",
+        "images": [
+            "moonmath.jpg"
+        ],
+        "live": "https://moon-math.online",
+        "github": "https://github.com/b0rgbart3/reactBlog",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "Mongoose"
+        ],
+        "shields": [
+            "react",
+            "node",
+            "express",
+            "mongo",
+            "mongoose"
+        ]
+    },
+    {
+        "title": "Millionth Block Countdown",
+        "intro": "counting down the blocks until Bitcoin hits the one-millionth block",
+        "description": "Fun little countdown visualizer that uses the Mempool.space API to track the bitcoin network blockheight.",
+        "images": [
+            "millionthblock.jpg"
+        ],
+        "live": "https://millionthblock-countdown.com/",
+        "github": "https://github.com/b0rgbart3/1M-Countdown",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Node.js",
+            "Mempool API"
+        ],
+        "shields": [
+            "react",
+            "node"
+        ]
+    },
+    {
+        "title": "Bitcoin Retirement Calculator",
+        "intro": "an interactive dashboard that calculates how much bitcoin you need to retire",
+        "description": "This is a fun little interactive dashboard that calculates how much bitcoin you need to retire based on your current age, desired retirement age, and desired retirement income.  It uses the Mempool.space API to track the bitcoin network blockheight.",
+        "images": [
+            "calculator.webp"
+        ],
+        "live": "https://moon-math.online/calculator-landing",
+        "github": "https://github.com/b0rgbart3/btc_calc",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Typescript",
+            "Vite"
+        ],
+        "shields": [
+            "react",
+            "typescript",
+            "vite"
+        ]
+    },
+    {
+        "title": "SimplCAGR",
+        "intro": "an interactive dashboard that let's you calculate your compound annual growth rate",
+        "description": "This is a fun little interactive dashboard that calculates how much bitcoin you need to retire based on your current age, desired retirement age, and desired retirement income.",
+        "images": [
+            "simplCAGR.webp"
+        ],
+        "live": "https://moon-math.online/simplcagr-landing",
+        "github": "https://github.com/b0rgbart3/simplCAGR",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Typescript",
+            "Vite"
+        ],
+        "shields": [
+            "react",
+            "typescript",
+            "vite"
+        ]
+    },
+    {
         "title": "Birthday Tracker",
         "intro": "vibe coded fullstack app",
         "description": "Fullstack MERN app - Vibe coded with AntiGravity.  This is a fullstack application with a UI built with React, a cloud based MongoDB database, and a backend server written in Node.js.  The server runs a daily cron job to look for upcoming birthdays and sends me an email when they are a week out.",
@@ -53,55 +148,6 @@
             "express",
             "mongo",
             "mongoose"
-        ]
-    },
-    {
-        "title": "Moon-Math Blog",
-        "intro": "fullstack blogging app",
-        "description": "Full Stack MERN blog that allows authors to blog articles.  Includes user logins image uploads, etc.",
-        "images": [
-            "moonmath.jpg"
-        ],
-        "live": "https://moon-math.online",
-        "github": "https://github.com/b0rgbart3/reactBlog",
-        "features": [
-            ""
-        ],
-        "tech": [
-            "React",
-            "Node.js",
-            "Express",
-            "MongoDB",
-            "Mongoose"
-        ],
-        "shields": [
-            "react",
-            "node",
-            "express",
-            "mongo",
-            "mongoose"
-        ]
-    },
-    {
-        "title": "Millionth Block Countdown",
-        "intro": "counting down the blocks until Bitcoin hits the one-millionth block",
-        "description": "Fun little countdown visualizer that uses the Mempool.space API to track the bitcoin network blockheight.",
-        "images": [
-            "millionthblock.jpg"
-        ],
-        "live": "https://millionthblock-countdown.com/",
-        "github": "https://github.com/b0rgbart3/1M-Countdown",
-        "features": [
-            ""
-        ],
-        "tech": [
-            "React",
-            "Node.js",
-            "Mempool API"
-        ],
-        "shields": [
-            "react",
-            "node"
         ]
     },
     {

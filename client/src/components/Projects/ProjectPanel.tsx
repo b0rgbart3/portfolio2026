@@ -4,7 +4,7 @@ import { X, Github, ExternalLink, ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./ProjectPanel.module.scss";
 
 const projectImages = import.meta.glob(
-  "../../assets/projects/*.{jpg,png,jpeg}",
+  "../../assets/projects/*.{jpg,jpeg,png,webp,gif,avif,svg}",
   { eager: true },
 );
 
