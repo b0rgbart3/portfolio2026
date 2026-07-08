@@ -1,5 +1,5 @@
 import "./styles/main.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { playPanelOpen } from "./utils/sounds";
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
@@ -14,6 +14,15 @@ import Skills from "./components/Skills/Skills";
 function App() {
   const [isAIPanelOpen, setIsAIPanelOpen] = useState(false);
   const [openToBuildInfo, setOpenToBuildInfo] = useState(false);
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
   const handleOpenAI = () => {
     playPanelOpen();

@@ -103,11 +103,17 @@ def store_in_lancedb(chunks: List[Dict]):
 
     if TABLE_NAME in db.table_names():
         table = db.open_table(TABLE_NAME)
+        existing_df = table.to_pandas()
+        existing_sources = set(existing_df["source_file"].dropna().unique())
+        new_chunks = [c for c in chunks if c["source_file"] not in existing_sources]
+        if not new_chunks:
+            print("No new documents to add — all source files already in table.")
+            return
+        table.add(new_chunks)
+        print(f"Inserted {len(new_chunks)} chunks from {len(set(c['source_file'] for c in new_chunks))} new file(s) into LanceDB.")
     else:
         table = db.create_table(TABLE_NAME, data=chunks)
-
-    table.add(chunks)
-    print(f"Inserted {len(chunks)} chunks into LanceDB.")
+        print(f"Created table and inserted {len(chunks)} chunks into LanceDB.")
 
 
 # ==========================

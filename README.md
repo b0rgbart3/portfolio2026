@@ -138,6 +138,47 @@ The full application (frontend + API) is then available at `http://localhost:800
 
 ---
 
+## Frontend Architecture
+
+### Component Structure
+
+Each UI component lives in its own folder with a co-located SCSS Module:
+
+```
+components/
+├── Hero/
+│   ├── Hero.tsx
+│   └── Hero.module.scss
+├── Navbar/
+│   ├── Navbar.tsx
+│   └── Navbar.module.scss
+└── ...
+```
+
+Styles are scoped via CSS Modules (`import styles from './Component.module.scss'`), eliminating class name collisions without a CSS-in-JS runtime.
+
+### Custom Hooks
+
+| Hook | File | Purpose |
+|---|---|---|
+| `useTheme` | `src/utils/useTheme.ts` | Dark/light mode toggle — reads/persists preference and applies a `data-theme` attribute |
+
+### Animation Patterns (framer-motion)
+
+- `motion.*` components (`motion.div`, `motion.button`, etc.) for declarative enter/exit/hover animations
+- `AnimatePresence` — mounts/unmounts children with animated transitions; used with `mode="wait"` for sequential swaps and `initial={false}` to suppress entry animations on first render
+- `useInView` — triggers animations when elements scroll into the viewport
+
+### Portals
+
+`createPortal` (from `react-dom`) is used to render overlay elements (e.g. the AI panel) outside the component tree, avoiding z-index and overflow stacking issues.
+
+### Data Layer
+
+Project content is loaded from a static JSON file (`src/data/projects.json`) rather than hardcoded in components, keeping data and presentation separate.
+
+---
+
 ## AI Workflow
 
 The LangGraph agent in `server/ask_agent.py` implements a four-node RAG pipeline:

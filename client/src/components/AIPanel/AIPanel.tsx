@@ -19,10 +19,48 @@ interface AIPanelProps {
   onClose: () => void;
   openToBuildInfo?: boolean;
 }
+/*
+const newSuggestions = [
+  Top 10 recruiter questions for your portfolio chatbot
+What kind of roles is Bart looking for?
+This immediately frames you around AI-native UI, Design Engineer, Product Engineer, and product-focused front-end roles.
+Why is Bart a strong fit for a Design Engineer role?
+This sells your design + engineering overlap: React, TypeScript, visual craft, interaction design, Figma-to-code, component thinking, and production UI.
+What makes Bart different from a typical front-end engineer?
+This highlights your graphic design, animation, typography, branding, product taste, and AI-native workflow advantage.
+What are Bart’s strongest technical skills?
+This gives recruiters the fast keyword match: React, TypeScript, JavaScript, Node.js, REST APIs, Material UI, Sass, MobX, AI tools, RAG/agents, and responsive UI.
+How has Bart used AI in software development?
+This supports your AI-native positioning with practical credibility: prototyping, debugging, implementation, research, code refinement, agentic workflows, and product exploration.
+What kind of products or teams would Bart thrive on?
+This helps recruiters pattern-match you to AI tools, creative SaaS, design technology, developer tools, data-rich interfaces, and product-led teams with strong design culture.
+What portfolio projects best show Bart’s current direction?
+This guides them toward the most relevant proof instead of making them browse randomly.
+What experience does Bart have with complex or data-rich interfaces?
+This connects your Grid Dynamics experience, enterprise fintech UI work, dashboards, structured data, API-driven interfaces, and usability with real professional experience.
+Is Bart more front-end, full-stack, or design-focused?
+This resolves a likely recruiter question cleanly: primarily UI/front-end/product experience, with full-stack capability in service of user-facing software.
+Why should we interview Bart?
+This should be the chatbot’s strongest answer: concise, confident, and recruiter-friendly.
+]
+*/
+
+const suggestions2 = [
+  "What kind of roles is Bart looking for?",
+  "Why is Bart a strong fit for a Design Engineer role?",
+  "What makes Bart different from a typical front-end engineer?",
+  "What are Bart's strongest technical skills?",
+  "How has Bart used AI in software development?",
+  "What kind of products or teams would Bart thrive on?",
+  "What portfolio projects best show Bart's current direction?",
+  "What experience does Bart have with complex or data-rich interfaces?",
+  "Is Bart more front-end, full-stack, or design-focused?",
+  "Why should we interview Bart?",
+];
 
 const suggestions = [
   "Describe a project that Bart is particularly proud of — what were the challenges, solutions, and tradeoffs?",
-  "How does Bart make UIs fast, accessible, and cross-device?",
+  "How does Bart handle mobile app development?",
   "Share a time Bart and a designer or PM disagreed — what happened and what was the outcome?",
   "Would Bart be a good for a Series B startup with messy data infrastructure?",
   "Tell me about a time Bart experienced a failure.",
@@ -31,7 +69,46 @@ const suggestions = [
 ];
 
 const renderWithLineBreaks = (text: string) => {
-  const sentences = text.split(/(?<=\.)\s+(?=[A-Z])/);
+  // Normalize numbered list items (e.g. "1. Foo") into bullets so they render consistently
+  const normalized = text.replace(/^\d+\.\s+/gm, "- ");
+  const lines = normalized.split("\n").filter((l) => l.trim());
+  const firstBulletIdx = lines.findIndex((l) => /^[-•*]\s/.test(l));
+
+  if (firstBulletIdx !== -1) {
+    const introLines = lines.slice(0, firstBulletIdx);
+    const bulletLines = lines
+      .slice(firstBulletIdx)
+      .filter((l) => /^[-•*]\s/.test(l))
+      .slice(0, 4);
+    return (
+      <>
+        {introLines.map((line, i) => (
+          <React.Fragment key={`intro-${i}`}>
+            {line}
+            <br />
+          </React.Fragment>
+        ))}
+        <ul
+          style={{
+            margin: introLines.length > 0 ? "6px 0 0" : 0,
+            paddingLeft: "1.2em",
+            lineHeight: 1.6,
+          }}
+        >
+          {bulletLines.map((line, i) => (
+            <li
+              key={i}
+              style={{ marginBottom: i < bulletLines.length - 1 ? "6px" : 0 }}
+            >
+              {line.replace(/^[-•*]\s*/, "")}
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  }
+
+  const sentences = text.split(/(?<=\.)\s+(?=[A-Z])/).slice(0, 3);
   return sentences.map((sentence, i) => (
     <React.Fragment key={i}>
       {sentence}
@@ -58,6 +135,9 @@ const AIPanel: React.FC<AIPanelProps> = ({
   const [isStreaming, setIsStreaming] = useState(false);
   const [showBuildInfo, setShowBuildInfo] = useState(false);
   const [shuffledSuggestions, setShuffledSuggestions] = useState<string[]>([]);
+  const [followupSuggestion, setFollowupSuggestion] = useState<string | null>(
+    null,
+  );
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const streamingIdRef = useRef<string | null>(null);
@@ -74,6 +154,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
       setStatusText("");
       setIsStreaming(false);
       setShowBuildInfo(openToBuildInfo);
+      setFollowupSuggestion(null);
       setShuffledSuggestions([...suggestions].sort(() => Math.random() - 0.5));
     } else {
       abortControllerRef.current?.abort();
@@ -88,16 +169,18 @@ const AIPanel: React.FC<AIPanelProps> = ({
   const assistantCount = messages.filter(
     (m) => m.sender === "assistant",
   ).length;
-  const showAskAnother = assistantCount >= 2 && !isTyping;
+  const showAskAnother = assistantCount >= 3 && !isTyping;
 
   const handleReset = () => {
     setMessages([]);
     setInputValue("");
+    setFollowupSuggestion(null);
     setShuffledSuggestions([...suggestions].sort(() => Math.random() - 0.5));
   };
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return;
+    setFollowupSuggestion(null);
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -171,6 +254,8 @@ const AIPanel: React.FC<AIPanelProps> = ({
 
           if (event.type === "status") {
             setStatusText(event.text ?? "");
+          } else if (event.type === "followup") {
+            setFollowupSuggestion(event.text ?? null);
           } else if (event.type === "token") {
             if (!firstTokenReceived) {
               firstTokenReceived = true;
@@ -376,7 +461,10 @@ const AIPanel: React.FC<AIPanelProps> = ({
                         <button
                           key={index}
                           className={styles["suggestion-item"]}
-                          onClick={() => { playComputerThink(); handleSend(suggestion); }}
+                          onClick={() => {
+                            playComputerThink();
+                            handleSend(suggestion);
+                          }}
                         >
                           {suggestion}
                         </button>
@@ -414,6 +502,29 @@ const AIPanel: React.FC<AIPanelProps> = ({
                         </div>
                       </div>
                     )}
+                    {followupSuggestion &&
+                      assistantCount === 1 &&
+                      !isTyping && (
+                        <motion.div
+                          className={styles["followup-hint"]}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 }}
+                        >
+                          <span className={styles["followup-label"]}>
+                            You might also want to ask:
+                          </span>
+                          <button
+                            className={styles["followup-btn"]}
+                            onClick={() => {
+                              playComputerThink();
+                              handleSend(followupSuggestion);
+                            }}
+                          >
+                            {followupSuggestion}
+                          </button>
+                        </motion.div>
+                      )}
                     <div ref={messagesEndRef} />
                   </motion.div>
                 )}
@@ -465,7 +576,10 @@ const AIPanel: React.FC<AIPanelProps> = ({
                 {!showBuildInfo && !isTyping && messages.length > 0 && (
                   <button
                     className={styles["ask-another-btn"]}
-                    onClick={() => { playButtonClick(); handleReset(); }}
+                    onClick={() => {
+                      playButtonClick();
+                      handleReset();
+                    }}
                   >
                     Ask another question
                   </button>
