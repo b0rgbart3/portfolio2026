@@ -6,12 +6,16 @@ import profilePic from "../../assets/bart_dority_profile4.png";
 import profilePicLight from "../../assets/bart_dority_profile_light5.jpg";
 import { useTheme } from "../../utils/useTheme";
 import { playButtonClick, playComputerThink } from "../../utils/sounds";
+import { hardCodedQA } from "./hardCodedQA";
+
+const hardwiredMap = new Map(hardCodedQA.map((e) => [e.question, e.answer]));
 
 interface Message {
   id: string;
   text: string;
   sender: "user" | "assistant";
   timestamp: Date;
+  isHardwired?: boolean;
 }
 
 interface AIPanelProps {
@@ -45,18 +49,18 @@ This should be the chatbot’s strongest answer: concise, confident, and recruit
 ]
 */
 
-// const suggestions2 = [
-//   "What kind of roles is Bart looking for?",
-//   "Why is Bart a strong fit for a Design Engineer role?",
-//   "What makes Bart different from a typical front-end engineer?",
-//   "What are Bart's strongest technical skills?",
-//   "How has Bart used AI in software development?",
-//   "What kind of products or teams would Bart thrive on?",
-//   "What portfolio projects best show Bart's current direction?",
-//   "What experience does Bart have with complex or data-rich interfaces?",
-//   "Is Bart more front-end, full-stack, or design-focused?",
-//   "Why should we interview Bart?",
-// ];
+const hardwiredSuggestions = [
+  "What kind of roles is Bart looking for?",
+  "Why is Bart a strong fit for a Design Engineer role?",
+  "What makes Bart different from a typical front-end engineer?",
+  "What are Bart's strongest technical skills?",
+  "How has Bart used AI in software development?",
+  "What kind of products or teams would Bart thrive on?",
+  "What portfolio projects best show Bart's current direction?",
+  "What experience does Bart have with complex or data-rich interfaces?",
+  "Is Bart more front-end, full-stack, or design-focused?",
+  "Why should we interview Bart?",
+];
 
 const suggestions = [
   "Describe a project that Bart is particularly proud of — what were the challenges, solutions, and tradeoffs?",
@@ -122,6 +126,78 @@ const renderWithLineBreaks = (text: string) => {
   ));
 };
 
+const URL_REGEX = /(https?:\/\/[^\s,)]+)/g;
+
+const renderHardwiredAnswer = (text: string) => {
+  const normalized = text.replace(/^\d+\.\s+/gm, "- ");
+  const lines = normalized.split("\n").filter((l) => l.trim());
+  const firstBulletIdx = lines.findIndex((l) => /^[-•*]\s/.test(l));
+
+  const renderTextWithLinks = (line: string) => {
+    const parts = line.split(URL_REGEX);
+    return parts.map((part, i) =>
+      URL_REGEX.test(part) ? (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "inherit", textDecoration: "underline" }}
+        >
+          {part}
+        </a>
+      ) : (
+        part
+      ),
+    );
+  };
+
+  if (firstBulletIdx !== -1) {
+    const introLines = lines.slice(0, firstBulletIdx);
+    const bulletLines = lines
+      .slice(firstBulletIdx)
+      .filter((l) => /^[-•*]\s/.test(l));
+    const outroLines = lines
+      .slice(firstBulletIdx)
+      .filter((l) => !/^[-•*]\s/.test(l));
+    return (
+      <>
+        {introLines.map((line, i) => (
+          <React.Fragment key={`intro-${i}`}>
+            {renderTextWithLinks(line)}
+            <br />
+          </React.Fragment>
+        ))}
+        <ul style={{ margin: introLines.length > 0 ? "6px 0 0" : 0, paddingLeft: "1.2em", lineHeight: 1.6 }}>
+          {bulletLines.map((line, i) => (
+            <li key={i} style={{ marginBottom: i < bulletLines.length - 1 ? "6px" : 0 }}>
+              {renderTextWithLinks(line.replace(/^[-•*]\s*/, ""))}
+            </li>
+          ))}
+        </ul>
+        {outroLines.map((line, i) => (
+          <React.Fragment key={`outro-${i}`}>
+            <br />
+            {renderTextWithLinks(line)}
+          </React.Fragment>
+        ))}
+      </>
+    );
+  }
+
+  return lines.map((line, i) => (
+    <React.Fragment key={i}>
+      {renderTextWithLinks(line)}
+      {i < lines.length - 1 && (
+        <>
+          <br />
+          <br />
+        </>
+      )}
+    </React.Fragment>
+  ));
+};
+
 const AIPanel: React.FC<AIPanelProps> = ({
   isOpen,
   onClose,
@@ -155,7 +231,9 @@ const AIPanel: React.FC<AIPanelProps> = ({
       setIsStreaming(false);
       setShowBuildInfo(openToBuildInfo);
       setFollowupSuggestion(null);
-      setShuffledSuggestions([...suggestions].sort(() => Math.random() - 0.5));
+      setShuffledSuggestions(
+        [...hardwiredSuggestions, ...suggestions].sort(() => Math.random() - 0.5),
+      );
     } else {
       abortControllerRef.current?.abort();
       abortControllerRef.current = null;
@@ -175,7 +253,117 @@ const AIPanel: React.FC<AIPanelProps> = ({
     setMessages([]);
     setInputValue("");
     setFollowupSuggestion(null);
-    setShuffledSuggestions([...suggestions].sort(() => Math.random() - 0.5));
+    setShuffledSuggestions(
+      [...hardwiredSuggestions, ...suggestions].sort(() => Math.random() - 0.5),
+    );
+  };
+
+  const handleHardwiredSend = async (question: string, answer: string) => {
+    setFollowupSuggestion(null);
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: question,
+      sender: "user",
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, userMessage]);
+    setInputValue("");
+    setIsTyping(true);
+    setIsStreaming(false);
+    setStatusText("Connecting...");
+
+    playComputerThink();
+
+    const assistantId = (Date.now() + 1).toString();
+    streamingIdRef.current = assistantId;
+    const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+    // Mimic the real pipeline's 4-stage status progression
+    await wait(400);
+    setStatusText("Refining your question...");
+    await wait(600);
+    setStatusText("Searching knowledge base...");
+    await wait(700);
+    setStatusText("Retrieving relevant context...");
+    await wait(500);
+    setStatusText("Generating answer...");
+    await wait(400);
+
+    // Stream the answer in small character chunks (4 chars at 25ms) to match LLM token speed
+    const CHUNK = 4;
+    let firstChunk = true;
+    for (let i = 0; i < answer.length; i += CHUNK) {
+      const chunk = answer.slice(i, i + CHUNK);
+      if (firstChunk) {
+        firstChunk = false;
+        setIsStreaming(true);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: assistantId,
+            text: chunk,
+            sender: "assistant",
+            timestamp: new Date(),
+            isHardwired: true,
+          },
+        ]);
+      } else {
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId ? { ...m, text: m.text + chunk } : m,
+          ),
+        );
+      }
+      await wait(25);
+    }
+
+    streamingIdRef.current = null;
+    setIsTyping(false);
+    setIsStreaming(false);
+    setStatusText("");
+
+    // Background call to get a follow-up hint (ignore main answer tokens)
+    const bgFetch = async () => {
+      const ctrl = new AbortController();
+      try {
+        const res = await fetch("/api/ask/stream", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: question, history: [] }),
+          signal: ctrl.signal,
+        });
+        if (!res.ok || !res.body) return;
+        const reader = res.body.getReader();
+        const dec = new TextDecoder();
+        let buf = "";
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buf += dec.decode(value, { stream: true });
+          const parts = buf.split("\n\n");
+          buf = parts.pop() ?? "";
+          for (const part of parts) {
+            const line = part.split("\n").find((l) => l.startsWith("data: "));
+            if (!line) continue;
+            try {
+              const ev = JSON.parse(line.slice(6));
+              if (ev.type === "followup" && ev.text) {
+                setFollowupSuggestion(ev.text);
+                ctrl.abort();
+                return;
+              }
+              if (ev.type === "done") return;
+            } catch {
+              // ignore parse errors
+            }
+          }
+        }
+      } catch {
+        // ignore abort and network errors
+      }
+    };
+    bgFetch();
   };
 
   const handleSend = async (text: string) => {
@@ -462,8 +650,13 @@ const AIPanel: React.FC<AIPanelProps> = ({
                           key={index}
                           className={styles["suggestion-item"]}
                           onClick={() => {
-                            playComputerThink();
-                            handleSend(suggestion);
+                            const hardwiredAnswer = hardwiredMap.get(suggestion);
+                            if (hardwiredAnswer) {
+                              handleHardwiredSend(suggestion, hardwiredAnswer);
+                            } else {
+                              playComputerThink();
+                              handleSend(suggestion);
+                            }
                           }}
                         >
                           {suggestion}
@@ -487,7 +680,9 @@ const AIPanel: React.FC<AIPanelProps> = ({
                           className={`${styles.bubble}${isTyping && isStreaming && msg.id === streamingIdRef.current ? ` ${styles.streaming}` : ""}`}
                         >
                           {msg.sender === "assistant"
-                            ? renderWithLineBreaks(msg.text)
+                            ? msg.isHardwired
+                              ? renderHardwiredAnswer(msg.text)
+                              : renderWithLineBreaks(msg.text)
                             : msg.text}
                         </div>
                       </div>

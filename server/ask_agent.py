@@ -210,8 +210,11 @@ def _build_llm_messages(state: AgentState):
     return messages, _DEFAULT_RESPONSE
 
 
+_FOLLOWUP_CONFIDENCE_THRESHOLD = 0.70
+
+
 async def _generate_followup_hint(passage: str, original_query: str) -> str:
-    """Generate a short follow-up question from the second-best RAG passage."""
+    """Generate a short follow-up question, only returning it if RAG can answer it."""
     try:
         client = get_llm_client()
 
@@ -238,8 +241,20 @@ async def _generate_followup_hint(passage: str, original_query: str) -> str:
 
         result = await asyncio.to_thread(_call)
         text = result.choices[0].message.content.strip()
-        if text and len(text) > 5 and len(text.split()) <= 20:
-            return text
+        if not (text and len(text) > 5 and len(text.split()) <= 20):
+            return ""
+
+        # Validate: only surface the follow-up if RAG has a confident answer for it
+        prefixed = f"Represent this sentence for searching relevant passages: {text}"
+        embedding = await asyncio.to_thread(Settings.embed_model.get_text_embedding, prefixed)
+        hits = await asyncio.to_thread(lambda: table.search(embedding).limit(1).to_list())
+        best_dist = hits[0]["_distance"] if hits else 9.0
+        if best_dist >= _FOLLOWUP_CONFIDENCE_THRESHOLD:
+            print(f"FOLLOWUP SUPPRESSED (dist={best_dist:.4f} >= {_FOLLOWUP_CONFIDENCE_THRESHOLD}): {text!r}")
+            return ""
+
+        print(f"FOLLOWUP ACCEPTED (dist={best_dist:.4f}): {text!r}")
+        return text
     except Exception:
         pass
     return ""
