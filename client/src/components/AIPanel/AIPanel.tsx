@@ -45,18 +45,18 @@ This should be the chatbot’s strongest answer: concise, confident, and recruit
 ]
 */
 
-const suggestions2 = [
-  "What kind of roles is Bart looking for?",
-  "Why is Bart a strong fit for a Design Engineer role?",
-  "What makes Bart different from a typical front-end engineer?",
-  "What are Bart's strongest technical skills?",
-  "How has Bart used AI in software development?",
-  "What kind of products or teams would Bart thrive on?",
-  "What portfolio projects best show Bart's current direction?",
-  "What experience does Bart have with complex or data-rich interfaces?",
-  "Is Bart more front-end, full-stack, or design-focused?",
-  "Why should we interview Bart?",
-];
+// const suggestions2 = [
+//   "What kind of roles is Bart looking for?",
+//   "Why is Bart a strong fit for a Design Engineer role?",
+//   "What makes Bart different from a typical front-end engineer?",
+//   "What are Bart's strongest technical skills?",
+//   "How has Bart used AI in software development?",
+//   "What kind of products or teams would Bart thrive on?",
+//   "What portfolio projects best show Bart's current direction?",
+//   "What experience does Bart have with complex or data-rich interfaces?",
+//   "Is Bart more front-end, full-stack, or design-focused?",
+//   "Why should we interview Bart?",
+// ];
 
 const suggestions = [
   "Describe a project that Bart is particularly proud of — what were the challenges, solutions, and tradeoffs?",
