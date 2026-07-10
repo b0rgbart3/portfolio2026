@@ -53,6 +53,19 @@ async def ask(request: AskRequest, req: Request):
     return {"response": answer}
 
 
+class TrackRequest(BaseModel):
+    event_type: str
+    data: dict = {}
+
+
+@app.post("/api/track")
+async def track(request: TrackRequest, req: Request):
+    ip = _get_client_ip(req)
+    ua = req.headers.get("User-Agent", "")
+    log_event(request.event_type, ip, ua, request.data)
+    return {"ok": True}
+
+
 class FollowupRequest(BaseModel):
     question: str
 

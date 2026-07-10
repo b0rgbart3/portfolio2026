@@ -335,6 +335,13 @@ const AIPanel: React.FC<AIPanelProps> = ({
     setIsStreaming(false);
     setStatusText("");
 
+    // Fire-and-forget tracking for preset questions (no backend call otherwise)
+    fetch("/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event_type: "ai_chat_preset", data: { question } }),
+    }).catch(() => {});
+
     // Background call to get a follow-up hint via the lightweight endpoint
     const bgFetch = async () => {
       try {
