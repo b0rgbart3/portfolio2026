@@ -4,15 +4,15 @@ An AI-powered portfolio website featuring an interactive chat interface backed b
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 19 + TypeScript + Vite |
-| Styling | SCSS Modules + Framer Motion |
-| Backend | Python + FastAPI + Uvicorn |
-| AI Workflow | LangGraph (state machine RAG agent) |
-| Vector DB | LanceDB (local) |
-| Embeddings | HuggingFace `BAAI/bge-small-en-v1.5` |
-| LLM | OpenAI API |
+| Layer       | Technology                           |
+| ----------- | ------------------------------------ |
+| Frontend    | React 19 + TypeScript + Vite         |
+| Styling     | SCSS Modules + Framer Motion         |
+| Backend     | Python + FastAPI + Uvicorn           |
+| AI Workflow | LangGraph (state machine RAG agent)  |
+| Vector DB   | LanceDB (local)                      |
+| Embeddings  | HuggingFace `BAAI/bge-small-en-v1.5` |
+| LLM         | OpenAI API                           |
 
 ---
 
@@ -20,27 +20,50 @@ An AI-powered portfolio website featuring an interactive chat interface backed b
 
 ```
 portfolio2026/
-├── client/                   # React + TypeScript frontend
+├── client/                       # React + TypeScript frontend
 │   ├── src/
-│   │   ├── components/       # UI components (Navbar, Hero, Experience, etc.)
-│   │   ├── styles/           # Global SCSS
+│   │   ├── components/
+│   │   │   ├── AIPanel/          # AI chat interface + hard-coded Q&A layer
+│   │   │   │   ├── AIPanel.tsx
+│   │   │   │   ├── hardCodedQA.ts
+│   │   │   │   └── hard_coded.md # Source of truth for pre-written answers
+│   │   │   ├── FitCheck/         # Job-description fit assessment UI
+│   │   │   ├── Projects/
+│   │   │   │   ├── Projects.tsx
+│   │   │   │   └── ProjectPanel.tsx  # Project detail slide-in panel
+│   │   │   ├── Experience/
+│   │   │   ├── Skills/
+│   │   │   ├── Hero/
+│   │   │   ├── Navbar/
+│   │   │   ├── Footer/
+│   │   │   └── ScrollToTop/
+│   │   ├── data/
+│   │   │   └── projects.json     # Project content (drives Projects section)
+│   │   ├── utils/
+│   │   │   ├── useTheme.ts       # Dark/light mode hook
+│   │   │   └── sounds.ts         # Web Audio API sound effects
+│   │   ├── styles/               # Global SCSS
 │   │   ├── App.tsx
 │   │   └── main.tsx
 │   ├── public/
 │   ├── vite.config.ts
 │   └── package.json
 │
-├── server/                   # Python FastAPI backend
-│   ├── main.py               # FastAPI app entry point
-│   ├── ask_agent.py          # LangGraph AI agent
-│   ├── pdf_injest.py         # PDF document ingestion
-│   ├── review_injestion.py   # Review document ingestion
-│   ├── test_vector_search.py # Vector search tests
-│   ├── lancedb/              # Local vector database
-│   ├── documents/            # Source PDFs for ingestion
-│   └── requirements.txt      # Python dependencies
+├── server/                       # Python FastAPI backend
+│   ├── main.py                   # FastAPI app entry point + static file serving
+│   ├── ask_agent.py              # LangGraph RAG agent (chat)
+│   ├── assess_agent.py           # LangGraph assess agent (FitCheck)
+│   ├── pdf_injest.py             # PDF document ingestion
+│   ├── review_injestion.py       # Review document ingestion
+│   ├── test_vector_search.py     # Vector search tests
+│   ├── graph_diagram.html        # LangGraph pipeline visualisation
+│   ├── lancedb/                  # Local vector database
+│   ├── documents/                # Source PDFs for ingestion
+│   ├── requirements.txt          # Full pinned dependencies
+│   ├── requirements-server.txt   # Server-only dependencies (no heavy ML libs)
+│   └── requirements-preprocess.txt  # Ingestion/embedding dependencies
 │
-└── .venv/                    # Python virtual environment
+└── .venv/                        # Python virtual environment
 ```
 
 ---
@@ -94,6 +117,8 @@ source ../.venv/bin/activate     # macOS/Linux
 
 pip install -r requirements.txt
 ```
+
+> **Split requirements files:** `requirements-server.txt` installs only the runtime server dependencies (no heavy ML/embedding libs — faster deploys). `requirements-preprocess.txt` adds the ingestion/embedding stack needed to run `pdf_injest.py`. `requirements.txt` is the full pinned lockfile.
 
 ### Ingest Documents
 
@@ -157,11 +182,12 @@ components/
 
 Styles are scoped via CSS Modules (`import styles from './Component.module.scss'`), eliminating class name collisions without a CSS-in-JS runtime.
 
-### Custom Hooks
+### Custom Hooks & Utilities
 
-| Hook | File | Purpose |
-|---|---|---|
+| Module     | File                    | Purpose                                                                                 |
+| ---------- | ----------------------- | --------------------------------------------------------------------------------------- |
 | `useTheme` | `src/utils/useTheme.ts` | Dark/light mode toggle — reads/persists preference and applies a `data-theme` attribute |
+| `sounds`   | `src/utils/sounds.ts`   | Programmatic Web Audio API sound effects for panel open, button click, and AI thinking  |
 
 ### Animation Patterns (framer-motion)
 
@@ -206,6 +232,48 @@ State is managed via a typed `AgentState` dict passed through each node.
 
 ---
 
+## FitCheck
+
+FitCheck is a job-description assessment tool. Recruiters or hiring managers paste a job description into the panel; a second LangGraph agent (`server/assess_agent.py`) evaluates Bart's fit and streams back a structured result.
+
+### Pipeline
+
+```
+Job Description (raw text)
+    │
+    ▼
+extract_jd_signals_node  ← LLM distils the JD into a compact ~100-word signal string
+    │
+    ▼
+embed_and_search_node    ← Embeds signals, searches LanceDB for relevant CV passages
+    │
+    ▼
+assess_node              ← LLM compares passages against signals, returns structured JSON
+    │
+    ▼
+{ fit_percentage, good_fit[], mismatches[], recommendation }
+```
+
+The result is streamed via `POST /api/assess` (SSE) and rendered in the `FitCheck` component with animated score indicators, strengths, gaps, and a plain-English recommendation.
+
+---
+
+## Hard-coded Q&A
+
+A client-side lookup layer in `hardCodedQA.ts` intercepts common questions before they reach the RAG pipeline. If the user's message exactly matches a preset question, the pre-written answer is returned immediately — no server round-trip.
+
+- `hard_coded.md` is the human-readable source of truth for those answers.
+- Preset questions are also surfaced as clickable suggestion chips in the chat UI.
+- After an AI response, the server may emit a `followup` SSE event suggesting a related question, which is displayed as a tappable hint below the answer.
+
+---
+
+## Projects Deep-linking
+
+The Projects section supports a `?project=<slug>` URL parameter. When present on page load, the matching project panel opens automatically — used in chatbot links to send visitors directly to a specific project.
+
+---
+
 ## Streaming Response
 
 The chatbot uses **Server-Sent Events (SSE)** to stream responses progressively instead of waiting for the full pipeline to complete.
@@ -225,12 +293,13 @@ data: {"type": "token",  "text": "has extensive"}
 data: {"type": "done"}
 ```
 
-| Event type | Description |
-|---|---|
-| `status` | Pipeline stage label shown in the typing indicator |
-| `token` | A token chunk from the LLM, appended to the live response bubble |
-| `done` | Stream complete — client finalises the message |
-| `error` | Unrecoverable error during pipeline setup |
+| Event type | Description                                                      |
+| ---------- | ---------------------------------------------------------------- |
+| `status`   | Pipeline stage label shown in the typing indicator               |
+| `token`    | A token chunk from the LLM, appended to the live response bubble |
+| `followup` | A suggested follow-up question generated after the answer        |
+| `done`     | Stream complete — client finalises the message                   |
+| `error`    | Unrecoverable error during pipeline setup                        |
 
 ### Implementation notes
 
@@ -244,26 +313,26 @@ data: {"type": "done"}
 
 ### Frontend (`client/package.json`)
 
-| Package | Purpose |
-|---|---|
-| `react` / `react-dom` | UI framework |
-| `framer-motion` | Animations |
-| `lucide-react` | Icons |
-| `sass` | SCSS preprocessing |
-| `vite` | Build tool |
-| `typescript` | Type safety |
+| Package               | Purpose            |
+| --------------------- | ------------------ |
+| `react` / `react-dom` | UI framework       |
+| `framer-motion`       | Animations         |
+| `lucide-react`        | Icons              |
+| `sass`                | SCSS preprocessing |
+| `vite`                | Build tool         |
+| `typescript`          | Type safety        |
 
 ### Backend (`server/requirements.txt`)
 
-| Package | Purpose |
-|---|---|
-| `fastapi` | Web framework |
-| `uvicorn` | ASGI server |
-| `langgraph` | AI workflow orchestration |
-| `langchain-core` | LLM integration |
-| `lancedb` | Local vector database |
-| `llama-index-*` | Document indexing and retrieval |
-| `sentence-transformers` | Embedding model |
-| `openai` | LLM API client |
-| `python-dotenv` | Environment variable loading |
-| `pypdf` | PDF parsing |
+| Package                 | Purpose                         |
+| ----------------------- | ------------------------------- |
+| `fastapi`               | Web framework                   |
+| `uvicorn`               | ASGI server                     |
+| `langgraph`             | AI workflow orchestration       |
+| `langchain-core`        | LLM integration                 |
+| `lancedb`               | Local vector database           |
+| `llama-index-*`         | Document indexing and retrieval |
+| `sentence-transformers` | Embedding model                 |
+| `openai`                | LLM API client                  |
+| `python-dotenv`         | Environment variable loading    |
+| `pypdf`                 | PDF parsing                     |

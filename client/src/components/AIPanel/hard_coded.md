@@ -48,7 +48,7 @@ The best portfolio projects to review first are the ones that show Bart’s curr
 
 His custom portfolio chatbot and fit-check features are strong examples of AI-powered product UI: they use agent-style interactions to help recruiters quickly understand his skills, experience, and fit for target roles. (https://bartdorityportfolio.online)
 MoonMath Data Tools demonstrates full-stack product delivery, structured data presentation, calculator interfaces, dashboard-style thinking, and responsive UI implementation.
-(https://moon-math.online/, https://moon-math.online/calculator-landing, https://moon-math.online/simplcagr-landing, https://moon-math.online/countdown-landing)
+(https://bartdorityportfolio.online/?project=moon-math-blog, https://moon-math.online/calculator-landing, https://moon-math.online/simplcagr-landing, https://moon-math.online/countdown-landing)
 Google Bookshelf demonstrates React, TypeScript, Node.js, Express, MongoDB, REST APIs, external API integration, saved collection workflows, and responsive product UI.
 (https://bartdorityportfolio.online/?project=google-bookshelf)
 LightBurst and selected freelance/client work show Bart’s visual craft, interaction design, animation, typography, creative direction, and ability to deliver polished user-facing experiences across different contexts.

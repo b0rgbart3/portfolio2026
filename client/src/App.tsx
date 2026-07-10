@@ -28,6 +28,7 @@ function App() {
     playPanelOpen();
     setOpenToBuildInfo(false);
     setIsAIPanelOpen(true);
+    gtag("event", "ai_chat_opened");
   };
 
   const handleOpenAIBuildInfo = () => {

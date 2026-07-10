@@ -168,9 +168,18 @@ const renderHardwiredAnswer = (text: string) => {
             <br />
           </React.Fragment>
         ))}
-        <ul style={{ margin: introLines.length > 0 ? "6px 0 0" : 0, paddingLeft: "1.2em", lineHeight: 1.6 }}>
+        <ul
+          style={{
+            margin: introLines.length > 0 ? "6px 0 0" : 0,
+            paddingLeft: "1.2em",
+            lineHeight: 1.6,
+          }}
+        >
           {bulletLines.map((line, i) => (
-            <li key={i} style={{ marginBottom: i < bulletLines.length - 1 ? "6px" : 0 }}>
+            <li
+              key={i}
+              style={{ marginBottom: i < bulletLines.length - 1 ? "6px" : 0 }}
+            >
               {renderTextWithLinks(line.replace(/^[-•*]\s*/, ""))}
             </li>
           ))}
@@ -232,7 +241,9 @@ const AIPanel: React.FC<AIPanelProps> = ({
       setShowBuildInfo(openToBuildInfo);
       setFollowupSuggestion(null);
       setShuffledSuggestions(
-        [...hardwiredSuggestions, ...suggestions].sort(() => Math.random() - 0.5),
+        [...hardwiredSuggestions, ...suggestions].sort(
+          () => Math.random() - 0.5,
+        ),
       );
     } else {
       abortControllerRef.current?.abort();
@@ -259,6 +270,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
   };
 
   const handleHardwiredSend = async (question: string, answer: string) => {
+    gtag("event", "ai_question_sent", { question_type: "preset" });
     setFollowupSuggestion(null);
 
     const userMessage: Message = {
@@ -323,44 +335,19 @@ const AIPanel: React.FC<AIPanelProps> = ({
     setIsStreaming(false);
     setStatusText("");
 
-    // Background call to get a follow-up hint (ignore main answer tokens)
+    // Background call to get a follow-up hint via the lightweight endpoint
     const bgFetch = async () => {
-      const ctrl = new AbortController();
       try {
-        const res = await fetch("/api/ask/stream", {
+        const res = await fetch("/api/followup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: question, history: [] }),
-          signal: ctrl.signal,
+          body: JSON.stringify({ question }),
         });
-        if (!res.ok || !res.body) return;
-        const reader = res.body.getReader();
-        const dec = new TextDecoder();
-        let buf = "";
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          buf += dec.decode(value, { stream: true });
-          const parts = buf.split("\n\n");
-          buf = parts.pop() ?? "";
-          for (const part of parts) {
-            const line = part.split("\n").find((l) => l.startsWith("data: "));
-            if (!line) continue;
-            try {
-              const ev = JSON.parse(line.slice(6));
-              if (ev.type === "followup" && ev.text) {
-                setFollowupSuggestion(ev.text);
-                ctrl.abort();
-                return;
-              }
-              if (ev.type === "done") return;
-            } catch {
-              // ignore parse errors
-            }
-          }
-        }
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.followup) setFollowupSuggestion(data.followup);
       } catch {
-        // ignore abort and network errors
+        // ignore network errors
       }
     };
     bgFetch();
@@ -368,6 +355,7 @@ const AIPanel: React.FC<AIPanelProps> = ({
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return;
+    gtag("event", "ai_question_sent", { question_type: "custom" });
     setFollowupSuggestion(null);
 
     const userMessage: Message = {
@@ -650,7 +638,8 @@ const AIPanel: React.FC<AIPanelProps> = ({
                           key={index}
                           className={styles["suggestion-item"]}
                           onClick={() => {
-                            const hardwiredAnswer = hardwiredMap.get(suggestion);
+                            const hardwiredAnswer =
+                              hardwiredMap.get(suggestion);
                             if (hardwiredAnswer) {
                               handleHardwiredSend(suggestion, hardwiredAnswer);
                             } else {

@@ -210,10 +210,10 @@ def _build_llm_messages(state: AgentState):
     return messages, _DEFAULT_RESPONSE
 
 
-_FOLLOWUP_CONFIDENCE_THRESHOLD = 0.70
+_FOLLOWUP_CONFIDENCE_THRESHOLD = 0.90
 
 
-async def _generate_followup_hint(passage: str, original_query: str) -> str:
+async def _generate_followup_hint(original_query: str) -> str:
     """Generate a short follow-up question, only returning it if RAG can answer it."""
     try:
         client = get_llm_client()
@@ -232,7 +232,7 @@ async def _generate_followup_hint(passage: str, original_query: str) -> str:
                     },
                     {
                         "role": "user",
-                        "content": f"Recruiter's question: {original_query}\n\nRelevant context: {passage[:300]}",
+                        "content": f"Recruiter's question: {original_query}",
                     },
                 ],
                 max_tokens=48,
@@ -368,10 +368,8 @@ async def stream_agent_response(
                 yield sse({"type": "token", "text": delta.content})
 
         # After first response only, suggest a follow-up grounded in the same topic
-        if not history and len(state["retrieved_passages"]) > 0:
-            followup = await _generate_followup_hint(
-                state["retrieved_passages"][0], state["user_query"]
-            )
+        if not history:
+            followup = await _generate_followup_hint(state["user_query"])
             if followup:
                 yield sse({"type": "followup", "text": followup})
 

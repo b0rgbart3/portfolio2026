@@ -139,6 +139,7 @@ const FitCheck: React.FC = () => {
 
   const runAssessment = async (text: string) => {
     if (!text.trim() || text.trim().length < 50) return;
+    gtag("event", "fitcheck_submitted");
 
     setStatus("loading");
     setStatusText("Connecting...");

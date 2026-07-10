@@ -45,7 +45,9 @@ const Projects: React.FC = () => {
       setSelectedIndex(index);
       const url = new URL(window.location.href);
       if (index !== null) {
-        url.searchParams.set("project", slugify(projects[index].title));
+        const slug = slugify(projects[index].title);
+        url.searchParams.set("project", slug);
+        gtag("event", "project_viewed", { project_name: slug });
       } else {
         url.searchParams.delete("project");
       }
