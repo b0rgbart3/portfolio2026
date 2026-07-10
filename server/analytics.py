@@ -107,5 +107,17 @@ def get_summary() -> dict:
         "SELECT COUNT(DISTINCT ip_address) FROM events WHERE timestamp LIKE ? AND is_self = 0",
         (f"{today}%",),
     ).fetchone()[0]
+    unique_visitor_ips = conn.execute(
+        "SELECT COUNT(DISTINCT ip_address) FROM events WHERE is_self = 0"
+    ).fetchone()[0]
+    page_views = conn.execute(
+        "SELECT COUNT(*) FROM events WHERE event_type = 'page_view' AND is_self = 0"
+    ).fetchone()[0]
     conn.close()
-    return {"total": total, "today_total": today_total, "today_visitors": today_visitors}
+    return {
+        "total": total,
+        "today_total": today_total,
+        "today_visitors": today_visitors,
+        "unique_visitor_ips": unique_visitor_ips,
+        "page_views": page_views,
+    }

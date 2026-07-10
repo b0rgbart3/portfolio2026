@@ -24,6 +24,14 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    fetch("/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event_type: "page_view", data: { referrer: document.referrer || "direct" } }),
+    }).catch(() => {});
+  }, []);
+
   const handleOpenAI = () => {
     playPanelOpen();
     setOpenToBuildInfo(false);

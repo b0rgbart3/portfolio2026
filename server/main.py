@@ -183,9 +183,10 @@ async def admin_events():
 <body>
 <h1>Portfolio Analytics</h1>
 <div class="summary">
-  <div class="stat"><div class="stat-label">Total events</div><div class="stat-value">{summary['total']}</div></div>
-  <div class="stat"><div class="stat-label">Events today</div><div class="stat-value">{summary['today_total']}</div></div>
+  <div class="stat"><div class="stat-label">Page views (visitors)</div><div class="stat-value">{summary['page_views']}</div></div>
+  <div class="stat"><div class="stat-label">Unique visitor IPs</div><div class="stat-value">{summary['unique_visitor_ips']}</div></div>
   <div class="stat"><div class="stat-label">Visitor IPs today</div><div class="stat-value">{summary['today_visitors']}</div></div>
+  <div class="stat"><div class="stat-label">All events today</div><div class="stat-value">{summary['today_total']}</div></div>
 </div>
 <table>
 <thead><tr>
