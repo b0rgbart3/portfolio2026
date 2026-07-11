@@ -34,6 +34,41 @@
     }
   }
 
+  .filterBar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .filterBtn {
+    padding: 6px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: $font-sans;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: var(--accent-blue-40);
+      color: var(--text-primary);
+      background: var(--surface-subtle);
+    }
+  }
+
+  .filterBtnActive {
+    border-color: var(--accent-blue);
+    background: var(--accent-blue-15);
+    color: var(--accent-blue-bright);
+
+    &:hover {
+      background: var(--accent-blue-20);
+    }
+  }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -95,12 +130,6 @@
         color: var(--accent-blue);
       }
     }
-  }
-
-  .cardHighlighted {
-    border-color: var(--accent-sky) !important;
-    background: rgba(56, 189, 248, 0.18) !important;
-    transition: all 0.2s ease !important;
   }
 
   .grid2 {

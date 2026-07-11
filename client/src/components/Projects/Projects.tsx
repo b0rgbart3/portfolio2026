@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 import styles from "./Projects.module.scss";
 import projectsData from "../../data/projects.json";
 import ProjectPanel from "./ProjectPanel";
@@ -14,10 +14,25 @@ interface Project {
   features: string[];
   tech: string[];
   shields: string[];
+  category: string;
 }
 
+const FILTERS = [
+  { label: "All", value: "all" },
+  { label: "Data Visualizations", value: "data-viz" },
+  { label: "Agentic AI", value: "ai" },
+  { label: "Fullstack Apps", value: "fullstack" },
+  { label: "Games", value: "games" },
+  { label: "Client Work", value: "client" },
+] as const;
+
+type FilterValue = (typeof FILTERS)[number]["value"];
+
 function slugify(title: string): string {
-  return title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+  return title
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
 }
 
 function getIndexFromUrl(projects: Project[]): number | null {
@@ -30,15 +45,20 @@ function getIndexFromUrl(projects: Project[]): number | null {
 
 const Projects: React.FC = () => {
   const projects: Project[] = projectsData;
+  const [activeFilter, setActiveFilter] = useState<FilterValue>("all");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(() =>
     getIndexFromUrl(projectsData as Project[]),
   );
-  const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
+
   const selectedProject =
     selectedIndex !== null ? projects[selectedIndex] : null;
 
-  const gridRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(gridRef, { once: true, amount: 0.2 });
+  const displayedProjects = projects
+    .map((project, index) => ({ project, index }))
+    .filter(
+      ({ project }) =>
+        activeFilter === "all" || project.category === activeFilter,
+    );
 
   const openProject = useCallback(
     (index: number | null) => {
@@ -62,24 +82,6 @@ const Projects: React.FC = () => {
     return () => window.removeEventListener("popstate", onPopState);
   }, [projects]);
 
-  useEffect(() => {
-    if (!isInView) return;
-
-    const HIGHLIGHT_DURATION = 180;
-    const SEQUENCE_START = 2400;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-
-    projects.forEach((_, index) => {
-      const start = SEQUENCE_START + index * HIGHLIGHT_DURATION;
-      timers.push(setTimeout(() => setHighlightedIndex(index), start));
-      timers.push(
-        setTimeout(() => setHighlightedIndex(null), start + HIGHLIGHT_DURATION),
-      );
-    });
-
-    return () => timers.forEach(clearTimeout);
-  }, [isInView]);
-
   const handlePrev = () =>
     setSelectedIndex((i) => {
       const next = i !== null && i > 0 ? i - 1 : i;
@@ -90,6 +92,7 @@ const Projects: React.FC = () => {
       }
       return next;
     });
+
   const handleNext = () =>
     setSelectedIndex((i) => {
       const next = i !== null && i < projects.length - 1 ? i + 1 : i;
@@ -128,49 +131,36 @@ const Projects: React.FC = () => {
         </motion.p>
       </div>
 
-      <div className={styles.grid} ref={gridRef}>
-        {projects.map((project, index) => (
-          <motion.div
+      <motion.div
+        className={styles.filterBar}
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        {FILTERS.map((f) => (
+          <button
+            key={f.value}
+            className={`${styles.filterBtn} ${activeFilter === f.value ? styles.filterBtnActive : ""}`}
+            onClick={() => setActiveFilter(f.value)}
+          >
+            {f.label}
+          </button>
+        ))}
+      </motion.div>
+
+      <div className={styles.grid}>
+        {displayedProjects.map(({ project, index }) => (
+          <div
             key={project.title}
-            className={`${styles.card} ${highlightedIndex === index ? styles.cardHighlighted : ""}`}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{
-              duration: 1.5 - index * 0.1,
-              delay: 1 + index * 0.18,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
+            className={styles.card}
             onClick={() => openProject(index)}
           >
             <h3>{project.title}</h3>
             <p>{project.intro}</p>
-          </motion.div>
+          </div>
         ))}
       </div>
-
-      {/* <div className={styles.grid2}>
-        {projects.map((project, index) => (
-          <motion.div
-            key={`bloat-${project.title}`}
-            className={styles.cardBloat}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{
-              duration: 1.5 - index * 0.1,
-              delay: 1 + index * 0.18,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
-            onClick={() => setSelectedIndex(index)}
-          >
-            <div className={styles.cardBloatContent}>
-              <h3>{project.title}</h3>
-              <p>{project.intro}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div> */}
 
       <ProjectPanel
         project={selectedProject}

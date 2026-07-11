@@ -24,7 +24,8 @@
             "express",
             "mongo",
             "mongoose"
-        ]
+        ],
+        "category": "fullstack"
     },
     {
         "title": "Millionth Block Countdown",
@@ -46,7 +47,8 @@
         "shields": [
             "react",
             "node"
-        ]
+        ],
+        "category": "data-viz"
     },
     {
         "title": "Bitcoin Retirement Calculator",
@@ -69,7 +71,8 @@
             "react",
             "typescript",
             "vite"
-        ]
+        ],
+        "category": "data-viz"
     },
     {
         "title": "SimplCAGR",
@@ -92,7 +95,8 @@
             "react",
             "typescript",
             "vite"
-        ]
+        ],
+        "category": "data-viz"
     },
     {
         "title": "Birthday Tracker",
@@ -121,7 +125,35 @@
             "mongo",
             "mongoose",
             "antigravity"
-        ]
+        ],
+        "category": "fullstack"
+    },
+    {
+        "title": "K*Bart",
+        "intro": "classic Q*Bert arcade game remake",
+        "description": "This is a remake of the classic arcade game Q*Bert.  It was built with Python and PyGame, and uses PyBag to generate an HTML5 canvas element to render the game.  The game is fully playable and includes sound effects and music.  It features all the original characters, and includes extra levels each with their own unique color system.",
+        "images": [
+            "kbart1.png"
+        ],
+        "live": "https://millionthblock-countdown.com/qbert/",
+        "github": "https://github.com/b0rgbart3/qbert",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "Python",
+            "PyGame",
+            "PyBag"
+        ],
+        "shields": [
+            "react",
+            "node",
+            "express",
+            "mongo",
+            "mongoose",
+            "antigravity"
+        ],
+        "category": "games"
     },
     {
         "title": "Google Bookshelf",
@@ -148,7 +180,8 @@
             "express",
             "mongo",
             "mongoose"
-        ]
+        ],
+        "category": "fullstack"
     },
     {
         "title": "LightBurst",
@@ -169,7 +202,8 @@
         "shields": [
             "flutter",
             "dart"
-        ]
+        ],
+        "category": "games"
     },
     {
         "title": "JerryFrost",
@@ -194,7 +228,8 @@
             "js",
             "html",
             "css"
-        ]
+        ],
+        "category": "client"
     },
     {
         "title": "Amy Graham",
@@ -217,7 +252,8 @@
             "js",
             "html",
             "css"
-        ]
+        ],
+        "category": "client"
     },
     {
         "title": "Dority Design Works",
@@ -242,7 +278,8 @@
             "js",
             "html",
             "css"
-        ]
+        ],
+        "category": "client"
     },
     {
         "title": "My 2026 Portfolio",
@@ -269,6 +306,7 @@
             "js",
             "html",
             "css"
-        ]
+        ],
+        "category": "ai"
     }
 ]
