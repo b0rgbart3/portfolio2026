@@ -1,5 +1,43 @@
 [
     {
+        "title": "Bitcoin Globe",
+        "intro": "D3 globe visualizer of bitcoin network",
+        "description": "This is a D3 globe visualizer of the bitcoin network.  It uses the Mempool.space API to track the bitcoin network blockheight, and displays a globe with the current blockheight and the number of blocks remaining until the next halving.",
+        "images": [
+            "bitcoin-globe.jpg"
+        ],
+        "live": "https://bitcoin-globe.moon-math.online",
+        "github": "https://github.com/b0rgbart3/bitcoin-globe",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React 19",
+            "TypeScript",
+            "Three.js",
+            "React Three Fiber",
+            "React Three Drei",
+            "React Three Postprocessing",
+            "Vite",
+            "Sass",
+            "Node.js",
+            "WebSockets",
+            "mempool.space",
+            "world-atlas",
+            "topojson-client",
+            "astronomy-engine",
+            "AWS EC2"
+        ],
+        "shields": [
+            "react",
+            "node",
+            "express",
+            "mongo",
+            "mongoose"
+        ],
+        "category": "data-viz"
+    },
+    {
         "title": "Moon-Math Blog",
         "intro": "fullstack blogging app",
         "description": "Full Stack MERN blog that allows authors to blog articles.  Includes user logins image uploads, etc.",
