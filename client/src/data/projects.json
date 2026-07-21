@@ -1,13 +1,13 @@
 [
     {
-        "title": "Bitcoin Globe",
-        "intro": "D3 globe visualizer of bitcoin network",
-        "description": "This is a D3 globe visualizer of the bitcoin network.  It uses the Mempool.space API to track the bitcoin network blockheight, and displays a globe with the current blockheight and the number of blocks remaining until the next halving.",
+        "title": "Synchronicity: A Bitcoin Visualization",
+        "intro": "D3 visualization of the bitcoin network",
+        "description": "This is a D3 globe visualization of the bitcoin network.  It uses the Mempool.space API to track the bitcoin network blockheight, and transactions gathering in the mempool and other stats including the current blockheight and the number of blocks remaining until the next halving.",
         "images": [
-            "bitcoin-globe.jpg"
+            "synchronicity.jpg"
         ],
-        "live": "https://bitcoin-globe.moon-math.online",
-        "github": "https://github.com/b0rgbart3/bitcoin-globe",
+        "live": "https://synchronicity.moon-math.online",
+        "github": "https://github.com/b0rgbart3/sychronicity",
         "features": [
             ""
         ],
