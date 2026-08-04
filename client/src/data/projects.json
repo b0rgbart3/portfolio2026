@@ -1,8 +1,46 @@
 [
     {
+        "title": "The Orrery",
+        "intro": "3D visualization of the Solar System",
+        "description": "An interactive, planetarium-style 3D visualization of the solar system: the Sun at the center of orbital control, all eight planets visible on screen at once, with a single compromise scale that exaggerates both planet size and orbital distance so the whole system reads as a recognizable model rather than a mostly-empty void. Planet positions are computed from real ephemeris data (via astronomy-engine), with a scrubbable timeline for moving through past and future dates.",
+        "images": [
+            "theorrery.jpg"
+        ],
+        "live": "https://theorrery.moon-math.online",
+        "github": "https://github.com/b0rgbart3/theorrery",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React 19",
+            "TypeScript",
+            "Three.js",
+            "React Three Fiber",
+            "React Three Drei",
+            "React Three Postprocessing",
+            "Vite",
+            "Sass",
+            "Node.js",
+            "WebSockets",
+            "mempool.space",
+            "world-atlas",
+            "topojson-client",
+            "astronomy-engine",
+            "AWS EC2"
+        ],
+        "shields": [
+            "react",
+            "node",
+            "express",
+            "mongo",
+            "mongoose"
+        ],
+        "category": "data-viz"
+    },
+     {
         "title": "Synchronicity: A Bitcoin Visualization",
-        "intro": "D3 visualization of the bitcoin network",
-        "description": "This is a D3 globe visualization of the bitcoin network.  It uses the Mempool.space API to track the bitcoin network blockheight, and transactions gathering in the mempool and other stats including the current blockheight and the number of blocks remaining until the next halving.",
+        "intro": "3D visualization of the bitcoin network",
+        "description": "This is a 3D globe visualization of the bitcoin network.  It uses the Mempool.space API to track the bitcoin network blockheight, and transactions gathering in the mempool and other stats including the current blockheight and the number of blocks remaining until the next halving.",
         "images": [
             "synchronicity.jpg"
         ],
