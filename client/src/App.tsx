@@ -16,12 +16,23 @@ function App() {
   const [openToBuildInfo, setOpenToBuildInfo] = useState(false);
 
   useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (!hash) return;
-    const el = document.getElementById(hash);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    const handleHash = () => {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+      if (hash === "chat-bot") {
+        handleOpenAI();
+        return;
+      }
+      const el = document.getElementById(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
