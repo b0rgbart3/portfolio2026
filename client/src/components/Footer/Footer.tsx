@@ -1,6 +1,9 @@
 import React from "react";
-import { Github, Linkedin, Mail } from "lucide-react";
 import styles from "./Footer.module.scss";
+import IconLink from "../sharedLibrary/IconLink/IconLink";
+import GithubIcon from "../sharedLibrary/icons/GithubIcon";
+import LinkedInIcon from "../sharedLibrary/icons/LinkedInIcon";
+import MailIcon from "../sharedLibrary/icons/MailIcon";
 
 interface FooterProps {
   onOpenAIBuildInfo: () => void;
@@ -18,31 +21,32 @@ const Footer: React.FC<FooterProps> = ({ onOpenAIBuildInfo }) => {
           </p>
         </div>
         <div className={styles.icons}>
-          <a
+          <IconLink
             href="https://github.com/b0rgbart3/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles["icon-btn"]}
-            aria-label="GitHub"
-          >
-            <Github size={20} />
-          </a>
-          <a
+            icon={GithubIcon}
+            label="GitHub"
+            external
+            variant="button"
+            iconSize={20}
+            className=""
+          />
+          <IconLink
             href="https://www.linkedin.com/in/bart-dority/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles["icon-btn"]}
-            aria-label="LinkedIn"
-          >
-            <Linkedin size={20} />
-          </a>
-          <a
+            icon={LinkedInIcon}
+            label="LinkedIn"
+            external
+            variant="button"
+            iconSize={20}
+            className=""
+          />
+          <IconLink
             href="mailto:jobs4bart@gmail.com"
-            className={styles["icon-btn"]}
-            aria-label="Email"
-          >
-            <Mail size={20} />
-          </a>
+            icon={MailIcon}
+            label="Email"
+            variant="button"
+            iconSize={20}
+            className=""
+          />
         </div>
       </div>
       <p className={styles.tagline}>

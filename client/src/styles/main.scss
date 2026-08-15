@@ -2,51 +2,57 @@
 
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.15s ease;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    font-family: $font-sans;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 1.5;
-    overflow-x: hidden;
-}
-
-h1,
-h2,
-h3,
-h4 {
-    font-family: $font-serif;
-    font-weight: 700;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: opacity 0.2s ease;
-
-    &:hover {
-        opacity: 0.8;
+// Layered so Tailwind's utility classes (which live in @layer utilities)
+// can override this reset — unlayered CSS always wins over layered CSS
+// regardless of specificity, which otherwise silently defeats Tailwind
+// classes on any converted component.
+@layer base {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        transition: background-color 0.25s ease, border-color 0.25s ease, color 0.15s ease;
     }
-}
 
-main {
-    width: 100%;
-}
+    html {
+        scroll-behavior: smooth;
+    }
 
-section {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: $font-sans;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        line-height: 1.5;
+        overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: $font-serif;
+        font-weight: 700;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    main {
+        width: 100%;
+    }
+
+    section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 }

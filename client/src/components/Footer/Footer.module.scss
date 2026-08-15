@@ -45,27 +45,6 @@
         gap: 12px;
     }
 
-    .icon-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: var(--surface-subtle);
-        border: 1px solid var(--border-color);
-        color: var(--text-secondary);
-        text-decoration: none;
-        transition: all 0.2s ease;
-
-        &:hover {
-            background: var(--border-color);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: var(--text-primary);
-            transform: translateY(-2px);
-        }
-    }
-
     .tagline {
         max-width: 1000px;
         margin: 0 auto;

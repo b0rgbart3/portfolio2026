@@ -1,7 +1,8 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Github, ExternalLink, ArrowLeft, ArrowRight } from "lucide-react";
+import { X, ExternalLink, ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./ProjectPanel.module.scss";
+import GithubIcon from "../sharedLibrary/icons/GithubIcon";
 
 const projectImages = import.meta.glob(
   "../../assets/projects/*.{jpg,jpeg,png,webp,gif,avif,svg}",
@@ -128,7 +129,7 @@ const ProjectPanel: React.FC<ProjectPanelProps> = ({
                       rel="noopener noreferrer"
                       className={styles.linkBtn}
                     >
-                      <Github size={16} />
+                      <GithubIcon size={16} />
                       GitHub Repo
                     </a>
                   )}

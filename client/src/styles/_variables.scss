@@ -55,6 +55,7 @@ $font-sans:  'Inter', sans-serif;
   --accent-green-06:     rgba(74, 222, 128, 0.06);
   --accent-green-15:     rgba(74, 222, 128, 0.15);
    --ask-ai-text: #32abde;
+  --nav-link-color:      var(--text-secondary);
 }
 
 // ── Light theme overrides ────────────────────────────────────
@@ -90,4 +91,5 @@ $font-sans:  'Inter', sans-serif;
   --ask-ai-text: white;
   --accent-green-06:     rgba(0, 200, 83, 0.35);
   --accent-green-15:     rgb(10, 32, 19);
+  --nav-link-color:      #11649b;
 }

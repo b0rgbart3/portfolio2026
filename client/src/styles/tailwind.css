@@ -1,0 +1,47 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Preflight intentionally omitted — main.scss already provides a global
+   reset, and skipping it avoids changing native button/input styling in
+   components not yet converted to Tailwind. */
+
+@theme {
+  --font-serif: 'PT Serif', serif;
+  --font-sans: 'Inter', sans-serif;
+
+  /* Every value below points at the CSS custom properties defined in
+     _variables.scss, so the existing [data-theme="light"] cascade
+     override keeps driving these colors — nothing here is a literal. */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-panel: var(--bg-panel);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent-green: var(--accent-green);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-blue-bright: var(--accent-blue-bright);
+  --color-dull-accent-blue: var(--dull-accent-blue);
+  --color-accent-gold: var(--accent-gold);
+  --color-accent-sky: var(--accent-sky);
+  --color-nav-bg: var(--nav-bg);
+  --color-overlay-bg: var(--overlay-bg);
+  --color-border-color: var(--border-color);
+  --color-border-faint: var(--border-faint);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-faint: var(--surface-faint);
+  --color-avatar-border-color: var(--avatar-border-color);
+  --color-cv-link-text: var(--cv-link-text);
+  --color-accent-blue-header: var(--accent-blue-header);
+  --color-color-note: var(--color-note);
+  --color-color-error: var(--color-error);
+  --color-panel-about-bg: var(--panel-about-bg);
+  --color-accent-blue-10: var(--accent-blue-10);
+  --color-accent-blue-15: var(--accent-blue-15);
+  --color-accent-blue-20: var(--accent-blue-20);
+  --color-accent-blue-25: var(--accent-blue-25);
+  --color-accent-blue-30: var(--accent-blue-30);
+  --color-accent-blue-40: var(--accent-blue-40);
+  --color-accent-green-06: var(--accent-green-06);
+  --color-accent-green-15: var(--accent-green-15);
+  --color-ask-ai-text: var(--ask-ai-text);
+  --color-nav-link-color: var(--nav-link-color);
+}

@@ -35,3 +35,8 @@ venv/*
 .live_env
 
 
+
+*storybook.log
+storybook-static
+
+design/

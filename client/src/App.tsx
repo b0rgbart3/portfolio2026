@@ -1,4 +1,5 @@
 import "./styles/main.scss";
+import "./styles/tailwind.css";
 import { useState, useEffect } from "react";
 import { playPanelOpen } from "./utils/sounds";
 import Navbar from "./components/Navbar/Navbar";
