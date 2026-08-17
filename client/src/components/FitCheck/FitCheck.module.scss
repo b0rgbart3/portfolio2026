@@ -1,7 +1,7 @@
 @use '../../styles/variables' as *;
 
 .fitCheck {
-  scroll-margin-top: 40px;
+  scroll-margin-top: 100px;
   background: var(--bg-primary);
   min-height: 100vh;
   display: flex;
@@ -11,7 +11,7 @@
 
 .inner {
   @include section-padding;
-  padding-top: 85px;
+  padding-top: 20px;
   padding-bottom: 85px;
   width: 100%;
 }

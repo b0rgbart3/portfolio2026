@@ -37,11 +37,11 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
 
   const scrollToSection = (id: string) => {
     playNavClick();
+    setIsMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
       history.pushState(null, "", "#" + id);
-      setIsMenuOpen(false);
     }
   };
 

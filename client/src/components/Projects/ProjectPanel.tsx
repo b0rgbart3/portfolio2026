@@ -1,30 +1,14 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./ProjectPanel.module.scss";
+import type { Project } from "./types";
+import { getProjectImageUrl } from "../../utils/projectImages";
 import GithubIcon from "../sharedLibrary/icons/GithubIcon";
 
-const projectImages = import.meta.glob(
-  "../../assets/projects/*.{jpg,jpeg,png,webp,gif,avif,svg}",
-  { eager: true },
-);
-
-function getImageUrl(imageName: string): string {
-  const key = `../../assets/projects/${imageName}`;
-  return (projectImages[key] as { default: string })?.default ?? "";
-}
-
-interface Project {
-  title: string;
-  description: string;
-  intro: string;
-  images: string[];
-  live: string;
-  github: string;
-  features: string[];
-  tech: string[];
-  shields: string[];
-}
+/** Minimum horizontal travel, px, before a touch gesture counts as a swipe rather
+ *  than a tap or an incidental finger wobble while scrolling the description. */
+const SWIPE_THRESHOLD_PX = 50;
 
 interface ProjectPanelProps {
   project: Project | null;
@@ -43,6 +27,41 @@ const ProjectPanel: React.FC<ProjectPanelProps> = ({
   isFirst,
   isLast,
 }) => {
+  useEffect(() => {
+    if (!project) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [project, onClose]);
+
+  // Mobile drops the prev/next arrow buttons (see .navBtn's display:none under the
+  // 700px breakpoint) in favor of swiping the panel itself — tracked here rather than
+  // via a drag library since it's a single one-shot gesture, not a draggable surface.
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start) return;
+
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    // Require the swipe to be more horizontal than vertical so scrolling the
+    // description text (a vertical gesture) never gets mistaken for a page turn.
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD_PX || Math.abs(deltaX) < Math.abs(deltaY)) return;
+
+    if (deltaX < 0 && !isLast) onNext();
+    else if (deltaX > 0 && !isFirst) onPrev();
+  };
+
   return (
     <AnimatePresence>
       {project && (
@@ -75,12 +94,16 @@ const ProjectPanel: React.FC<ProjectPanelProps> = ({
               </button>
             </div>
 
-            <div className={styles.body}>
+            <div
+              className={styles.body}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
               <div className={styles.mobileImageContainer}>
                 <div className={styles.imageWrapper}>
                   {project.images[0] && (
                     <img
-                      src={getImageUrl(project.images[0])}
+                      src={getProjectImageUrl(project.images[0])}
                       alt={project.title}
                       className={styles.image}
                     />

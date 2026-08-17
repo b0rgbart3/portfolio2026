@@ -1,7 +1,9 @@
 @use '../../styles/variables' as *;
 
 .skills {
-  scroll-margin-top: 100px;
+  // .inner's padding-top (85px) stacks with this, so the heading lands ~100px
+  // under the fixed navbar when jumped to via the Navbar — matching every other section.
+  scroll-margin-top: 15px;
   background: var(--bg-primary);
   min-height: 100vh;
   display: flex;
@@ -12,7 +14,7 @@
 .inner {
   @include section-padding;
   padding-top: 85px;
-  padding-bottom: 85px;
+  padding-bottom: 25px;
   max-width: 1000px;
   width: 100%;
   display: flex;

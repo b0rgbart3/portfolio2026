@@ -1,16 +1,17 @@
 @use '../../styles/variables' as *;
 
 .projects {
-  scroll-margin-top: 100px;
+  // padding-top (85px) below stacks with this, so the heading lands ~100px under
+  // the fixed navbar when jumped to via the Navbar — matching every other section.
+  scroll-margin-top: 15px;
   @include section-padding;
   padding-top: 85px;
-  padding-bottom: 85px;
+  padding-bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 40px;
 
   .header {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 
     h2 {
       font-size: 3rem;
@@ -21,7 +22,7 @@
     p {
       font-size: 1.125rem;
       color: var(--text-secondary);
-      max-width: 700px;
+      max-width: 900px;
     }
 
     .header-note {
@@ -37,8 +38,51 @@
   .filterBar {
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
     gap: 10px;
-    margin-bottom: 8px;
+    margin-bottom: 0;
+    margin-top: 20px;
+  }
+
+  .filterBarMobile {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .filterBarDesktop {
+      display: none;
+    }
+
+    .filterBarMobile {
+      display: flex;
+
+      .filterBtn {
+        border-radius: 8px;
+        // Fixed so every pill is the same size regardless of label length (unlike
+        // desktop, which sizes to content) — wide enough for "Fullstack", the longest
+        // mobile label.
+        width: 76px;
+        flex: 0 0 auto;
+        padding-left: 8px;
+        padding-right: 8px;
+        text-align: center;
+      }
+    }
+  }
+
+  .carouselWrap {
+    // Break out of the section's contained max-width so the Carousel gets the full
+    // viewport to work with, while the title/filter bar above stay contained like
+    // every other section.
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    // Carousel.css cascades height:100% down to the card viewport, so this needs a
+    // concrete height. Fixed (not viewport-relative) so the carousel's footprint
+    // doesn't shift as the window is resized — sized to fit the collapsed row
+    // (500px card + glow buffer); the expanded card overflows this box on purpose
+    // (see .carousel-viewport.has-expanded in Carousel.css) rather than stretching it.
+    height: 560px;
   }
 
   .filterBtn {
@@ -62,73 +106,16 @@
   .filterBtnActive {
     border-color: var(--accent-blue);
     background: var(--accent-blue-15);
+    // In light theme --accent-blue-15 is a solid (alpha 1) blue fill, so the blue
+    // accent text would be too low contrast against it — white only in that theme.
     color: var(--accent-blue-bright);
+
+    :global([data-theme="light"]) & {
+      color: #fff;
+    }
 
     &:hover {
       background: var(--accent-blue-20);
-    }
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-
-    @media (max-width: 1024px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 640px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .card {
-    background: var(--surface-faint);
-    border: 1px solid var(--border-faint);
-    border-radius: 16px;
-    padding: 32px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-
-    &:hover {
-      border-color: var(--accent-blue-40);
-      background: var(--accent-blue-10);
-      transform: translateY(-2px);
-
-      h3 {
-        color: var(--accent-blue);
-      }
-
-      p {
-        color: var(--text-primary);
-      }
-    }
-
-    h3 {
-      font-size: 1.25rem;
-      color: var(--text-primary);
-      margin-bottom: 12px;
-    }
-
-    p {
-      font-family: $font-sans;
-      font-size: 0.9375rem;
-      line-height: 1.65;
-      color: var(--text-secondary);
-      margin: 0;
-    }
-
-    :global([data-theme="light"]) &:hover {
-      border-color: var(--accent-blue);
-
-      h3 {
-        color: var(--accent-blue);
-      }
-
-      p {
-        color: var(--accent-blue);
-      }
     }
   }
 
@@ -206,7 +193,7 @@
 @media (max-width: 768px) {
   .projects {
     padding-top: 60px;
-    padding-bottom: 60px;
+    padding-bottom: 0;
 
     .header {
       h2 {
@@ -214,12 +201,20 @@
       }
     }
 
-    .card {
+    .cardBloatContent {
       padding: 24px;
     }
 
-    .cardBloatContent {
-      padding: 24px;
+    // carouselWrap's desktop height (560px) is sized for the max 500px-tall card
+    // (300px wide × the 500/300 aspect ratio from config.ts, +60px buffer). On mobile
+    // the card itself shrinks with viewport width (Carousel.tsx: clamp(200px, 58vw,
+    // 300px)), but a fixed height would leave the centered card floating in a lot of
+    // empty space above/below it — so mirror that same clamp()/aspect-ratio/buffer
+    // formula here instead of hardcoding a shorter height. This lands on exactly
+    // 560px at the 768px boundary (matching desktop, no visual jump) and shrinks
+    // smoothly down to ~393px at the narrowest phone widths.
+    .carouselWrap {
+      height: calc(clamp(200px, 58vw, 300px) * (500 / 300) + 60px);
     }
   }
 }

@@ -1,39 +1,23 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import styles from "./Projects.module.scss";
 import projectsData from "../../data/projects.json";
+import { Carousel } from "../carousel/Carousel";
 import ProjectPanel from "./ProjectPanel";
-
-interface Project {
-  title: string;
-  description: string;
-  intro: string;
-  images: string[];
-  live: string;
-  github: string;
-  features: string[];
-  tech: string[];
-  shields: string[];
-  category: string;
-}
+import type { Project } from "./types";
+import { slugify } from "../../utils/slug";
 
 const FILTERS = [
-  { label: "All", value: "all" },
-  { label: "Data Visualizations", value: "data-viz" },
-  { label: "Agentic AI", value: "ai" },
-  { label: "Fullstack Apps", value: "fullstack" },
-  { label: "Games", value: "games" },
-  { label: "Client Work", value: "client" },
+  { label: "All", mobileLabel: "ALL", value: "all" },
+  { label: "Data Visualizations", mobileLabel: "DATA", value: "data-viz" },
+  { label: "Best Four", mobileLabel: "Best", value: "best-four" },
+  { label: "Agentic AI", mobileLabel: "AI", value: "ai" },
+  { label: "Fullstack Apps", mobileLabel: "Fullstack", value: "fullstack" },
+  { label: "Games", mobileLabel: "Games", value: "games" },
+  { label: "Client Work", mobileLabel: "Clients", value: "client" },
 ] as const;
 
 type FilterValue = (typeof FILTERS)[number]["value"];
-
-function slugify(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
 
 function getIndexFromUrl(projects: Project[]): number | null {
   const params = new URLSearchParams(window.location.search);
@@ -47,25 +31,24 @@ const Projects: React.FC = () => {
   const projects: Project[] = projectsData;
   const [activeFilter, setActiveFilter] = useState<FilterValue>("all");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(() =>
-    getIndexFromUrl(projectsData as Project[]),
+    getIndexFromUrl(projects),
   );
 
-  const selectedProject =
-    selectedIndex !== null ? projects[selectedIndex] : null;
-
-  const displayedProjects = projects
-    .map((project, index) => ({ project, index }))
-    .filter(
-      ({ project }) =>
-        activeFilter === "all" || project.category === activeFilter,
-    );
+  const displayedProjects = useMemo(
+    () =>
+      projects.filter(
+        (project) =>
+          activeFilter === "all" || project.category.includes(activeFilter),
+      ),
+    [projects, activeFilter],
+  );
 
   const openProject = useCallback(
     (index: number | null) => {
       setSelectedIndex(index);
       const url = new URL(window.location.href);
       if (index !== null) {
-        const slug = slugify(projects[index].title);
+        const slug = slugify(displayedProjects[index].title);
         url.searchParams.set("project", slug);
         gtag("event", "project_viewed", { project_name: slug });
       } else {
@@ -73,36 +56,40 @@ const Projects: React.FC = () => {
       }
       window.history.pushState({}, "", url.toString());
     },
-    [projects],
+    [displayedProjects],
   );
 
   useEffect(() => {
-    const onPopState = () => setSelectedIndex(getIndexFromUrl(projects));
+    const onPopState = () => {
+      const idx = getIndexFromUrl(projects);
+      // The URL always identifies a project by slug within the full list, so force
+      // the filter to "all" whenever a link resolves — otherwise the active filter
+      // could hide the very project the URL points at.
+      if (idx !== null) setActiveFilter("all");
+      setSelectedIndex(idx);
+    };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, [projects]);
 
-  const handlePrev = () =>
-    setSelectedIndex((i) => {
-      const next = i !== null && i > 0 ? i - 1 : i;
-      if (next !== null && next !== i) {
-        const url = new URL(window.location.href);
-        url.searchParams.set("project", slugify(projects[next].title));
-        window.history.pushState({}, "", url.toString());
-      }
-      return next;
-    });
+  const handleFilterChange = (value: FilterValue) => {
+    setActiveFilter(value);
+    if (selectedIndex !== null) openProject(null);
+  };
 
-  const handleNext = () =>
-    setSelectedIndex((i) => {
-      const next = i !== null && i < projects.length - 1 ? i + 1 : i;
-      if (next !== null && next !== i) {
-        const url = new URL(window.location.href);
-        url.searchParams.set("project", slugify(projects[next].title));
-        window.history.pushState({}, "", url.toString());
-      }
-      return next;
-    });
+  const selectedProject =
+    selectedIndex !== null ? (displayedProjects[selectedIndex] ?? null) : null;
+
+  const handlePrev = useCallback(() => {
+    if (selectedIndex === null || selectedIndex <= 0) return;
+    openProject(selectedIndex - 1);
+  }, [selectedIndex, openProject]);
+
+  const handleNext = useCallback(() => {
+    if (selectedIndex === null || selectedIndex >= displayedProjects.length - 1)
+      return;
+    openProject(selectedIndex + 1);
+  }, [selectedIndex, displayedProjects.length, openProject]);
 
   return (
     <section className={styles.projects} id="projects">
@@ -132,7 +119,7 @@ const Projects: React.FC = () => {
       </div>
 
       <motion.div
-        className={styles.filterBar}
+        className={`${styles.filterBar} ${styles.filterBarDesktop}`}
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -142,24 +129,36 @@ const Projects: React.FC = () => {
           <button
             key={f.value}
             className={`${styles.filterBtn} ${activeFilter === f.value ? styles.filterBtnActive : ""}`}
-            onClick={() => setActiveFilter(f.value)}
+            onClick={() => handleFilterChange(f.value)}
           >
             {f.label}
           </button>
         ))}
       </motion.div>
 
-      <div className={styles.grid}>
-        {displayedProjects.map(({ project, index }) => (
-          <div
-            key={project.title}
-            className={styles.card}
-            onClick={() => openProject(index)}
+      <motion.div
+        className={`${styles.filterBar} ${styles.filterBarMobile}`}
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        {FILTERS.map((f) => (
+          <button
+            key={f.value}
+            className={`${styles.filterBtn} ${activeFilter === f.value ? styles.filterBtnActive : ""}`}
+            onClick={() => handleFilterChange(f.value)}
           >
-            <h3>{project.title}</h3>
-            <p>{project.intro}</p>
-          </div>
+            {f.mobileLabel}
+          </button>
         ))}
+      </motion.div>
+
+      <div className={styles.carouselWrap}>
+        <Carousel
+          projects={displayedProjects}
+          onActivate={(index) => openProject(index)}
+        />
       </div>
 
       <ProjectPanel
@@ -168,7 +167,7 @@ const Projects: React.FC = () => {
         onPrev={handlePrev}
         onNext={handleNext}
         isFirst={selectedIndex === 0}
-        isLast={selectedIndex === projects.length - 1}
+        isLast={selectedIndex === displayedProjects.length - 1}
       />
     </section>
   );

@@ -1,0 +1,116 @@
+.card {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--card-width);
+  height: var(--card-height);
+  background: var(--color-surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-origin: center center;
+  user-select: none;
+  -webkit-user-select: none;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  cursor: pointer;
+  transition:
+    box-shadow 200ms ease,
+    border-color 200ms ease;
+}
+
+/* In light theme this hairline reads as a stray light-gray line sitting just inside
+   the blue selected/hover ring (a box-shadow, drawn outside the border edge) —
+   dropped rather than recolored since the card's own shadow already defines its edge.
+   Zeroing the width (not just the color) matters: with box-sizing: border-box a
+   colored-transparent border still reserves 1px of box space, so card-art stops 1px
+   short of the edge and the card's own light --color-surface shows through in the gap. */
+[data-theme="light"] .card {
+  border-width: 0;
+}
+
+/* Depth cue for off-center cards: an opaque tint of the page background laid over the
+   card, increasing with distance from center — rather than lowering the card's own
+   opacity, which would let heavily-overlapping neighboring cards show through it. */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-page-bg);
+  opacity: var(--depth-tint, 0);
+  pointer-events: none;
+}
+
+/* Transform/box-shadow easing is scoped to this class, applied only for the brief
+   activation flash — the drift/drag physics writes `transform`/`--depth-tint` every
+   animation frame, and a blanket transition there would make the row visibly lag
+   the cursor. */
+.card.is-animating {
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 250ms ease;
+}
+
+.card.is-animating::after {
+  transition: opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover,
+.card.is-pressed {
+  box-shadow:
+    var(--shadow-card),
+    0 0 0 3px var(--color-accent),
+    0 0 36px 6px color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+.card-art {
+  position: relative;
+  flex: 0 0 auto;
+  height: calc(var(--card-height) * 0.6);
+  background: linear-gradient(155deg, hsl(210 20% 88%), hsl(210 15% 74%)) center / cover no-repeat;
+}
+
+/* Photo cards get a top-right vignette so overlaid content stays legible over
+   arbitrary screenshot content. */
+.card-art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at top right, rgb(0 0 0 / 0.35), transparent 45%);
+  pointer-events: none;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 18px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: calc(var(--card-height) * 0.4 - 40px);
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-blurb {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

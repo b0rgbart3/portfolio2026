@@ -108,9 +108,14 @@
 
 
   @media (max-width: 700px) {
-    width: 286px;
-    height: 286px;
+    // Auto height (rather than the desktop box's fixed square) so the wrapper hugs
+    // the image's real rendered height instead of leaving dead space below a
+    // wider-than-tall screenshot before .details starts.
+    width: calc(100% - 32px);
+    max-width: 340px;
+    height: auto;
     margin: 0 auto;
+    padding: 0;
     border-right: none;
     border-bottom: none;
     overflow: hidden;
@@ -269,14 +274,10 @@
     margin-top: 16px;
   }
 
+  // Replaced by swipe-to-navigate on the panel body (see ProjectPanel.tsx) — arrows
+  // stay for pointer-driven desktop/tablet, but a touch swipe is the mobile affordance.
   .navBtn {
-    bottom: auto;
-    top: 50%;
-    transform: translateY(-50%);
-
-    &:hover {
-      transform: translateY(-50%) scale(1.2);
-    }
+    display: none;
   }
 }
 
@@ -294,6 +295,6 @@
   .header h2 .projectTitle {
     display: block;
     padding-left: 0;
-    white-space: nowrap;
+    white-space: normal;
   }
 }

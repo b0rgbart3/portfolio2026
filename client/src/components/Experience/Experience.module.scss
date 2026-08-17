@@ -1,7 +1,9 @@
 @use '../../styles/variables' as *;
 
 .experience {
-    scroll-margin-top: 100px;
+    // padding-top (85px) below stacks with this, so the heading lands ~100px under
+    // the fixed navbar when jumped to via the Navbar — matching every other section.
+    scroll-margin-top: 15px;
     @include section-padding;
     padding-top: 85px;
     padding-bottom: 85px;

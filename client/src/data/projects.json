@@ -1,5 +1,143 @@
 [
     {
+        "title": "K*Bart",
+        "intro": "classic Q*Bert arcade game remake",
+        "description": "This is a remake of the classic arcade game Q*Bert.  It was built with Python and PyGame, and uses PyBag to generate an HTML5 canvas element to render the game.  The game is fully playable and includes sound effects and music.  It features all the original characters, and includes extra levels each with their own unique color system.",
+        "images": [
+            "kbart1.png"
+        ],
+        "live": "https://millionthblock-countdown.com/qbert/",
+        "github": "https://github.com/b0rgbart3/qbert",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "Python",
+            "PyGame",
+            "PyBag"
+        ],
+        "shields": [
+            "react",
+            "node",
+            "express",
+            "mongo",
+            "mongoose",
+            "antigravity"
+        ],
+        "category": [
+            "games"
+        ]
+    },
+    {
+        "title": "Millionth Block Countdown",
+        "intro": "counting down the blocks until Bitcoin hits the one-millionth block",
+        "description": "Fun little countdown visualizer that uses the Mempool.space API to track the bitcoin network blockheight.",
+        "images": [
+            "millionthblock.jpg"
+        ],
+        "live": "https://millionthblock-countdown.com/",
+        "github": "https://github.com/b0rgbart3/1M-Countdown",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Node.js",
+            "Mempool API"
+        ],
+        "shields": [
+            "react",
+            "node"
+        ],
+        "category": [
+            "data-viz"
+        ]
+    },
+    {
+        "title": "Bitcoin Retirement Calculator",
+        "intro": "an interactive dashboard that calculates how much bitcoin you need to retire",
+        "description": "This is a fun little interactive dashboard that calculates how much bitcoin you need to retire based on your current age, desired retirement age, and desired retirement income.  It uses the Mempool.space API to track the bitcoin network blockheight.",
+        "images": [
+            "calculator.jpg"
+        ],
+        "live": "https://moon-math.online/calculator-landing",
+        "github": "https://github.com/b0rgbart3/btc_calc",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Typescript",
+            "Vite"
+        ],
+        "shields": [
+            "react",
+            "typescript",
+            "vite"
+        ],
+        "category": [
+            "data-viz"
+        ]
+    },
+    {
+        "title": "SimplCAGR",
+        "intro": "an interactive dashboard that let's you calculate your compound annual growth rate",
+        "description": "This is a fun little interactive dashboard that calculates how much bitcoin you need to retire based on your current age, desired retirement age, and desired retirement income.",
+        "images": [
+            "simplCAGR.webp"
+        ],
+        "live": "https://moon-math.online/simplcagr-landing",
+        "github": "https://github.com/b0rgbart3/simplCAGR",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Typescript",
+            "Vite"
+        ],
+        "shields": [
+            "react",
+            "typescript",
+            "vite"
+        ],
+        "category": [
+            "data-viz"
+        ]
+    },
+    {
+        "title": "Birthday Tracker",
+        "intro": "vibe coded fullstack app",
+        "description": "Fullstack MERN app - Vibe coded with AntiGravity.  This is a fullstack application with a UI built with React, a cloud based MongoDB database, and a backend server written in Node.js.  The server runs a daily cron job to look for upcoming birthdays and sends me an email when they are a week out.",
+        "images": [
+            "birthdayTracker.jpg"
+        ],
+        "live": "https://birthdaytracker.bartdorityportfolio.online/",
+        "github": "https://github.com/b0rgbart3/birthday_tracker",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "Mongoose",
+            "Antigravity"
+        ],
+        "shields": [
+            "react",
+            "node",
+            "express",
+            "mongo",
+            "mongoose",
+            "antigravity"
+        ],
+        "category": [
+            "fullstack"
+        ]
+    },
+    {
         "title": "The Orrery",
         "intro": "3D visualization of the Solar System",
         "description": "An interactive, planetarium-style 3D visualization of the solar system: the Sun at the center of orbital control, all eight planets visible on screen at once, with a single compromise scale that exaggerates both planet size and orbital distance so the whole system reads as a recognizable model rather than a mostly-empty void. Planet positions are computed from real ephemeris data (via astronomy-engine), with a scrubbable timeline for moving through past and future dates.",
@@ -23,8 +161,6 @@
             "Node.js",
             "WebSockets",
             "mempool.space",
-            "world-atlas",
-            "topojson-client",
             "astronomy-engine",
             "AWS EC2"
         ],
@@ -35,9 +171,12 @@
             "mongo",
             "mongoose"
         ],
-        "category": "data-viz"
+        "category": [
+            "data-viz",
+            "best-four"
+        ]
     },
-     {
+    {
         "title": "Synchronicity: A Bitcoin Visualization",
         "intro": "3D visualization of the bitcoin network",
         "description": "This is a 3D globe visualization of the bitcoin network.  It uses the Mempool.space API to track the bitcoin network blockheight, and transactions gathering in the mempool and other stats including the current blockheight and the number of blocks remaining until the next halving.",
@@ -73,7 +212,11 @@
             "mongo",
             "mongoose"
         ],
-        "category": "data-viz"
+        "category": [
+            "data-viz",
+            "best-four",
+            "fullstack"
+        ]
     },
     {
         "title": "Moon-Math Blog",
@@ -101,135 +244,10 @@
             "mongo",
             "mongoose"
         ],
-        "category": "fullstack"
-    },
-    {
-        "title": "Millionth Block Countdown",
-        "intro": "counting down the blocks until Bitcoin hits the one-millionth block",
-        "description": "Fun little countdown visualizer that uses the Mempool.space API to track the bitcoin network blockheight.",
-        "images": [
-            "millionthblock.jpg"
-        ],
-        "live": "https://millionthblock-countdown.com/",
-        "github": "https://github.com/b0rgbart3/1M-Countdown",
-        "features": [
-            ""
-        ],
-        "tech": [
-            "React",
-            "Node.js",
-            "Mempool API"
-        ],
-        "shields": [
-            "react",
-            "node"
-        ],
-        "category": "data-viz"
-    },
-    {
-        "title": "Bitcoin Retirement Calculator",
-        "intro": "an interactive dashboard that calculates how much bitcoin you need to retire",
-        "description": "This is a fun little interactive dashboard that calculates how much bitcoin you need to retire based on your current age, desired retirement age, and desired retirement income.  It uses the Mempool.space API to track the bitcoin network blockheight.",
-        "images": [
-            "calculator.webp"
-        ],
-        "live": "https://moon-math.online/calculator-landing",
-        "github": "https://github.com/b0rgbart3/btc_calc",
-        "features": [
-            ""
-        ],
-        "tech": [
-            "React",
-            "Typescript",
-            "Vite"
-        ],
-        "shields": [
-            "react",
-            "typescript",
-            "vite"
-        ],
-        "category": "data-viz"
-    },
-    {
-        "title": "SimplCAGR",
-        "intro": "an interactive dashboard that let's you calculate your compound annual growth rate",
-        "description": "This is a fun little interactive dashboard that calculates how much bitcoin you need to retire based on your current age, desired retirement age, and desired retirement income.",
-        "images": [
-            "simplCAGR.webp"
-        ],
-        "live": "https://moon-math.online/simplcagr-landing",
-        "github": "https://github.com/b0rgbart3/simplCAGR",
-        "features": [
-            ""
-        ],
-        "tech": [
-            "React",
-            "Typescript",
-            "Vite"
-        ],
-        "shields": [
-            "react",
-            "typescript",
-            "vite"
-        ],
-        "category": "data-viz"
-    },
-    {
-        "title": "Birthday Tracker",
-        "intro": "vibe coded fullstack app",
-        "description": "Fullstack MERN app - Vibe coded with AntiGravity.  This is a fullstack application with a UI built with React, a cloud based MongoDB database, and a backend server written in Node.js.  The server runs a daily cron job to look for upcoming birthdays and sends me an email when they are a week out.",
-        "images": [
-            "birthdayTracker.jpg"
-        ],
-        "live": "https://birthdaytracker.bartdorityportfolio.online/",
-        "github": "https://github.com/b0rgbart3/birthday_tracker",
-        "features": [
-            ""
-        ],
-        "tech": [
-            "React",
-            "Node.js",
-            "Express",
-            "MongoDB",
-            "Mongoose",
-            "Antigravity"
-        ],
-        "shields": [
-            "react",
-            "node",
-            "express",
-            "mongo",
-            "mongoose",
-            "antigravity"
-        ],
-        "category": "fullstack"
-    },
-    {
-        "title": "K*Bart",
-        "intro": "classic Q*Bert arcade game remake",
-        "description": "This is a remake of the classic arcade game Q*Bert.  It was built with Python and PyGame, and uses PyBag to generate an HTML5 canvas element to render the game.  The game is fully playable and includes sound effects and music.  It features all the original characters, and includes extra levels each with their own unique color system.",
-        "images": [
-            "kbart1.png"
-        ],
-        "live": "https://millionthblock-countdown.com/qbert/",
-        "github": "https://github.com/b0rgbart3/qbert",
-        "features": [
-            ""
-        ],
-        "tech": [
-            "Python",
-            "PyGame",
-            "PyBag"
-        ],
-        "shields": [
-            "react",
-            "node",
-            "express",
-            "mongo",
-            "mongoose",
-            "antigravity"
-        ],
-        "category": "games"
+        "category": [
+            "fullstack",
+            "best-four"
+        ]
     },
     {
         "title": "Google Bookshelf",
@@ -257,7 +275,9 @@
             "mongo",
             "mongoose"
         ],
-        "category": "fullstack"
+        "category": [
+            "fullstack"
+        ]
     },
     {
         "title": "LightBurst",
@@ -279,7 +299,9 @@
             "flutter",
             "dart"
         ],
-        "category": "games"
+        "category": [
+            "games"
+        ]
     },
     {
         "title": "JerryFrost",
@@ -305,7 +327,10 @@
             "html",
             "css"
         ],
-        "category": "client"
+        "category": [
+            "client",
+            "fullstack"
+        ]
     },
     {
         "title": "Amy Graham",
@@ -329,7 +354,9 @@
             "html",
             "css"
         ],
-        "category": "client"
+        "category": [
+            "client"
+        ]
     },
     {
         "title": "Dority Design Works",
@@ -355,7 +382,9 @@
             "html",
             "css"
         ],
-        "category": "client"
+        "category": [
+            "client"
+        ]
     },
     {
         "title": "My 2026 Portfolio",
@@ -383,6 +412,10 @@
             "html",
             "css"
         ],
-        "category": "ai"
+        "category": [
+            "ai",
+            "best-four",
+            "fullstack"
+        ]
     }
 ]
