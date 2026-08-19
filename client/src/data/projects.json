@@ -54,6 +54,31 @@
         ]
     },
     {
+        "title": "Financial Dashboard",
+        "intro": "React based financial tracking dashboard.",
+        "description": "A personal stock tracking dashboard for monitoring purchases, dividends, and projecting future portfolio value.",
+        "images": [
+            "dashboard.jpg"
+        ],
+        "live": "https://dashboard.moon-math.online/",
+        "github": "https://github.com/b0rgbart3/dashboard",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React",
+            "Recharts",
+            "Vite"
+        ],
+        "shields": [
+            "react",
+            "node"
+        ],
+        "category": [
+            "data-viz"
+        ]
+    },
+    {
         "title": "Bitcoin Retirement Calculator",
         "intro": "an interactive dashboard that calculates how much bitcoin you need to retire",
         "description": "This is a fun little interactive dashboard that calculates how much bitcoin you need to retire based on your current age, desired retirement age, and desired retirement income.  It uses the Mempool.space API to track the bitcoin network blockheight.",
