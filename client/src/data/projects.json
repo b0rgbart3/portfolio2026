@@ -163,6 +163,41 @@
         ]
     },
     {
+        "title": "Prazsky Orloj",
+        "intro": "Digital version of the Prague Astronomical Clock",
+        "description": "A digital recreation of the Prague Orloj — the medieval astronomical clock on Prague's Old Town Hall — built as layered, animated SVG graphics in React.  The clock is fully functional, with all the original features of the Orloj, including the astronomical dial, the calendar dial, and the animated figures of the Apostles.  It also includes a custom-built backend that uses the astronomy-engine library to calculate the positions of the planets and other celestial bodies in real time.",
+        "images": [
+            "orloj.jpg"
+        ],
+        "live": "https://orloj.moon-math.online/",
+        "github": "https://github.com/b0rgbart3/Orloj",
+        "features": [
+            ""
+        ],
+        "tech": [
+            "React 19",
+            "TypeScript",
+            "Vite",
+            "Python",
+            "Fast API",
+            "LangGraph",
+            "LanceDB",
+            "sentence-transformers",
+            "Ollama",
+            "OpenRouter",
+            "unicorn",
+            "AWS EC2"
+        ],
+        "shields": [
+            "react",
+            "python"
+        ],
+        "category": [
+            "data-viz",
+            "ai"
+        ]
+    },
+    {
         "title": "The Orrery",
         "intro": "3D visualization of the Solar System",
         "description": "An interactive, planetarium-style 3D visualization of the solar system: the Sun at the center of orbital control, all eight planets visible on screen at once, with a single compromise scale that exaggerates both planet size and orbital distance so the whole system reads as a recognizable model rather than a mostly-empty void. Planet positions are computed from real ephemeris data (via astronomy-engine), with a scrubbable timeline for moving through past and future dates.",
